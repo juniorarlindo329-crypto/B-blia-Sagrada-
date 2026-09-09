@@ -1,0 +1,17 @@
+{
+  "name": "Palavra Viva - Bíblia e Meditação",
+  "short_name": "Palavra Viva",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f6f0e8",
+  "theme_color": "#1f1712",
+  "description": "Bíblia, meditações, reflexões e orações.",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
