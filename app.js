@@ -328,16 +328,66 @@ const BIBLE_MAP_STUDIES = [
 ];
 
 const QUIZ_QUESTIONS = [
-  {q:"Quem construiu a arca?",answers:["Abraão","Noé","Moisés","Davi"],correct:1},
-  {q:"Qual livro começa com a criação do mundo?",answers:["Êxodo","Salmos","Gênesis","Mateus"],correct:2},
-  {q:"Quem enfrentou Golias?",answers:["Davi","Salomão","Josué","Samuel"],correct:0},
-  {q:"Quem recebeu os Dez Mandamentos?",answers:["Pedro","Moisés","Paulo","José"],correct:1},
-  {q:"Em qual cidade Jesus nasceu?",answers:["Jerusalém","Nazaré","Belém","Roma"],correct:2},
-  {q:"Qual discípulo negou Jesus três vezes?",answers:["João","Tiago","Pedro","André"],correct:2},
-  {q:"Quem foi lançado na cova dos leões?",answers:["Daniel","Elias","Jonas","Neemias"],correct:0},
-  {q:"Quem foi engolido por um grande peixe?",answers:["Jonas","Amós","Joel","Oséias"],correct:0},
-  {q:"Qual é o último livro do Novo Testamento?",answers:["Judas","Hebreus","Atos","Apocalipse"],correct:3},
-  {q:"Quem escreveu muitas cartas do Novo Testamento?",answers:["Paulo","Pilatos","Herodes","Zaqueu"],correct:0}
+  {id:"q01",type:"Conhecimento",q:"Quem construiu a arca?",answers:["Abraão","Noé","Moisés","Davi"],correct:"Noé"},
+  {id:"q02",type:"Conhecimento",q:"Qual livro começa com a criação do mundo?",answers:["Êxodo","Salmos","Gênesis","Mateus"],correct:"Gênesis"},
+  {id:"q03",type:"Conhecimento",q:"Quem enfrentou Golias?",answers:["Davi","Salomão","Josué","Samuel"],correct:"Davi"},
+  {id:"q04",type:"Conhecimento",q:"Quem recebeu os Dez Mandamentos?",answers:["Pedro","Moisés","Paulo","José"],correct:"Moisés"},
+  {id:"q05",type:"Conhecimento",q:"Em qual cidade Jesus nasceu?",answers:["Jerusalém","Nazaré","Belém","Roma"],correct:"Belém"},
+  {id:"q06",type:"Conhecimento",q:"Qual discípulo negou Jesus três vezes?",answers:["João","Tiago","Pedro","André"],correct:"Pedro"},
+  {id:"q07",type:"Conhecimento",q:"Quem foi lançado na cova dos leões?",answers:["Daniel","Elias","Jonas","Neemias"],correct:"Daniel"},
+  {id:"q08",type:"Conhecimento",q:"Quem foi engolido por um grande peixe?",answers:["Jonas","Amós","Joel","Oséias"],correct:"Jonas"},
+  {id:"q09",type:"Conhecimento",q:"Qual é o último livro do Novo Testamento?",answers:["Judas","Hebreus","Atos","Apocalipse"],correct:"Apocalipse"},
+  {id:"q10",type:"Conhecimento",q:"Quem escreveu muitas cartas do Novo Testamento?",answers:["Paulo","Pilatos","Herodes","Zaqueu"],correct:"Paulo"},
+  {id:"q11",type:"Quem sou eu?",q:"Fui vendido pelos meus irmãos e depois me tornei governador no Egito. Quem sou eu?",answers:["José","Benjamim","Isaque","Josué"],correct:"José"},
+  {id:"q12",type:"Quem sou eu?",q:"Deus me chamou para sair da minha terra e prometeu fazer de mim uma grande nação. Quem sou eu?",answers:["Abraão","Jacó","Samuel","Calebe"],correct:"Abraão"},
+  {id:"q13",type:"Quem sou eu?",q:"Fui conhecido por minha grande força e meu cabelo tinha relação com meu voto. Quem sou eu?",answers:["Sansão","Gideão","Saul","Davi"],correct:"Sansão"},
+  {id:"q14",type:"Quem sou eu?",q:"Pedi sabedoria a Deus e fui rei de Israel. Quem sou eu?",answers:["Salomão","Saul","Ezequias","Josias"],correct:"Salomão"},
+  {id:"q15",type:"Quem sou eu?",q:"Ouvi Deus me chamar quando ainda era menino e respondi: 'Fala'. Quem sou eu?",answers:["Samuel","Davi","Timóteo","João"],correct:"Samuel"},
+  {id:"q16",type:"Quem sou eu?",q:"Subi numa árvore para conseguir ver Jesus. Quem sou eu?",answers:["Zaqueu","Nicodemos","Bartimeu","Lázaro"],correct:"Zaqueu"},
+  {id:"q17",type:"Quem sou eu?",q:"Preparei o caminho do Senhor e batizei Jesus. Quem sou eu?",answers:["João Batista","Pedro","Filipe","Tiago"],correct:"João Batista"},
+  {id:"q18",type:"Quem sou eu?",q:"Fui rainha e arrisquei minha vida para ajudar meu povo. Quem sou eu?",answers:["Ester","Rute","Débora","Miriã"],correct:"Ester"},
+  {id:"q19",type:"Quem sou eu?",q:"Fui chamado por Jesus quando trabalhava como cobrador de impostos. Quem sou eu?",answers:["Mateus","André","Tomé","Bartolomeu"],correct:"Mateus"},
+  {id:"q20",type:"Quem sou eu?",q:"Disse: 'Eis-me aqui, envia-me a mim'. Quem sou eu?",answers:["Isaías","Jeremias","Ezequiel","Daniel"],correct:"Isaías"},
+  {id:"q21",type:"Verdadeiro ou falso",q:"Moisés entrou na arca com Noé.",answers:["Verdadeiro","Falso"],correct:"Falso"},
+  {id:"q22",type:"Verdadeiro ou falso",q:"Davi foi pastor de ovelhas antes de ser rei.",answers:["Verdadeiro","Falso"],correct:"Verdadeiro"},
+  {id:"q23",type:"Verdadeiro ou falso",q:"Jesus teve doze apóstolos.",answers:["Verdadeiro","Falso"],correct:"Verdadeiro"},
+  {id:"q24",type:"Verdadeiro ou falso",q:"Jonas foi enviado para pregar em Nínive.",answers:["Verdadeiro","Falso"],correct:"Verdadeiro"},
+  {id:"q25",type:"Verdadeiro ou falso",q:"Salomão derrotou Golias.",answers:["Verdadeiro","Falso"],correct:"Falso"},
+  {id:"q26",type:"Verdadeiro ou falso",q:"Paulo se chamava Saulo antes de sua conversão.",answers:["Verdadeiro","Falso"],correct:"Verdadeiro"},
+  {id:"q27",type:"Verdadeiro ou falso",q:"Rute era sogra de Noemi.",answers:["Verdadeiro","Falso"],correct:"Falso"},
+  {id:"q28",type:"Verdadeiro ou falso",q:"Daniel interpretou sonhos.",answers:["Verdadeiro","Falso"],correct:"Verdadeiro"},
+  {id:"q29",type:"Verdadeiro ou falso",q:"Pedro caminhou sobre as águas em direção a Jesus.",answers:["Verdadeiro","Falso"],correct:"Verdadeiro"},
+  {id:"q30",type:"Verdadeiro ou falso",q:"O livro de Salmos está no Novo Testamento.",answers:["Verdadeiro","Falso"],correct:"Falso"},
+  {id:"q31",type:"Complete",q:"Complete: 'O Senhor é o meu ___; nada me faltará.'",answers:["pastor","rei","juiz","profeta"],correct:"pastor"},
+  {id:"q32",type:"Complete",q:"Complete: 'No princípio criou Deus os céus e a ___.'",answers:["terra","cidade","luz","água"],correct:"terra"},
+  {id:"q33",type:"Complete",q:"Complete: 'Tudo posso naquele que me ___.'",answers:["fortalece","ensina","ouve","acompanha"],correct:"fortalece"},
+  {id:"q34",type:"Complete",q:"Complete: 'Bem-aventurados os pacificadores, porque serão chamados filhos de ___.'",answers:["Deus","Abraão","Israel","Davi"],correct:"Deus"},
+  {id:"q35",type:"Complete",q:"Complete: 'Eu sou o caminho, e a verdade, e a ___.'",answers:["vida","força","luz","paz"],correct:"vida"},
+  {id:"q36",type:"Livros da Bíblia",q:"Qual destes é um Evangelho?",answers:["Mateus","Romanos","Hebreus","Atos"],correct:"Mateus"},
+  {id:"q37",type:"Livros da Bíblia",q:"Qual destes livros pertence ao Antigo Testamento?",answers:["Isaías","Efésios","Tiago","Filipenses"],correct:"Isaías"},
+  {id:"q38",type:"Livros da Bíblia",q:"Qual livro vem depois de Gênesis?",answers:["Êxodo","Levítico","Números","Josué"],correct:"Êxodo"},
+  {id:"q39",type:"Livros da Bíblia",q:"Qual livro narra o início da igreja cristã e as viagens dos apóstolos?",answers:["Atos","Romanos","Lucas","Apocalipse"],correct:"Atos"},
+  {id:"q40",type:"Livros da Bíblia",q:"Qual destes é um livro de sabedoria/poesia do Antigo Testamento?",answers:["Provérbios","Marcos","Atos","Gálatas"],correct:"Provérbios"},
+  {id:"q41",type:"Jesus",q:"Qual foi o primeiro milagre de Jesus registrado no Evangelho de João?",answers:["Transformar água em vinho","Multiplicar pães","Acalmar a tempestade","Curar Bartimeu"],correct:"Transformar água em vinho"},
+  {id:"q42",type:"Jesus",q:"Quem batizou Jesus?",answers:["João Batista","Pedro","Tiago","André"],correct:"João Batista"},
+  {id:"q43",type:"Jesus",q:"Quantos dias Jesus jejuou no deserto?",answers:["40","7","12","30"],correct:"40"},
+  {id:"q44",type:"Jesus",q:"Quem traiu Jesus?",answers:["Judas Iscariotes","Pedro","João","Tomé"],correct:"Judas Iscariotes"},
+  {id:"q45",type:"Jesus",q:"Quem ajudou a carregar a cruz de Jesus?",answers:["Simão de Cirene","José de Arimateia","Nicodemos","Bartimeu"],correct:"Simão de Cirene"},
+  {id:"q46",type:"Antigo Testamento",q:"Quem liderou o povo de Israel após a morte de Moisés?",answers:["Josué","Arão","Calebe","Samuel"],correct:"Josué"},
+  {id:"q47",type:"Antigo Testamento",q:"Qual profeta desafiou os profetas de Baal no monte Carmelo?",answers:["Elias","Eliseu","Isaías","Jeremias"],correct:"Elias"},
+  {id:"q48",type:"Antigo Testamento",q:"Quem sonhou com uma escada que chegava ao céu?",answers:["Jacó","José","Isaque","Abraão"],correct:"Jacó"},
+  {id:"q49",type:"Antigo Testamento",q:"Quem foi mãe de Samuel?",answers:["Ana","Sara","Raquel","Rebeca"],correct:"Ana"},
+  {id:"q50",type:"Antigo Testamento",q:"Quem sucedeu Elias como profeta?",answers:["Eliseu","Isaías","Amós","Oséias"],correct:"Eliseu"},
+  {id:"q51",type:"Novo Testamento",q:"Quem foi o primeiro mártir cristão citado em Atos?",answers:["Estêvão","Paulo","Pedro","Barnabé"],correct:"Estêvão"},
+  {id:"q52",type:"Novo Testamento",q:"Quem acompanhou Paulo em várias viagens missionárias e escreveu um Evangelho e Atos?",answers:["Lucas","Marcos","Timóteo","Silas"],correct:"Lucas"},
+  {id:"q53",type:"Novo Testamento",q:"Quem teve uma visão de um lençol com animais antes de visitar Cornélio?",answers:["Pedro","Paulo","João","Filipe"],correct:"Pedro"},
+  {id:"q54",type:"Novo Testamento",q:"Em qual cidade os discípulos foram chamados cristãos pela primeira vez?",answers:["Antioquia","Jerusalém","Roma","Éfeso"],correct:"Antioquia"},
+  {id:"q55",type:"Novo Testamento",q:"Quem foi companheiro de Paulo e Silas na prisão em Filipos?",answers:["Paulo e Silas estavam juntos","Barnabé","Timóteo","Tito"],correct:"Paulo e Silas estavam juntos"},
+  {id:"q56",type:"Números bíblicos",q:"Quantos dias e noites choveu durante o dilúvio, segundo Gênesis?",answers:["40","7","12","70"],correct:"40"},
+  {id:"q57",type:"Números bíblicos",q:"Quantos irmãos José tinha, filhos de Jacó além dele?",answers:["11","10","12","7"],correct:"11"},
+  {id:"q58",type:"Números bíblicos",q:"Quantas pedras Davi escolheu antes de enfrentar Golias?",answers:["5","3","7","12"],correct:"5"},
+  {id:"q59",type:"Números bíblicos",q:"Quantos pães foram usados na alimentação dos cinco mil, além dos peixes?",answers:["5","7","12","2"],correct:"5"},
+  {id:"q60",type:"Números bíblicos",q:"Quantos dias Jesus permaneceu aparecendo aos discípulos antes da ascensão, segundo Atos?",answers:["40","50","30","12"],correct:"40"}
 ];
 
 const BLOG_ARTICLES = [
@@ -379,7 +429,13 @@ const state = {
   fontScale:Number(localStorage.getItem("bs-font-scale")||1),
   notes:JSON.parse(localStorage.getItem("bs-notes")||"{}"),
   highlights:JSON.parse(localStorage.getItem("bs-highlights")||"{}"),
+  readMarks:JSON.parse(localStorage.getItem("bs-read-marks")||"{}"),
+  readMarkColor:localStorage.getItem("bs-read-mark-color")||"mint",
   history:JSON.parse(localStorage.getItem("bs-history")||"[]"),
+  quizRound:null,
+  quizIndex:0,
+  quizScore:0,
+  quizAnswered:null,
   drawerOpen:false
 };
 
@@ -402,6 +458,21 @@ const HIGHLIGHT_COLORS = [
   {id:"rose", bg:"#efa0c3", fg:"#1a1a1a"},
   {id:"gray", bg:"#d3d2d6", fg:"#1a1a1a"}
 ];
+
+const READ_MARK_COLORS = [
+  {id:"mint", bg:"#b8ddb3", fg:"#18311b", label:"Verde"},
+  {id:"lime", bg:"#d5ff25", fg:"#171717", label:"Limão"},
+  {id:"yellow", bg:"#efe88d", fg:"#332d08", label:"Amarelo"},
+  {id:"blue", bg:"#9ec9ef", fg:"#172b3a", label:"Azul"},
+  {id:"orange", bg:"#f6cf87", fg:"#39250c", label:"Laranja"},
+  {id:"rose", bg:"#efa0c3", fg:"#42162b", label:"Rosa"},
+  {id:"purple", bg:"#aa38f0", fg:"#ffffff", label:"Roxo"}
+];
+
+if(!READ_MARK_COLORS.some(c=>c.id===state.readMarkColor)){
+  state.readMarkColor="mint";
+  localStorage.setItem("bs-read-mark-color","mint");
+}
 
 if(state.dark) document.body.classList.add("dark");
 themeBtn.textContent = state.dark ? "☀" : "☾";
@@ -492,6 +563,75 @@ function addHistory(item){
 function getFavorite(id){ return state.fullFavorites.find(x=>x.id===id); }
 function getVerseNote(id){ return state.notes[id] || ""; }
 function getVerseHighlight(id){ return state.highlights[id] || null; }
+function getVerseReadMark(id){ return state.readMarks[id] || null; }
+function getReadMarkColor(id){ return READ_MARK_COLORS.find(c=>c.id===id) || READ_MARK_COLORS[0]; }
+
+function setReadMarkColor(colorId){
+  if(!READ_MARK_COLORS.some(c=>c.id===colorId)) return;
+  state.readMarkColor=colorId;
+  localStorage.setItem("bs-read-mark-color",colorId);
+  if(state.page==="bible") renderBible();
+}
+
+function toggleVerseReadByNumber(number){
+  const v=getCurrentVerse(number);
+  if(!v) return;
+  const id=refId(state.selectedBookCode,state.selectedChapter,v.number);
+  if(state.readMarks[id]){
+    delete state.readMarks[id];
+    toast(`Versículo ${v.number} desmarcado`);
+  }else{
+    state.readMarks[id]=state.readMarkColor;
+    toast(`Versículo ${v.number} marcado como lido`);
+  }
+  saveJSON("bs-read-marks",state.readMarks);
+  renderBible();
+}
+
+function markAllChapterRead(){
+  if(!state.currentChapterVerses.length) return;
+  for(const v of state.currentChapterVerses){
+    state.readMarks[refId(state.selectedBookCode,state.selectedChapter,v.number)]=state.readMarkColor;
+  }
+  saveJSON("bs-read-marks",state.readMarks);
+  toast("Capítulo marcado como lido");
+  renderBible();
+}
+
+function clearChapterReadMarks(){
+  for(const v of state.currentChapterVerses){
+    delete state.readMarks[refId(state.selectedBookCode,state.selectedChapter,v.number)];
+  }
+  saveJSON("bs-read-marks",state.readMarks);
+  toast("Marcações de leitura removidas");
+  renderBible();
+}
+
+function chapterReadCount(){
+  return state.currentChapterVerses.filter(v=>getVerseReadMark(refId(state.selectedBookCode,state.selectedChapter,v.number))).length;
+}
+
+function renderReadMarkerToolbar(){
+  const readCount=chapterReadCount();
+  const total=state.currentChapterVerses.length;
+  const pct=total ? Math.round(readCount/total*100) : 0;
+  return `<div class="read-marker-toolbar">
+    <div class="read-marker-head">
+      <div>
+        <strong>✓ Marcar o que já leu</strong>
+        <div class="small">${readCount} de ${total} versículos lidos • ${pct}%</div>
+      </div>
+      <button class="mini-btn" onclick="markAllChapterRead()">Marcar todos</button>
+    </div>
+    <div class="read-progress-track"><span style="width:${pct}%"></span></div>
+    <div class="read-color-picker">
+      <span class="small">Cor:</span>
+      ${READ_MARK_COLORS.map(c=>`<button class="read-color-dot ${state.readMarkColor===c.id?'active':''}" style="--read-color:${c.bg};--read-fg:${c.fg}" title="${c.label}" onclick="setReadMarkColor('${c.id}')">${state.readMarkColor===c.id?'✓':''}</button>`).join('')}
+      ${readCount?`<button class="read-clear-btn" onclick="clearChapterReadMarks()">Limpar capítulo</button>`:''}
+    </div>
+    <div class="small read-marker-help">Escolha uma cor e toque em <strong>Marcar lido</strong> em cada versículo conforme for lendo.</div>
+  </div>`;
+}
 
 function toggleFullFavorite(code,bookName,chapter,verse,text){
   const id=refId(code,chapter,verse);
@@ -605,12 +745,14 @@ function guidedMeditationOptions(verse){
 
 async function openBook(code){ state.selectedBookCode=code; state.selectedChapter=null; await renderBible(); }
 async function openChapter(chapter){
+  window.scrollTo({top:0,behavior:"auto"});
   state.selectedChapter=Number(chapter);
   state.selectedVerseNumbers=[];
   state.chapterMode="read";
   state.currentChapterVerses=[];
   state.activeReadingVerse=null;
   await renderBible();
+  requestAnimationFrame(()=>window.scrollTo({top:0,behavior:"auto"}));
 }
 function showLoading(text="Carregando..."){ content.innerHTML=`<div class="empty-state"><span class="spinner"></span><br><br>${text}</div>`; }
 function getCurrentVerse(number){ return state.currentChapterVerses.find(v=>Number(v.number)===Number(number)); }
@@ -724,16 +866,20 @@ function renderReadingActionSheet(){
 function fullVerseRow(code,bookName,chapter,v){
   const id=refId(code,chapter,v.number);
   const liked=!!getFavorite(id);
-  const highlightId = getVerseHighlight(id);
-  const color = HIGHLIGHT_COLORS.find(c=>c.id===highlightId);
-  const isActive = state.activeReadingVerse && Number(state.activeReadingVerse.verse)===Number(v.number);
-  const rowStyle = color ? `background:${color.bg};color:${color.fg}` : `background:var(--surface)`;
-  return `<article class="reading-verse ${isActive?'selected':''}" style="${rowStyle}">
+  const highlightId=getVerseHighlight(id);
+  const readMarkId=getVerseReadMark(id);
+  const highlightColor=HIGHLIGHT_COLORS.find(c=>c.id===highlightId);
+  const readColor=getReadMarkColor(readMarkId);
+  const displayColor=highlightColor || (readMarkId ? readColor : null);
+  const isActive=state.activeReadingVerse && Number(state.activeReadingVerse.verse)===Number(v.number);
+  const rowStyle=displayColor ? `background:${displayColor.bg};color:${displayColor.fg}` : `background:var(--surface)`;
+  return `<article id="verse-${v.number}" class="reading-verse ${isActive?'selected':''} ${readMarkId?'read-done':''}" style="${rowStyle}">
     <div class="reading-verse-line" onclick="setReadingActionVerse(${v.number})">
-      <button class="verse-number-btn" onclick="event.stopPropagation();openVerseByNumber(${v.number})">${v.number}</button>
+      <button class="verse-number-btn" onclick="event.stopPropagation();setReadingActionVerse(${v.number})">${v.number}</button>
       <div class="reading-verse-text" style="font-size:${(20*state.fontScale).toFixed(1)}px">${escapeHtml(v.text)}</div>
     </div>
     <div class="verse-inline-tools">
+      <button class="verse-tool read-tool ${readMarkId?'is-read':''}" onclick="toggleVerseReadByNumber(${v.number})">${readMarkId?"✓ Lido":"○ Marcar lido"}</button>
       <button class="verse-tool" onclick="openVerseByNumber(${v.number})">✦ Estudo Bíblico</button>
       <button class="verse-tool" onclick="shareReadingVerse(${v.number})">↗ Compartilhar</button>
       <button class="verse-tool" onclick="copyReadingVerse(${v.number})">⧉ Copiar</button>
@@ -819,11 +965,12 @@ async function renderBible(){
     }
     const ch=book.chapters.find(c=>Number(c.chapter)===Number(state.selectedChapter));
     if(!ch) throw new Error("Capítulo não encontrado");
-    state.currentChapterVerses=ch.verses;
+    const allVerses=[...(ch.verses||[])].sort((a,b)=>Number(a.number)-Number(b.number));
+    state.currentChapterVerses=allVerses;
     if(state.chapterMode==="select"){ renderVersePicker(); return; }
     const prev=state.selectedChapter>1?state.selectedChapter-1:null;
     const next=state.selectedChapter<book.chapters.length?state.selectedChapter+1:null;
-    const chosen = state.selectedVerseNumbers.length ? ch.verses.filter(v=>state.selectedVerseNumbers.includes(Number(v.number))) : ch.verses;
+    const chosen = state.selectedVerseNumbers.length ? allVerses.filter(v=>state.selectedVerseNumbers.includes(Number(v.number))) : allVerses;
     if(!state.activeReadingVerse && chosen.length){ const f=chosen[0]; state.activeReadingVerse={code,bookName,chapter:Number(state.selectedChapter),verse:Number(f.number),text:f.text}; }
     addHistory({id:`${code}-${state.selectedChapter}-${state.currentVersionCode}`,label:`${bookName} ${state.selectedChapter}`,when:new Date().toLocaleString("pt-BR")});
     content.innerHTML=`
@@ -837,6 +984,7 @@ async function renderBible(){
           <button class="top-icon-btn" onclick="fontUp()">T+</button>
           <button class="top-icon-btn" onclick="fontDown()">T-</button>
         </div>
+        ${renderReadMarkerToolbar()}
         <section class="bible-reading">${chosen.map(v=>fullVerseRow(code,bookName,state.selectedChapter,v)).join('')}</section>
       </div>
       <div id="readingActionMount"></div>
@@ -1169,16 +1317,81 @@ function buildSaltMessage(){const name=document.getElementById("saltName").value
 function shareSaltMessage(){if(!state.saltMessage)return;if(navigator.share)navigator.share({text:state.saltMessage}).catch(()=>{});else copySaltMessage();}
 function copySaltMessage(){navigator.clipboard?.writeText(state.saltMessage||"");toast("Mensagem copiada");}
 
+function shuffleArray(items){
+  const arr=[...items];
+  for(let i=arr.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]]=[arr[j],arr[i]];
+  }
+  return arr;
+}
+
+function buildQuizQuestion(q){
+  const answers=shuffleArray(q.answers);
+  return {...q,answers,correctIndex:answers.indexOf(q.correct)};
+}
+
+function startNewQuizRound(){
+  const previousIds=JSON.parse(localStorage.getItem("bs-last-quiz-round")||"[]");
+  let pool=QUIZ_QUESTIONS.filter(q=>!previousIds.includes(q.id));
+  if(pool.length<10) pool=[...QUIZ_QUESTIONS];
+  state.quizRound=shuffleArray(pool).slice(0,10).map(buildQuizQuestion);
+  state.quizIndex=0;
+  state.quizScore=0;
+  state.quizAnswered=null;
+  saveJSON("bs-last-quiz-round",state.quizRound.map(q=>q.id));
+}
+
 function renderQuestions(){
   pageTitle.textContent="Perguntas Bíblicas";
-  if(state.quizIndex===undefined){state.quizIndex=0;state.quizScore=0;state.quizAnswered=null;}
-  if(state.quizIndex>=QUIZ_QUESTIONS.length){content.innerHTML=`<div class="quiz-finish"><span>🏆</span><h2>Quiz concluído</h2><p>Você acertou <strong>${state.quizScore}</strong> de ${QUIZ_QUESTIONS.length} perguntas.</p><button class="btn-primary" onclick="restartQuiz()">Jogar novamente</button></div>`;return;}
-  const q=QUIZ_QUESTIONS[state.quizIndex];
-  content.innerHTML=`<div class="panel"><span class="eyebrow">PERGUNTA ${state.quizIndex+1} DE ${QUIZ_QUESTIONS.length}</span><h2>${q.q}</h2></div><div class="quiz-answers">${q.answers.map((a,i)=>`<button class="quiz-answer ${state.quizAnswered===i?(i===q.correct?'correct':'wrong'):''} ${state.quizAnswered!==null&&i===q.correct?'correct':''}" ${state.quizAnswered!==null?'disabled':''} onclick="answerQuiz(${i})">${a}</button>`).join('')}</div>${state.quizAnswered!==null?`<button class="btn-primary full-width" onclick="nextQuiz()">${state.quizIndex===QUIZ_QUESTIONS.length-1?'Ver resultado':'Próxima pergunta'}</button>`:''}`;
+  if(!Array.isArray(state.quizRound) || !state.quizRound.length) startNewQuizRound();
+
+  if(state.quizIndex>=state.quizRound.length){
+    const pct=Math.round(state.quizScore/state.quizRound.length*100);
+    content.innerHTML=`<div class="quiz-finish">
+      <span>${pct>=80?"🏆":pct>=60?"👏":"📖"}</span>
+      <h2>Rodada concluída!</h2>
+      <p>Você acertou <strong>${state.quizScore}</strong> de ${state.quizRound.length} perguntas.</p>
+      <p class="small">A próxima rodada será montada com perguntas diferentes das 10 que você acabou de responder.</p>
+      <button class="btn-primary full-width" onclick="restartQuiz()">Jogar nova rodada</button>
+    </div>`;
+    return;
+  }
+
+  const q=state.quizRound[state.quizIndex];
+  content.innerHTML=`<div class="panel quiz-question-card">
+    <div class="quiz-topline">
+      <span class="eyebrow">PERGUNTA ${state.quizIndex+1} DE ${state.quizRound.length}</span>
+      <span class="quiz-type">${q.type}</span>
+    </div>
+    <div class="quiz-progress-track"><span style="width:${(state.quizIndex/state.quizRound.length)*100}%"></span></div>
+    <h2>${escapeHtml(q.q)}</h2>
+    <div class="small">Pontuação: ${state.quizScore}</div>
+  </div>
+  <div class="quiz-answers">
+    ${q.answers.map((a,i)=>`<button class="quiz-answer ${state.quizAnswered===i?(i===q.correctIndex?'correct':'wrong'):''} ${state.quizAnswered!==null&&i===q.correctIndex?'correct':''}" ${state.quizAnswered!==null?'disabled':''} onclick="answerQuiz(${i})">${escapeHtml(a)}</button>`).join('')}
+  </div>
+  ${state.quizAnswered!==null?`<div class="quiz-feedback ${state.quizAnswered===q.correctIndex?'good':'bad'}">${state.quizAnswered===q.correctIndex?'✓ Acertou!':'✕ Resposta correta: '+escapeHtml(q.answers[q.correctIndex])}</div><button class="btn-primary full-width" onclick="nextQuiz()">${state.quizIndex===state.quizRound.length-1?'Ver resultado':'Próxima pergunta'}</button>`:''}`;
 }
-function answerQuiz(i){if(state.quizAnswered!==null)return;const q=QUIZ_QUESTIONS[state.quizIndex];state.quizAnswered=i;if(i===q.correct)state.quizScore++;renderQuestions();}
-function nextQuiz(){state.quizIndex++;state.quizAnswered=null;renderQuestions();}
-function restartQuiz(){state.quizIndex=0;state.quizScore=0;state.quizAnswered=null;renderQuestions();}
+
+function answerQuiz(i){
+  if(state.quizAnswered!==null) return;
+  const q=state.quizRound[state.quizIndex];
+  state.quizAnswered=i;
+  if(i===q.correctIndex) state.quizScore++;
+  renderQuestions();
+}
+
+function nextQuiz(){
+  state.quizIndex++;
+  state.quizAnswered=null;
+  renderQuestions();
+}
+
+function restartQuiz(){
+  startNewQuizRound();
+  renderQuestions();
+}
 
 function renderDictionary(){pageTitle.textContent="Dicionário";const q=(state.dictionaryQuery||"").toLowerCase();const list=BIBLE_DICTIONARY_FULL.filter(x=>!q||x.term.toLowerCase().includes(q)||x.meaning.toLowerCase().includes(q));content.innerHTML=`<div class="panel"><h3>🔤 Dicionário Bíblico</h3><input class="field" placeholder="Buscar termo" value="${escapeHtml(state.dictionaryQuery||'')}" oninput="state.dictionaryQuery=this.value;renderDictionary()"></div>${list.map(x=>`<article class="dictionary-card"><strong>${x.term}</strong><p>${x.meaning}</p></article>`).join('')}`;}
 
@@ -1200,7 +1413,7 @@ function exportBackup(){const data={};for(let i=0;i<localStorage.length;i++){con
 function importBackupFile(event){const file=event.target.files?.[0];if(!file)return;const reader=new FileReader();reader.onload=()=>{try{const obj=JSON.parse(reader.result);if(!obj.data)throw new Error();for(const [k,v] of Object.entries(obj.data)){if(k.startsWith("bs-"))localStorage.setItem(k,v);}alert("Backup restaurado. O aplicativo será recarregado.");location.reload();}catch(e){toast("Arquivo de backup inválido");}};reader.readAsText(file);}
 function clearAppData(){if(!confirm("Tem certeza? Isso apaga favoritos, notas e progresso deste aparelho."))return;const keys=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k?.startsWith("bs-"))keys.push(k);}keys.forEach(k=>localStorage.removeItem(k));location.reload();}
 
-function renderMore(){pageTitle.textContent="Mais informações";content.innerHTML=`<div class="setting-row" onclick="toggleTheme()"><div class="setting-left"><div class="setting-icon">${state.dark?'☀':'☾'}</div><div><h3>Modo ${state.dark?'claro':'escuro'}</h3><div class="small">Mude a aparência do aplicativo</div></div></div><span>›</span></div><div class="setting-row" onclick="installAppFromMenu()"><div class="setting-left"><div class="setting-icon">⇩</div><div><h3>Instalar aplicativo</h3><div class="small">Adicionar à tela inicial do celular</div></div></div><span>›</span></div><div class="setting-row" onclick="shareApp()"><div class="setting-left"><div class="setting-icon">↗</div><div><h3>Compartilhar app</h3><div class="small">Envie o Palavra Viva para alguém</div></div></div><span>›</span></div><div class="version-card"><div class="cross">✝</div><h3>Bíblia Sagrada</h3><p>Palavra Viva • versão 0.9</p><p style="margin-top:8px">Desenvolvido por JNR</p></div><div class="panel" style="margin-top:12px"><strong>📖 Recursos desta versão</strong><p class="small">Menu reorganizado, planos, devocionais, histórias, pesquisa avançada, hinários pessoais, áudio por voz do aparelho, quiz, dicionário, temas, estudos por localização, backup e versões que realmente trocam o texto bíblico.</p></div>`;}
+function renderMore(){pageTitle.textContent="Mais informações";content.innerHTML=`<div class="setting-row" onclick="toggleTheme()"><div class="setting-left"><div class="setting-icon">${state.dark?'☀':'☾'}</div><div><h3>Modo ${state.dark?'claro':'escuro'}</h3><div class="small">Mude a aparência do aplicativo</div></div></div><span>›</span></div><div class="setting-row" onclick="installAppFromMenu()"><div class="setting-left"><div class="setting-icon">⇩</div><div><h3>Instalar aplicativo</h3><div class="small">Adicionar à tela inicial do celular</div></div></div><span>›</span></div><div class="setting-row" onclick="shareApp()"><div class="setting-left"><div class="setting-icon">↗</div><div><h3>Compartilhar app</h3><div class="small">Envie o Palavra Viva para alguém</div></div></div><span>›</span></div><div class="version-card"><div class="cross">✝</div><h3>Bíblia Sagrada</h3><p>Palavra Viva • versão 1.0</p><p style="margin-top:8px">Desenvolvido por JNR</p></div><div class="panel" style="margin-top:12px"><strong>📖 Recursos desta versão</strong><p class="small">Menu reorganizado, planos, devocionais, histórias, pesquisa avançada, hinários pessoais, áudio por voz do aparelho, quiz, dicionário, temas, estudos por localização, backup e versões que realmente trocam o texto bíblico.</p></div>`;}
 
 function installAppFromMenu(){ if(deferredPrompt) installBtn.click(); else toast("No Chrome: menu ⋮ → Adicionar à tela inicial"); }
 function shareApp(){ const data={title:"Bíblia Sagrada • Palavra Viva",text:"Conheça o aplicativo Bíblia Sagrada • Palavra Viva",url:location.href}; if(navigator.share) navigator.share(data).catch(()=>{}); else if(navigator.clipboard){navigator.clipboard.writeText(location.href);toast("Link copiado");} }
@@ -1265,7 +1478,9 @@ Object.assign(window,{ state,openDrawer,closeDrawer,quickOpenVersions,navigate,t
   toggleVerseSelection,selectAllVerses,clearVerseSelection,readSelectedVerses,readWholeChapter,meditateSelectedVerses,meditateCurrentReading,openVerseByNumber,toggleFavoriteByNumber,
   renderVersePicker,renderPassageMeditation,shareSelectedPassage,backToSelectedChapter,chooseVersesAgain,setMeditationOption,nextMeditationOption,setPassageMeditationOption,nextPassageMeditationOption,
   setReadingActionVerse,shareReadingVerse,copyReadingVerse,fontUp,fontDown,saveVerseNote,setVerseHighlight,renderVersions,setVersionsTab,toggleDualVersion,selectVersion,removeNote,handleDrawerItem,
-  openActiveReadingVerseStudy,toggleCurrentVerseFavorite,openFavoriteById,removeFavoriteById
+  openActiveReadingVerseStudy,toggleCurrentVerseFavorite,openFavoriteById,removeFavoriteById,
+  setReadMarkColor,toggleVerseReadByNumber,markAllChapterRead,clearChapterReadMarks,
+  startNewQuizRound,restartQuiz,answerQuiz,nextQuiz
 });
 
 if('serviceWorker' in navigator){ navigator.serviceWorker.register('./sw.js').catch(()=>{}); }

@@ -264,3 +264,134 @@ body.dark .verse-number-btn{background:rgba(255,255,255,.16);color:#fff}
 .btn-danger{border:1px solid #b44;background:color-mix(in srgb,#b44 12%,var(--surface));color:#b44;border-radius:15px;padding:13px 16px;font-weight:850}.file-label{display:block;text-align:center;cursor:pointer}.file-label input{display:none}
 .version-row{padding:0;display:flex;align-items:stretch;overflow:hidden}.version-main-btn{flex:1;border:0;background:transparent;color:inherit;display:flex;align-items:center;justify-content:space-between;text-align:left;padding:16px}.version-download-btn{width:64px;border:0;border-left:1px solid var(--line);background:var(--surface-soft);color:inherit;font-size:24px}.version-row.selected .version-download-btn{background:rgba(255,255,255,.1);border-left-color:rgba(255,255,255,.2)}
 @media(min-width:620px){.stats-grid{grid-template-columns:repeat(4,1fr)}.story-grid{grid-template-columns:repeat(3,1fr)}.theme-grid{grid-template-columns:repeat(4,1fr)}}
+
+
+/* v1.0 — correção do versículo 1 + marcação de leitura + quiz renovado */
+.reading-shell{overflow:visible}
+.reading-toolbar-top{
+  position:relative !important;
+  top:auto !important;
+  z-index:1;
+}
+.bible-reading{padding-top:12px}
+.reading-verse:first-child{scroll-margin-top:120px}
+
+.read-marker-toolbar{
+  margin:0 10px 4px;
+  padding:14px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:var(--surface-soft);
+}
+.read-marker-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+.read-marker-head strong{font-size:14px}
+.read-progress-track{
+  height:8px;
+  margin:10px 0 11px;
+  overflow:hidden;
+  border-radius:999px;
+  background:color-mix(in srgb,var(--muted) 18%,transparent);
+}
+.read-progress-track span{
+  display:block;
+  height:100%;
+  border-radius:inherit;
+  background:linear-gradient(90deg,var(--gold-dark),var(--gold-2));
+  transition:width .25s ease;
+}
+.read-color-picker{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.read-color-dot{
+  width:34px;
+  height:34px;
+  padding:0;
+  border-radius:50%;
+  border:2px solid color-mix(in srgb,var(--text) 12%,transparent);
+  background:var(--read-color);
+  color:var(--read-fg);
+  font-weight:900;
+  display:grid;
+  place-items:center;
+}
+.read-color-dot.active{
+  outline:3px solid var(--gold);
+  outline-offset:2px;
+}
+.read-clear-btn{
+  border:0;
+  background:transparent;
+  color:var(--muted);
+  font-size:11px;
+  font-weight:850;
+  padding:8px 4px;
+}
+.read-marker-help{margin-top:10px;line-height:1.45}
+.reading-verse.read-done{
+  border-color:color-mix(in srgb,var(--gold) 35%,transparent);
+}
+.read-tool{
+  padding:6px 9px !important;
+  border-radius:999px !important;
+  background:var(--surface-soft) !important;
+  color:var(--text) !important;
+}
+.read-tool.is-read{
+  background:rgba(24,120,62,.14) !important;
+  color:#1f7a3f !important;
+}
+body.dark .read-tool.is-read{color:#8de5a8 !important}
+
+.quiz-question-card h2{margin:14px 0 8px}
+.quiz-topline{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.quiz-type{
+  padding:7px 10px;
+  border-radius:999px;
+  background:var(--surface-soft);
+  color:var(--gold);
+  font-size:11px;
+  font-weight:900;
+  white-space:nowrap;
+}
+.quiz-progress-track{
+  height:7px;
+  border-radius:999px;
+  background:var(--surface-soft);
+  overflow:hidden;
+  margin:12px 0 4px;
+}
+.quiz-progress-track span{
+  display:block;
+  height:100%;
+  background:linear-gradient(90deg,var(--gold-dark),var(--gold-2));
+  border-radius:inherit;
+}
+.quiz-feedback{
+  padding:13px 15px;
+  border-radius:16px;
+  font-weight:850;
+  margin-top:10px;
+}
+.quiz-feedback.good{
+  background:color-mix(in srgb,#2a9d5b 14%,var(--surface));
+  border:1px solid #2a9d5b;
+  color:#218049;
+}
+.quiz-feedback.bad{
+  background:color-mix(in srgb,#c94b4b 14%,var(--surface));
+  border:1px solid #c94b4b;
+  color:#a43b3b;
+}
+
+@media(max-width:620px){
+  .read-marker-head{align-items:flex-start}
+  .read-marker-head .mini-btn{padding:9px 10px;font-size:11px}
+}
