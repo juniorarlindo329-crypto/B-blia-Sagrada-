@@ -1,31 +1,37 @@
-# Palavra Viva v0.1
+# Bíblia Sagrada • Palavra Viva — v0.2
 
-Aplicativo PWA de Bíblia + Meditação, feito para funcionar bem no celular.
+Versão 0.2 do aplicativo PWA de Bíblia + Meditação.
 
-## O que já funciona
-- Tela inicial com versículo do dia
-- Lista dos 66 livros da Bíblia
-- Página de versículo
-- Meditação
-- Pergunta para reflexão
-- Oração
+## Novidades
+- Novo visual profissional
+- Tela de abertura
+- Versículo do dia automático
+- Meditação, reflexão e oração
+- Busca por palavras e temas
 - Favoritos salvos no aparelho
-- Busca
+- Modo claro/escuro
 - Compartilhamento
-- Modo escuro
-- Instalação como PWA
-- Funciona offline depois do primeiro acesso
+- Botão/atalho de instalação PWA
+- Indicador de leitura diária
+- Lista dos 66 livros
+- 12 passagens demonstrativas com meditações
+- Crédito: Desenvolvido por JNR
 
-## Importante sobre o conteúdo bíblico
-A versão 0.1 usa somente alguns textos demonstrativos. Para publicar a Bíblia completa,
-é necessário escolher uma tradução cuja licença permita o uso no aplicativo.
+## Atualizar no GitHub
+Substitua os arquivos antigos pelos arquivos desta pasta:
+- index.html
+- style.css
+- app.js
+- manifest.json
+- sw.js
+- icon.svg
+- README.md
 
-## Como subir no GitHub
-1. Crie um repositório novo.
-2. Envie todos os arquivos desta pasta para a raiz do repositório.
-3. Publique no Render como Static Site ou ative o GitHub Pages.
+Depois faça Commit changes.
 
-## Arquivo inicial
-index.html
+## GitHub Pages
+O projeto funciona em GitHub Pages porque todos os caminhos foram configurados como relativos (`./`).
 
-Desenvolvido por JNR
+## Sobre o texto bíblico
+A v0.2 ainda usa um conjunto demonstrativo de passagens. Para adicionar a Bíblia completa,
+defina primeiro uma tradução/licença adequada para reprodução dentro do aplicativo.

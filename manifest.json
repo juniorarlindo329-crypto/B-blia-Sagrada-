@@ -1,14 +1,15 @@
 {
-  "name": "Palavra Viva - Bíblia e Meditação",
-  "short_name": "Palavra Viva",
+  "name": "Bíblia Sagrada • Palavra Viva",
+  "short_name": "Bíblia Sagrada",
   "start_url": "./",
+  "scope": "./",
   "display": "standalone",
-  "background_color": "#f6f0e8",
-  "theme_color": "#1f1712",
-  "description": "Bíblia, meditações, reflexões e orações.",
+  "background_color": "#f7f2eb",
+  "theme_color": "#17100b",
+  "description": "Bíblia Sagrada com meditações, reflexões e orações.",
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "./icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

@@ -3,33 +3,44 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="theme-color" content="#1f1712" />
-  <title>Palavra Viva</title>
-  <link rel="manifest" href="manifest.json" />
-  <link rel="icon" href="icon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="style.css" />
+  <meta name="theme-color" content="#17100b" />
+  <meta name="description" content="Bíblia Sagrada com meditações, reflexões e orações." />
+  <title>Bíblia Sagrada • Palavra Viva</title>
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="icon" href="./icon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
-  <div id="app">
+  <div id="splash" class="splash">
+    <div class="splash-mark">✝</div>
+    <h1>Bíblia Sagrada</h1>
+    <p>Palavra Viva</p>
+  </div>
+
+  <div id="app" class="app-shell">
     <header class="topbar">
       <div>
-        <small class="eyebrow">BÍBLIA & MEDITAÇÃO</small>
-        <h1 id="pageTitle">Palavra Viva</h1>
+        <span class="eyebrow">PALAVRA VIVA</span>
+        <h1 id="pageTitle">Início</h1>
       </div>
-      <button id="themeBtn" class="icon-btn" aria-label="Alternar tema">☾</button>
+      <div class="top-actions">
+        <button id="installBtn" class="circle-btn hidden" aria-label="Instalar aplicativo">⇩</button>
+        <button id="themeBtn" class="circle-btn" aria-label="Alternar tema">☾</button>
+      </div>
     </header>
 
     <main id="content"></main>
 
-    <nav class="bottom-nav" aria-label="Navegação principal">
-      <button data-page="home" class="nav-item active"><span>⌂</span><small>Início</small></button>
-      <button data-page="bible" class="nav-item"><span>📖</span><small>Bíblia</small></button>
-      <button data-page="search" class="nav-item"><span>⌕</span><small>Buscar</small></button>
-      <button data-page="favorites" class="nav-item"><span>♡</span><small>Favoritos</small></button>
-      <button data-page="more" class="nav-item"><span>☰</span><small>Mais</small></button>
+    <nav class="bottom-nav">
+      <button class="nav-item active" data-page="home"><span>⌂</span><small>Início</small></button>
+      <button class="nav-item" data-page="bible"><span>▤</span><small>Bíblia</small></button>
+      <button class="nav-item" data-page="search"><span>⌕</span><small>Buscar</small></button>
+      <button class="nav-item" data-page="favorites"><span>♡</span><small>Salvos</small></button>
+      <button class="nav-item" data-page="more"><span>☰</span><small>Mais</small></button>
     </nav>
   </div>
 
-  <script src="app.js"></script>
+  <div id="toast" class="toast"></div>
+  <script src="./app.js"></script>
 </body>
 </html>
