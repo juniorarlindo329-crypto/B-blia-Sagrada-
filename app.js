@@ -193,7 +193,8 @@ const MAPS = ["Êxodo","Viagens Missionárias de Paulo","Israel Antigo","Jerusal
 
 const WORKING_VERSION_GROUPS = [
   {language:"Português", versions:[
-    {name:"Almeida 1819 (Bíblia Livre)",code:"ALM",lang:"pt",slug:"almeida-livre"}
+    {name:"Almeida 1819 (Bíblia Livre)",code:"ALM",lang:"pt",slug:"almeida-livre"},
+    {name:"Almeida Edição Contemporânea",code:"AEC",lang:"pt",licensed:true,provider:"Editora Vida"}
   ]},
   {language:"Inglês", versions:[
     {name:"King James Version",code:"KJV",lang:"en",slug:"kjv"},
@@ -242,7 +243,9 @@ const WORKING_VERSION_GROUPS = [
     {name:"Vulgata Clementina",code:"CLEM",lang:"la",slug:"clem"}
   ]}
 ];
-const WORKING_VERSION_CODES = new Set(WORKING_VERSION_GROUPS.flatMap(g=>g.versions.map(v=>v.code)));
+const WORKING_VERSION_CODES = new Set(
+  WORKING_VERSION_GROUPS.flatMap(g=>g.versions.filter(v=>v.slug).map(v=>v.code))
+);
 const DATA_ROOT = "https://raw.githubusercontent.com/midvash/bible-data/main/versions";
 
 const PLAN_DETAILS = [
@@ -470,7 +473,7 @@ const READ_MARK_COLORS = [
   {id:"purple", bg:"#aa38f0", fg:"#ffffff", label:"Roxo"}
 ];
 
-if(!READ_MARK_COLORS.some(c=>c.id===state.readMarkColor)){
+if(state.readMarkColor!=="erase" && !READ_MARK_COLORS.some(c=>c.id===state.readMarkColor)){
   state.readMarkColor="mint";
   localStorage.setItem("bs-read-mark-color","mint");
 }
@@ -568,7 +571,7 @@ function getVerseReadMark(id){ return state.readMarks[id] || null; }
 function getReadMarkColor(id){ return READ_MARK_COLORS.find(c=>c.id===id) || READ_MARK_COLORS[0]; }
 
 function setReadMarkColor(colorId){
-  if(!READ_MARK_COLORS.some(c=>c.id===colorId)) return;
+  if(colorId!=="erase" && !READ_MARK_COLORS.some(c=>c.id===colorId)) return;
   state.readMarkColor=colorId;
   localStorage.setItem("bs-read-mark-color",colorId);
   if(state.page==="bible") renderBible();
@@ -578,13 +581,19 @@ function toggleVerseReadByNumber(number){
   const v=getCurrentVerse(number);
   if(!v) return;
   const id=refId(state.selectedBookCode,state.selectedChapter,v.number);
-  if(state.readMarks[id]){
-    delete state.readMarks[id];
-    toast(`Versículo ${v.number} desmarcado`);
+
+  if(state.readMarkColor==="erase"){
+    if(state.readMarks[id]){
+      delete state.readMarks[id];
+      toast(`Marcação do versículo ${v.number} removida`);
+    }else{
+      toast(`Versículo ${v.number} já está sem marcação`);
+    }
   }else{
     state.readMarks[id]=state.readMarkColor;
-    toast(`Versículo ${v.number} marcado como lido`);
+    toast(`Versículo ${v.number} marcado`);
   }
+
   saveJSON("bs-read-marks",state.readMarks);
   renderBible();
 }
@@ -619,18 +628,25 @@ function renderReadMarkerToolbar(){
   return `<div class="read-marker-toolbar">
     <div class="read-marker-head">
       <div>
-        <strong>✓ Marcar o que já leu</strong>
-        <div class="small">${readCount} de ${total} versículos lidos • ${pct}%</div>
+        <strong>🎨 Marcação de leitura</strong>
+        <div class="small">${readCount} de ${total} versículos marcados • ${pct}%</div>
       </div>
       <button class="mini-btn" onclick="markAllChapterRead()">Marcar todos</button>
     </div>
     <div class="read-progress-track"><span style="width:${pct}%"></span></div>
+
     <div class="read-color-picker">
-      <span class="small">Cor:</span>
-      ${READ_MARK_COLORS.map(c=>`<button class="read-color-dot ${state.readMarkColor===c.id?'active':''}" style="--read-color:${c.bg};--read-fg:${c.fg}" title="${c.label}" onclick="setReadMarkColor('${c.id}')">${state.readMarkColor===c.id?'✓':''}</button>`).join('')}
-      ${readCount?`<button class="read-clear-btn" onclick="clearChapterReadMarks()">Limpar capítulo</button>`:''}
+      <span class="small">Escolha a cor:</span>
+      ${READ_MARK_COLORS.map(c=>`<button class="read-color-swatch ${state.readMarkColor===c.id?'active':''}" style="--read-color:${c.bg};--read-fg:${c.fg}" title="${c.label}" onclick="setReadMarkColor('${c.id}')"><span></span>${state.readMarkColor===c.id?'<b>✓</b>':''}</button>`).join('')}
+      <button class="read-eraser ${state.readMarkColor==='erase'?'active':''}" onclick="setReadMarkColor('erase')" title="Apagar marcação">⌫</button>
     </div>
-    <div class="small read-marker-help">Escolha uma cor e toque em <strong>Marcar lido</strong> em cada versículo conforme for lendo.</div>
+
+    <div class="tap-to-mark-tip">
+      <strong>${state.readMarkColor==="erase" ? "Modo apagar ativado" : "Agora é só tocar no versículo"}</strong>
+      <span>${state.readMarkColor==="erase" ? "Toque diretamente no texto marcado para remover a cor." : "Toque diretamente nas letras do versículo e o bloco inteiro recebe a cor escolhida."}</span>
+    </div>
+
+    ${readCount?`<button class="read-clear-btn full-clear" onclick="clearChapterReadMarks()">Limpar todas as marcações deste capítulo</button>`:''}
   </div>`;
 }
 
@@ -995,17 +1011,19 @@ function fullVerseRow(code,bookName,chapter,v){
   const highlightId=getVerseHighlight(id);
   const readMarkId=getVerseReadMark(id);
   const highlightColor=HIGHLIGHT_COLORS.find(c=>c.id===highlightId);
-  const readColor=getReadMarkColor(readMarkId);
-  const displayColor=highlightColor || (readMarkId ? readColor : null);
+  const readColor=readMarkId ? getReadMarkColor(readMarkId) : null;
+  const displayColor=highlightColor || readColor;
   const isActive=state.activeReadingVerse && Number(state.activeReadingVerse.verse)===Number(v.number);
   const rowStyle=displayColor ? `background:${displayColor.bg};color:${displayColor.fg}` : `background:var(--surface)`;
+
   return `<article id="verse-${v.number}" class="reading-verse ${isActive?'selected':''} ${readMarkId?'read-done':''}" style="${rowStyle}">
-    <div class="reading-verse-line" onclick="setReadingActionVerse(${v.number})">
-      <button class="verse-number-btn" onclick="event.stopPropagation();setReadingActionVerse(${v.number})">${v.number}</button>
+    <div class="reading-verse-line tap-mark-area" onclick="toggleVerseReadByNumber(${v.number})" title="Toque para marcar com a cor escolhida">
+      <button class="verse-number-btn" onclick="event.stopPropagation();toggleVerseReadByNumber(${v.number})">${v.number}</button>
       <div class="reading-verse-text" style="font-size:${(20*state.fontScale).toFixed(1)}px">${escapeHtml(v.text)}</div>
+      ${readMarkId?'<span class="read-corner-check">✓</span>':''}
     </div>
+
     <div class="verse-inline-tools">
-      <button class="verse-tool read-tool ${readMarkId?'is-read':''}" onclick="toggleVerseReadByNumber(${v.number})">${readMarkId?"✓ Lido":"○ Marcar lido"}</button>
       <button class="verse-tool" onclick="openVerseByNumber(${v.number})">✦ Estudo Bíblico</button>
       <button class="verse-tool" onclick="shareReadingVerse(${v.number})">↗ Compartilhar</button>
       <button class="verse-tool" onclick="copyReadingVerse(${v.number})">⧉ Copiar</button>
@@ -1260,26 +1278,61 @@ function renderVersions(){
       <button class="version-tab ${state.versionsTab==='audio'?'active':''}" onclick="setVersionsTab('audio')">Áudio</button>
     </div>
     <div class="toggle-row"><div><strong>Duas traduções na mesma tela</strong><div class="small">Ative para deixar a segunda tradução preparada.</div></div><button class="switch ${state.dualVersion?'on':''}" onclick="toggleDualVersion()"></button></div>
-    <div class="panel" style="margin-bottom:12px"><strong>Versões que realmente funcionam</strong><p class="small">As versões abaixo usam textos abertos disponíveis para leitura. Ao selecionar uma, o texto da Bíblia muda de verdade.</p></div>
+    <div class="panel" style="margin-bottom:12px"><strong>Versões da Bíblia</strong><p class="small">A Almeida Edição Contemporânea (AEC) já aparece na lista. Versões com texto aberto podem ser usadas imediatamente; versões licenciadas precisam de uma fonte autorizada para exibir o texto completo corretamente.</p></div>
     ${groups.map(group=>`<section class="language-block"><div class="language-title">${group.language}</div><div class="version-list">${group.versions.map(v=>renderVersionRow(v)).join('')}</div></section>`).join('')}`;
 }
 function renderVersionRow(v){
   const downloaded=state.downloadedVersions.includes(v.code);
   const selected=state.currentVersionCode===v.code;
-  return `<div class="version-row ${selected?'selected':''}">
-    <button class="version-main-btn" onclick="selectVersion('${v.code}')"><div><div class="version-name">${escapeHtml(v.name)}</div><div class="version-code">${v.code}</div></div><span class="version-action">${selected?'✓':'›'}</span></button>
-    <button class="version-download-btn" onclick="downloadVersion('${v.code}')" title="Baixar para uso offline">${downloaded?'✔':'⬇'}</button>
+  const licensed=!!v.licensed;
+  return `<div class="version-row ${selected?'selected':''} ${licensed?'licensed-version':''}">
+    <button class="version-main-btn" onclick="selectVersion('${v.code}')">
+      <div>
+        <div class="version-name">${escapeHtml(v.name)} ${licensed?'<span class="licensed-badge">LICENCIADA</span>':''}</div>
+        <div class="version-code">${v.code}${licensed&&v.provider?` • ${escapeHtml(v.provider)}`:''}</div>
+      </div>
+      <span class="version-action">${selected?'✓':licensed?'🔒':'›'}</span>
+    </button>
+    ${licensed
+      ? `<button class="version-download-btn" onclick="showLicensedVersionInfo('${v.code}')" title="Informações">ⓘ</button>`
+      : `<button class="version-download-btn" onclick="downloadVersion('${v.code}')" title="Baixar para uso offline">${downloaded?'✔':'⬇'}</button>`}
   </div>`;
 }
 function setVersionsTab(tab){ state.versionsTab=tab; renderVersions(); }
 function toggleDualVersion(){ state.dualVersion=!state.dualVersion; renderVersions(); }
 function selectVersion(code){
+  const meta=getVersionMeta(code);
+  if(meta.licensed){
+    showLicensedVersionInfo(code);
+    return;
+  }
   if(!WORKING_VERSION_CODES.has(code)){toast("Versão indisponível");return;}
   state.currentVersionCode=code;
   localStorage.setItem("bs-version",code);
   state.bookCache.clear();
   toast(`Versão selecionada: ${getVersionMeta(code).name}`);
   renderVersions();
+}
+
+function showLicensedVersionInfo(code){
+  const meta=getVersionMeta(code);
+  if(code!=="AEC"){toast("Esta versão precisa de uma fonte autorizada.");return;}
+  pageTitle.textContent="Almeida Edição Contemporânea";
+  content.innerHTML=`
+    <div class="licensed-version-card">
+      <div class="licensed-lock">📖</div>
+      <span class="eyebrow">AEC</span>
+      <h2>Almeida Edição Contemporânea</h2>
+      <p>A versão AEC já foi adicionada ao aplicativo, mas o texto bíblico integral não foi substituído por outro texto diferente.</p>
+      <div class="license-info-box">
+        <strong>Por que?</strong>
+        <p>Para exibir a AEC corretamente, precisamos conectar uma fonte autorizada/licenciada da tradução. Assim evitamos mostrar Almeida Livre com o nome AEC.</p>
+      </div>
+      <div class="reading-bottom-actions">
+        <button class="btn-primary" onclick="navigate('versions')">Voltar às versões</button>
+        <button class="btn-ghost" onclick="navigate('bible')">Continuar lendo a Bíblia</button>
+      </div>
+    </div>`;
 }
 async function downloadVersion(code){
   const meta=getVersionMeta(code);
@@ -1545,7 +1598,7 @@ function exportBackup(){const data={};for(let i=0;i<localStorage.length;i++){con
 function importBackupFile(event){const file=event.target.files?.[0];if(!file)return;const reader=new FileReader();reader.onload=()=>{try{const obj=JSON.parse(reader.result);if(!obj.data)throw new Error();for(const [k,v] of Object.entries(obj.data)){if(k.startsWith("bs-"))localStorage.setItem(k,v);}alert("Backup restaurado. O aplicativo será recarregado.");location.reload();}catch(e){toast("Arquivo de backup inválido");}};reader.readAsText(file);}
 function clearAppData(){if(!confirm("Tem certeza? Isso apaga favoritos, notas e progresso deste aparelho."))return;const keys=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k?.startsWith("bs-"))keys.push(k);}keys.forEach(k=>localStorage.removeItem(k));location.reload();}
 
-function renderMore(){pageTitle.textContent="Mais informações";content.innerHTML=`<div class="setting-row" onclick="toggleTheme()"><div class="setting-left"><div class="setting-icon">${state.dark?'☀':'☾'}</div><div><h3>Modo ${state.dark?'claro':'escuro'}</h3><div class="small">Mude a aparência do aplicativo</div></div></div><span>›</span></div><div class="setting-row" onclick="installAppFromMenu()"><div class="setting-left"><div class="setting-icon">⇩</div><div><h3>Instalar aplicativo</h3><div class="small">Adicionar à tela inicial do celular</div></div></div><span>›</span></div><div class="setting-row" onclick="shareApp()"><div class="setting-left"><div class="setting-icon">↗</div><div><h3>Compartilhar app</h3><div class="small">Envie o Palavra Viva para alguém</div></div></div><span>›</span></div><div class="version-card"><div class="cross">✝</div><h3>Bíblia Sagrada</h3><p>Palavra Viva • versão 1.1</p><p style="margin-top:8px">Desenvolvido por JNR</p></div><div class="panel" style="margin-top:12px"><strong>📖 Recursos desta versão</strong><p class="small">Menu reorganizado, planos, devocionais, histórias, pesquisa avançada, hinários pessoais, áudio por voz do aparelho, quiz, dicionário, temas, estudos por localização, backup e versões que realmente trocam o texto bíblico.</p></div>`;}
+function renderMore(){pageTitle.textContent="Mais informações";content.innerHTML=`<div class="setting-row" onclick="toggleTheme()"><div class="setting-left"><div class="setting-icon">${state.dark?'☀':'☾'}</div><div><h3>Modo ${state.dark?'claro':'escuro'}</h3><div class="small">Mude a aparência do aplicativo</div></div></div><span>›</span></div><div class="setting-row" onclick="installAppFromMenu()"><div class="setting-left"><div class="setting-icon">⇩</div><div><h3>Instalar aplicativo</h3><div class="small">Adicionar à tela inicial do celular</div></div></div><span>›</span></div><div class="setting-row" onclick="shareApp()"><div class="setting-left"><div class="setting-icon">↗</div><div><h3>Compartilhar app</h3><div class="small">Envie o Palavra Viva para alguém</div></div></div><span>›</span></div><div class="version-card"><div class="cross">✝</div><h3>Bíblia Sagrada</h3><p>Palavra Viva • versão 1.3</p><p style="margin-top:8px">Desenvolvido por JNR</p></div><div class="panel" style="margin-top:12px"><strong>📖 Recursos desta versão</strong><p class="small">Menu reorganizado, planos, devocionais, histórias, pesquisa avançada, hinários pessoais, áudio por voz do aparelho, quiz, dicionário, temas, estudos por localização, backup e versões que realmente trocam o texto bíblico.</p></div>`;}
 
 function installAppFromMenu(){ if(deferredPrompt) installBtn.click(); else toast("No Chrome: menu ⋮ → Adicionar à tela inicial"); }
 function shareApp(){ const data={title:"Bíblia Sagrada • Palavra Viva",text:"Conheça o aplicativo Bíblia Sagrada • Palavra Viva",url:location.href}; if(navigator.share) navigator.share(data).catch(()=>{}); else if(navigator.clipboard){navigator.clipboard.writeText(location.href);toast("Link copiado");} }
@@ -1614,7 +1667,7 @@ Object.assign(window,{ state,openDrawer,closeDrawer,quickOpenVersions,navigate,t
   setReadMarkColor,toggleVerseReadByNumber,markAllChapterRead,clearChapterReadMarks,
   startNewQuizRound,restartQuiz,answerQuiz,nextQuiz,
   showBookQuickPicker,showChapterQuickPicker,showVerseQuickPicker,closeBibleQuickPicker,
-  jumpToBook,jumpToChapter,jumpToVerse
+  jumpToBook,jumpToChapter,jumpToVerse,showLicensedVersionInfo
 });
 
 if('serviceWorker' in navigator){ navigator.serviceWorker.register('./sw.js').catch(()=>{}); }

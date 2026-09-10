@@ -1,35 +1,29 @@
-# Bíblia Sagrada • Palavra Viva — versão 1.1
+# Bíblia Sagrada • Palavra Viva — versão 1.3
 
-## Navegação de Bíblia digital
+## Novidade principal: marcação direto no texto
 
-O fluxo principal agora fica:
+Agora a marcação ficou mais simples:
 
-**Bíblia → Livro → Capítulo → Palavra**
+1. Escolha uma cor no topo do capítulo.
+2. Toque diretamente no texto do versículo.
+3. O bloco inteiro do versículo recebe a cor automaticamente.
+4. Para trocar a cor, escolha outra e toque novamente.
+5. Para apagar uma marcação, escolha o ícone de borracha e toque no versículo.
 
-### Durante a leitura
-No topo existem seletores rápidos de:
-- **Livro**
-- **Capítulo**
-- **Versículo**
-- **Versão**
+O botão separado “○ Marcar lido” foi removido.
 
-Assim, a pessoa não precisa ir passando capítulo por capítulo.
+## Almeida Edição Contemporânea
+A **AEC — Almeida Edição Contemporânea** continua incluída na lista de versões.
+O texto integral da AEC requer uma fonte/licença autorizada; o app não troca um texto diferente e chama incorretamente de AEC.
 
-Exemplo:
-- está em João 3;
-- toca em **Cap.**;
-- escolhe 15;
-- vai direto para João 15.
-
-Também pode tocar em **Vers.** e ir direto para qualquer versículo daquele capítulo.
-
-### Mantido
-- marcação de versículos lidos com cores;
-- progresso do capítulo;
+## Mantido
+- Livro → Capítulo → Palavra;
+- seletor rápido de Livro / Capítulo / Versículo / Versão;
+- progresso de leitura;
 - meditações;
-- anotações;
 - favoritos;
-- quiz renovado;
-- todos os menus da versão anterior.
+- anotações;
+- quiz;
+- menus e demais recursos.
 
 Desenvolvido por JNR.

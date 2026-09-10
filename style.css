@@ -565,3 +565,171 @@ body.dark .read-tool.is-read{color:#8de5a8 !important}
   .picker-chapter-grid{grid-template-columns:repeat(5,1fr)}
   .verse-jump-grid{grid-template-columns:repeat(6,1fr)}
 }
+
+
+/* v1.2 — AEC Almeida Edição Contemporânea */
+.licensed-version{
+  border-color:color-mix(in srgb,var(--gold) 42%,var(--line)) !important;
+}
+.licensed-badge{
+  display:inline-flex;
+  margin-left:6px;
+  padding:3px 7px;
+  border-radius:999px;
+  background:color-mix(in srgb,var(--gold) 15%,var(--surface));
+  color:var(--gold-dark);
+  border:1px solid color-mix(in srgb,var(--gold) 35%,var(--line));
+  font-size:9px;
+  font-weight:950;
+  letter-spacing:.05em;
+  vertical-align:middle;
+}
+.licensed-version-card{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:26px;
+  padding:24px 20px;
+  box-shadow:var(--shadow);
+}
+.licensed-version-card h2{
+  margin:7px 0 10px;
+  font-family:Georgia,serif;
+  font-size:30px;
+}
+.licensed-version-card>p{
+  color:var(--muted);
+  line-height:1.6;
+}
+.licensed-lock{
+  width:64px;
+  height:64px;
+  display:grid;
+  place-items:center;
+  border-radius:20px;
+  margin-bottom:16px;
+  background:var(--surface-soft);
+  font-size:32px;
+}
+.license-info-box{
+  margin:18px 0;
+  padding:16px;
+  border-radius:18px;
+  background:var(--surface-soft);
+  border:1px solid var(--line);
+}
+.license-info-box p{
+  margin:7px 0 0;
+  line-height:1.55;
+  color:var(--muted);
+}
+
+
+/* v1.3 — tocar direto no versículo para marcar */
+.read-color-dot{display:none !important}
+
+.read-color-picker{
+  gap:9px !important;
+  align-items:center;
+}
+
+.read-color-swatch{
+  position:relative;
+  width:42px;
+  height:34px;
+  border-radius:10px;
+  border:2px solid color-mix(in srgb,var(--text) 12%,transparent);
+  background:var(--read-color);
+  color:var(--read-fg);
+  display:grid;
+  place-items:center;
+  padding:0;
+}
+.read-color-swatch span{
+  position:absolute;
+  inset:0;
+  border-radius:8px;
+  background:var(--read-color);
+}
+.read-color-swatch b{
+  position:relative;
+  z-index:2;
+  font-size:16px;
+}
+.read-color-swatch.active,
+.read-eraser.active{
+  outline:3px solid var(--gold);
+  outline-offset:2px;
+}
+
+.read-eraser{
+  width:42px;
+  height:34px;
+  border-radius:10px;
+  border:2px solid var(--line);
+  background:var(--surface);
+  color:var(--text);
+  display:grid;
+  place-items:center;
+  font-size:18px;
+  font-weight:900;
+}
+
+.tap-to-mark-tip{
+  margin-top:12px;
+  padding:12px 13px;
+  border-radius:14px;
+  background:var(--surface);
+  border:1px dashed color-mix(in srgb,var(--gold) 50%,var(--line));
+}
+.tap-to-mark-tip strong{
+  display:block;
+  font-size:13px;
+  color:var(--gold-dark);
+}
+.tap-to-mark-tip span{
+  display:block;
+  margin-top:4px;
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.45;
+}
+
+.full-clear{
+  width:100%;
+  margin-top:10px;
+  text-align:center;
+}
+
+.tap-mark-area{
+  position:relative;
+  cursor:pointer;
+  border-radius:14px;
+  transition:transform .12s ease, opacity .12s ease;
+  padding:2px;
+}
+.tap-mark-area:active{
+  transform:scale(.992);
+  opacity:.9;
+}
+.read-corner-check{
+  position:absolute;
+  right:4px;
+  top:2px;
+  min-width:24px;
+  height:24px;
+  border-radius:8px;
+  display:grid;
+  place-items:center;
+  background:rgba(255,255,255,.72);
+  color:#17351b;
+  font-size:12px;
+  font-weight:950;
+  box-shadow:0 3px 10px rgba(0,0,0,.08);
+}
+body.dark .read-corner-check{
+  background:rgba(0,0,0,.42);
+  color:#fff;
+}
+
+/* botão antigo de marcação separado foi removido */
+.read-tool{display:none !important}
