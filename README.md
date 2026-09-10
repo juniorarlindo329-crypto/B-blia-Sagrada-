@@ -1,29 +1,37 @@
-# Bíblia Sagrada • Palavra Viva — versão 1.3
+# Bíblia Sagrada • Palavra Viva — versão 1.5
 
-## Novidade principal: marcação direto no texto
+## Louvores brasileiros dentro da Bíblia
 
-Agora a marcação ficou mais simples:
+A lista principal agora é em português e usa vídeos do YouTube para reprodução dentro do próprio aplicativo.
 
-1. Escolha uma cor no topo do capítulo.
-2. Toque diretamente no texto do versículo.
-3. O bloco inteiro do versículo recebe a cor automaticamente.
-4. Para trocar a cor, escolha outra e toque novamente.
-5. Para apagar uma marcação, escolha o ícone de borracha e toque no versículo.
+Incluídos inicialmente:
+- Gabriela Rocha — Lugar Secreto
+- Preto no Branco feat. Gabriela Rocha — Ninguém Explica Deus
+- Gabriela Gomes — Deus Proverá
+- Samuel Messias — Todavia Me Alegrarei
+- Midian Lima — Prioridade
+- Fernandinho — Galileu
+- Casa Worship — A Casa É Sua
 
-O botão separado “○ Marcar lido” foi removido.
+## Como funciona
+- toque em um louvor;
+- o vídeo abre dentro do player do aplicativo;
+- você pode voltar para a Bíblia e continuar lendo;
+- o player permanece no aplicativo;
+- use os controles do próprio YouTube para pausar, continuar e ajustar o vídeo;
+- botões de anterior/próximo trocam de louvor.
 
-## Almeida Edição Contemporânea
-A **AEC — Almeida Edição Contemporânea** continua incluída na lista de versões.
-O texto integral da AEC requer uma fonte/licença autorizada; o app não troca um texto diferente e chama incorretamente de AEC.
+## Adicionar mais louvores
+Na área de Louvores, cole um link do YouTube e salve o louvor. Ele passa a fazer parte da sua lista.
 
-## Mantido
-- Livro → Capítulo → Palavra;
-- seletor rápido de Livro / Capítulo / Versículo / Versão;
-- progresso de leitura;
-- meditações;
-- favoritos;
-- anotações;
-- quiz;
-- menus e demais recursos.
+Categorias:
+- Adoração
+- Louvores Pentecostais
+- Corinhos de Fogo
+- Harpa Cristã
+- Louvores Antigos
+- Outros
+
+Todos os recursos da v1.4 foram mantidos, incluindo AEC na lista e marcação de versículos por toque.
 
 Desenvolvido por JNR.

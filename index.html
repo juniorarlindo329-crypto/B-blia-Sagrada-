@@ -8,7 +8,7 @@
   <title>Bíblia Sagrada • Palavra Viva</title>
   <link rel="manifest" href="./manifest.json" />
   <link rel="icon" href="./icon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="./style.css?v=1.3" />
+  <link rel="stylesheet" href="./style.css?v=1.5" />
 </head>
 <body>
   <div id="splash" class="splash">
@@ -62,7 +62,37 @@
     </nav>
   </div>
 
+
+  <div id="worshipPlayer" class="worship-player hidden">
+    <audio id="worshipAudio" preload="metadata"></audio>
+
+    <div id="worshipYoutubeBox" class="worship-youtube-box hidden">
+      <iframe id="worshipYoutubeFrame"
+        title="Louvor brasileiro"
+        allow="autoplay; encrypted-media; picture-in-picture"
+        allowfullscreen
+        referrerpolicy="strict-origin-when-cross-origin"></iframe>
+    </div>
+
+    <div class="worship-player-main">
+      <button id="worshipPlayBtn" class="worship-player-btn" onclick="toggleWorshipPlayback()">▶</button>
+      <div class="worship-player-info" onclick="navigate('hymns')">
+        <strong id="worshipPlayerTitle">Louvor</strong>
+        <small id="worshipPlayerSubtitle">Player da Bíblia</small>
+      </div>
+      <button class="worship-player-btn small-btn" onclick="playPreviousWorship()">‹</button>
+      <button class="worship-player-btn small-btn" onclick="playNextWorship()">›</button>
+      <button class="worship-player-btn small-btn" onclick="stopWorship()">✕</button>
+    </div>
+
+    <div id="worshipProgress" class="worship-progress">
+      <span id="worshipCurrentTime">0:00</span>
+      <input id="worshipSeek" type="range" min="0" max="100" value="0" oninput="seekWorship(this.value)">
+      <span id="worshipDuration">0:00</span>
+    </div>
+  </div>
+
   <div id="toast" class="toast"></div>
-  <script src="./app.js?v=1.3"></script>
+  <script src="./app.js?v=1.5"></script>
 </body>
 </html>

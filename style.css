@@ -733,3 +733,274 @@ body.dark .read-corner-check{
 
 /* botão antigo de marcação separado foi removido */
 .read-tool{display:none !important}
+
+
+/* v1.4 — louvores tocando dentro da Bíblia */
+body:has(.worship-player:not(.hidden)) .app-shell{
+  padding-bottom:190px;
+}
+body:has(.worship-player:not(.hidden)) .bottom-nav{
+  bottom:88px;
+}
+
+.worship-hero{
+  display:flex;
+  gap:15px;
+  align-items:flex-start;
+  padding:20px;
+  border-radius:24px;
+  background:linear-gradient(145deg,#20140d,#71451e);
+  color:#fff;
+  box-shadow:var(--shadow);
+}
+.worship-hero h2{margin:5px 0 7px;font-family:Georgia,serif;font-size:27px}
+.worship-hero p{margin:0;color:#eadbc8;line-height:1.5;font-size:13px}
+.worship-icon{
+  flex:0 0 54px;
+  width:54px;height:54px;border-radius:18px;
+  display:grid;place-items:center;
+  background:rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.13);
+  font-size:29px;
+}
+
+.worship-category-scroll{
+  display:flex;gap:8px;overflow:auto;
+  margin:13px 0;
+  padding:2px;
+  scrollbar-width:none;
+}
+.worship-category-scroll::-webkit-scrollbar{display:none}
+.worship-category-chip{
+  flex:0 0 auto;
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:10px 13px;
+  background:var(--surface);
+  color:var(--text);
+  font-weight:850;
+  font-size:12px;
+}
+.worship-category-chip.active{
+  background:linear-gradient(135deg,var(--gold-dark),var(--gold-2));
+  color:#fff;border-color:transparent;
+}
+
+.worship-info-panel{margin-bottom:12px}
+.worship-info-panel p{margin:6px 0 0;line-height:1.5}
+
+.worship-track-list{display:grid;gap:9px}
+.worship-track-card{
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  align-items:center;
+  gap:12px;
+  padding:13px;
+  border:1px solid var(--line);
+  border-radius:19px;
+  background:var(--surface);
+  box-shadow:0 7px 20px rgba(60,40,20,.05);
+}
+.worship-track-card.playing{
+  border-color:var(--gold);
+  background:color-mix(in srgb,var(--gold) 8%,var(--surface));
+}
+.worship-track-play{
+  width:48px;height:48px;border:0;border-radius:50%;
+  display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--gold-dark),var(--gold-2));
+  color:#fff;font-size:18px;font-weight:900;
+}
+.worship-track-copy{min-width:0}
+.worship-track-copy small{display:block;color:var(--gold);font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.04em}
+.worship-track-copy h3{margin:4px 0 2px;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.worship-track-copy p{margin:0;color:var(--muted);font-size:11px;line-height:1.35}
+.worship-track-copy span{display:block;color:var(--muted);font-size:10px;margin-top:3px}
+.worship-track-actions{display:flex;align-items:center}
+.icon-action-btn{
+  width:38px;height:38px;border:1px solid var(--line);
+  border-radius:13px;background:var(--surface-soft);color:var(--text);
+}
+
+.add-worship-card{margin-top:14px}
+.audio-file-label{
+  margin-top:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:50px;
+  border:1px dashed var(--gold);
+  border-radius:15px;
+  background:var(--surface-soft);
+  color:var(--text);
+  font-weight:850;
+  cursor:pointer;
+}
+.audio-file-label input{display:none}
+.worship-license-panel{margin-top:12px}
+.worship-license-panel p{margin:6px 0 0;line-height:1.5}
+
+.worship-player{
+  position:fixed;
+  z-index:90;
+  left:50%;
+  bottom:0;
+  transform:translateX(-50%);
+  width:min(860px,100%);
+  padding:9px 11px calc(9px + env(safe-area-inset-bottom));
+  background:color-mix(in srgb,var(--surface) 96%,transparent);
+  border-top:1px solid var(--line);
+  box-shadow:0 -10px 30px rgba(0,0,0,.14);
+  backdrop-filter:blur(18px);
+}
+.worship-player-main{
+  display:grid;
+  grid-template-columns:auto 1fr auto auto auto;
+  align-items:center;
+  gap:8px;
+}
+.worship-player-btn{
+  width:42px;height:42px;border:0;border-radius:50%;
+  display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--gold-dark),var(--gold-2));
+  color:#fff;font-weight:950;
+}
+.worship-player-btn.small-btn{
+  width:34px;height:34px;
+  background:var(--surface-soft);
+  color:var(--text);
+  border:1px solid var(--line);
+}
+.worship-player-info{min-width:0}
+.worship-player-info strong,
+.worship-player-info small{
+  display:block;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.worship-player-info strong{font-size:13px}
+.worship-player-info small{font-size:10px;color:var(--muted);margin-top:2px}
+.worship-progress{
+  display:grid;
+  grid-template-columns:34px 1fr 34px;
+  align-items:center;
+  gap:7px;
+  margin-top:5px;
+}
+.worship-progress span{
+  font-size:9px;
+  color:var(--muted);
+  text-align:center;
+}
+.worship-progress input{
+  width:100%;
+  accent-color:var(--gold);
+}
+
+
+/* v1.5 — Louvores brasileiros via YouTube */
+.brazilian-worship-hero{
+  background:linear-gradient(145deg,#17472d,#7a5620);
+}
+
+.worship-thumb-btn{
+  position:relative;
+  width:86px;
+  height:58px;
+  padding:0;
+  overflow:hidden;
+  border:0;
+  border-radius:13px;
+  background:#111;
+}
+.worship-thumb-btn img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+.worship-thumb-btn span{
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  width:31px;
+  height:31px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:rgba(0,0,0,.72);
+  color:white;
+  font-size:13px;
+  padding-left:2px;
+}
+
+.worship-youtube-box{
+  width:100%;
+  margin-bottom:8px;
+  border-radius:15px;
+  overflow:hidden;
+  background:#000;
+  aspect-ratio:16/9;
+}
+.worship-youtube-box iframe{
+  width:100%;
+  height:100%;
+  display:block;
+  border:0;
+}
+
+.worship-player.youtube-mode{
+  padding-top:8px;
+}
+.worship-player.youtube-mode .worship-player-main{
+  grid-template-columns:1fr auto auto auto;
+}
+.worship-player.youtube-mode .worship-player-info{
+  grid-column:1;
+}
+.worship-player.youtube-mode .worship-player-btn.small-btn{
+  display:grid;
+}
+
+body:has(.worship-player.youtube-mode:not(.hidden)) .app-shell{
+  padding-bottom:390px;
+}
+body:has(.worship-player.youtube-mode:not(.hidden)) .bottom-nav{
+  bottom:300px;
+}
+
+.optional-audio-details{
+  margin-top:12px;
+  border:1px solid var(--line);
+  border-radius:15px;
+  overflow:hidden;
+  background:var(--surface-soft);
+}
+.optional-audio-details summary{
+  padding:13px;
+  font-size:12px;
+  font-weight:850;
+  cursor:pointer;
+}
+.optional-audio-fields{
+  padding:0 12px 12px;
+}
+
+@media(max-width:620px){
+  .worship-track-card{
+    grid-template-columns:78px 1fr auto;
+    gap:9px;
+  }
+  .worship-thumb-btn{
+    width:78px;
+    height:53px;
+  }
+  body:has(.worship-player.youtube-mode:not(.hidden)) .app-shell{
+    padding-bottom:360px;
+  }
+  body:has(.worship-player.youtube-mode:not(.hidden)) .bottom-nav{
+    bottom:270px;
+  }
+}

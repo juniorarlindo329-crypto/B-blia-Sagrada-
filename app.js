@@ -124,6 +124,83 @@ const VERSION_GROUPS = [
   {language:"Vietnamita", versions:[{name:"Vietnamese (1934)", code:"VIE"}]}
 ];
 
+
+const INCLUDED_WORSHIP_TRACKS = [
+  {
+    id:"br-lugar-secreto",
+    category:"Adoração",
+    title:"Lugar Secreto",
+    subtitle:"Clipe oficial",
+    performer:"Gabriela Rocha",
+    youtubeId:"YnrN0o0lubM",
+    source:"YouTube • canal oficial"
+  },
+  {
+    id:"br-ninguem-explica-deus",
+    category:"Adoração",
+    title:"Ninguém Explica Deus",
+    subtitle:"Ao vivo • feat. Gabriela Rocha",
+    performer:"Preto no Branco",
+    youtubeId:"LYsaKn8FRhc",
+    source:"YouTube • canal oficial"
+  },
+  {
+    id:"br-deus-provera",
+    category:"Louvores Pentecostais",
+    title:"Deus Proverá",
+    subtitle:"Vídeo oficial",
+    performer:"Gabriela Gomes",
+    youtubeId:"tf1rVE3mbpg",
+    source:"YouTube • canal oficial"
+  },
+  {
+    id:"br-todavia",
+    category:"Louvores Pentecostais",
+    title:"Todavia Me Alegrarei",
+    subtitle:"Clipe oficial MK Music",
+    performer:"Samuel Messias",
+    youtubeId:"81GaF34veWA",
+    source:"YouTube • MK Music"
+  },
+  {
+    id:"br-prioridade",
+    category:"Louvores Pentecostais",
+    title:"Prioridade",
+    subtitle:"Ao vivo na MK Music",
+    performer:"Midian Lima",
+    youtubeId:"1Zyu6Ec57tU",
+    source:"YouTube • canal oficial"
+  },
+  {
+    id:"br-galileu",
+    category:"Adoração",
+    title:"Galileu",
+    subtitle:"Ao Vivo no Mineirão",
+    performer:"Fernandinho",
+    youtubeId:"bcLC42v-eyE",
+    source:"YouTube • canal oficial"
+  },
+  {
+    id:"br-a-casa-e-sua",
+    category:"Adoração",
+    title:"A Casa É Sua",
+    subtitle:"Apresentação ao vivo",
+    performer:"Casa Worship",
+    youtubeId:"qWkQnQIFm_E",
+    source:"YouTube"
+  }
+];
+
+const WORSHIP_CATEGORIES = [
+  "Todos",
+  "Adoração",
+  "Louvores Pentecostais",
+  "Corinhos de Fogo",
+  "Harpa Cristã",
+  "Louvores Antigos",
+  "Outros"
+];
+
 const DRAWER_SECTIONS = [
   [
     {key:"bible", title:"Bíblia", icon:"📖", meta:"Leitura principal"},
@@ -406,6 +483,17 @@ const installBtn = document.getElementById("installBtn");
 const toastEl = document.getElementById("toast");
 const drawerEl = document.getElementById("drawer");
 const drawerContent = document.getElementById("drawerContent");
+const worshipPlayerEl = document.getElementById("worshipPlayer");
+const worshipAudioEl = document.getElementById("worshipAudio");
+const worshipPlayBtnEl = document.getElementById("worshipPlayBtn");
+const worshipPlayerTitleEl = document.getElementById("worshipPlayerTitle");
+const worshipPlayerSubtitleEl = document.getElementById("worshipPlayerSubtitle");
+const worshipSeekEl = document.getElementById("worshipSeek");
+const worshipCurrentTimeEl = document.getElementById("worshipCurrentTime");
+const worshipDurationEl = document.getElementById("worshipDuration");
+const worshipYoutubeBoxEl = document.getElementById("worshipYoutubeBox");
+const worshipYoutubeFrameEl = document.getElementById("worshipYoutubeFrame");
+const worshipProgressEl = document.getElementById("worshipProgress");
 let deferredPrompt = null;
 
 const state = {
@@ -440,6 +528,12 @@ const state = {
   quizScore:0,
   quizAnswered:null,
   bibleQuickPicker:null,
+  hymnCategory:"Todos",
+  hymnSearch:"",
+  currentWorshipTrackId:null,
+  worshipQueue:[],
+  worshipPlaying:false,
+  worshipObjectUrl:null,
   drawerOpen:false
 };
 
@@ -1452,18 +1546,403 @@ function renderDevotionals(){
   content.innerHTML=`<div class="panel"><h3>🙏 Devocionais</h3><p class="small">Reflexões curtas com uma passagem para continuar o estudo.</p></div>${DEVOTIONAL_LIBRARY.map(d=>`<button class="list-card" onclick="state.activeDevotionalId='${d.id}';renderDevotionals()"><div><strong>${d.title}</strong><small>${refLabel(d.ref)}</small></div><span>›</span></button>`).join('')}`;
 }
 
-function getHymns(){return JSON.parse(localStorage.getItem("bs-hymns")||"[]");}
-function renderHymns(){
-  pageTitle.textContent="Hinários";
-  const hymns=getHymns();const q=(state.hymnSearch||"").toLowerCase();const filtered=hymns.filter(h=>!q||`${h.number} ${h.title} ${h.category}`.toLowerCase().includes(q));
-  content.innerHTML=`<div class="panel"><h3>🎵 Hinários</h3><p class="small">Organize Harpa Cristã, corinhos e louvores. Você pode cadastrar número, título e suas próprias anotações.</p></div>
-  <div class="category-chips"><button onclick="state.hymnCategory='Harpa Cristã';renderHymns()">Harpa Cristã</button><button onclick="state.hymnCategory='Corinhos';renderHymns()">Corinhos</button><button onclick="state.hymnCategory='Louvores';renderHymns()">Louvores</button></div>
-  <div class="search-card"><h3>Adicionar cântico</h3><select id="hymnCategory" class="field"><option>Harpa Cristã</option><option>Corinhos</option><option>Louvores</option></select><div class="field-row"><input id="hymnNumber" class="field" placeholder="Número"><input id="hymnTitle" class="field" placeholder="Título"></div><textarea id="hymnNotes" class="note-field" placeholder="Suas anotações, tom, observações..."></textarea><button class="btn-primary full-width" onclick="saveHymn()">Salvar</button></div>
-  <input class="field" placeholder="Buscar no hinário" value="${escapeHtml(state.hymnSearch||'')}" oninput="state.hymnSearch=this.value;renderHymns()">
-  ${filtered.length?filtered.map(h=>`<article class="hymn-card"><div><small>${h.category}</small><h3>${h.number?`${escapeHtml(h.number)} • `:''}${escapeHtml(h.title)}</h3><p>${escapeHtml(h.notes||'')}</p></div><button class="btn-ghost" onclick="deleteHymn('${h.id}')">Excluir</button></article>`).join(''):`<div class="empty-state"><span class="big">🎵</span>Nenhum cântico cadastrado ainda.</div>`}`;
+
+
+function getHymns(){
+  return JSON.parse(localStorage.getItem("bs-hymns")||"[]");
 }
-function saveHymn(){const title=document.getElementById("hymnTitle").value.trim();if(!title){toast("Digite o título");return;}const items=getHymns();items.unshift({id:String(Date.now()),category:document.getElementById("hymnCategory").value,number:document.getElementById("hymnNumber").value.trim(),title,notes:document.getElementById("hymnNotes").value.trim()});saveJSON("bs-hymns",items);renderHymns();toast("Cântico salvo");}
-function deleteHymn(id){saveJSON("bs-hymns",getHymns().filter(h=>h.id!==id));renderHymns();}
+
+function getAllWorshipTracks(){
+  const userTracks=getHymns().map(h=>({
+    ...h,
+    subtitle:h.subtitle||h.category||"Louvor adicionado",
+    performer:h.performer||"Biblioteca pessoal",
+    source:h.youtubeId?"YouTube adicionado pelo usuário":(h.localAudio?"Áudio salvo neste aparelho":(h.audioUrl?"Áudio por URL":"Biblioteca pessoal"))
+  }));
+  return [...INCLUDED_WORSHIP_TRACKS,...userTracks];
+}
+
+function renderHymns(){
+  pageTitle.textContent="Louvores Brasileiros";
+  const q=(state.hymnSearch||"").trim().toLowerCase();
+  const category=state.hymnCategory||"Todos";
+  const all=getAllWorshipTracks();
+  const filtered=all.filter(track=>{
+    const byCategory=category==="Todos" || track.category===category;
+    const hay=`${track.title||""} ${track.subtitle||""} ${track.performer||""} ${track.category||""}`.toLowerCase();
+    return byCategory && (!q || hay.includes(q));
+  });
+
+  content.innerHTML=`
+    <section class="worship-hero brazilian-worship-hero">
+      <div class="worship-icon">🇧🇷</div>
+      <div>
+        <span class="eyebrow">LOUVORES BRASILEIROS</span>
+        <h2>Louvores em Português</h2>
+        <p>Toque no louvor e o vídeo oficial abre no player dentro da Bíblia. Depois volte para a leitura sem sair do aplicativo.</p>
+      </div>
+    </section>
+
+    <div class="worship-category-scroll">
+      ${WORSHIP_CATEGORIES.map(cat=>`<button class="worship-category-chip ${category===cat?'active':''}" onclick="setHymnCategory('${cat}')">${cat}</button>`).join("")}
+    </div>
+
+    <div class="search-card">
+      <input class="field" placeholder="Buscar louvor ou cantor brasileiro..." value="${escapeHtml(state.hymnSearch||"")}" oninput="state.hymnSearch=this.value;renderHymns()">
+    </div>
+
+    <div class="panel worship-info-panel">
+      <strong>▶ Tocando pelo YouTube dentro do app</strong>
+      <p class="small">A lista inicial usa vídeos públicos de canais oficiais ou publicações oficiais. O aplicativo não copia os MP3s desses artistas.</p>
+    </div>
+
+    ${filtered.length
+      ? `<div class="worship-track-list">${filtered.map(renderWorshipTrack).join("")}</div>`
+      : `<div class="empty-state"><span class="big">🎵</span><strong>Nenhum louvor encontrado</strong></div>`}
+
+    <section class="search-card add-worship-card">
+      <h3>＋ Adicionar outro louvor brasileiro</h3>
+      <p class="small">Cole o link de um vídeo do YouTube. Depois ele fica salvo na sua lista dentro da Bíblia.</p>
+
+      <select id="hymnCategory" class="field">
+        <option>Corinhos de Fogo</option>
+        <option>Louvores Pentecostais</option>
+        <option>Adoração</option>
+        <option>Harpa Cristã</option>
+        <option>Louvores Antigos</option>
+        <option>Outros</option>
+      </select>
+      <input id="hymnTitle" class="field" placeholder="Nome do louvor">
+      <input id="hymnPerformer" class="field" placeholder="Cantor / grupo">
+      <input id="hymnYoutubeUrl" class="field" placeholder="Cole o link do YouTube">
+      <button class="btn-primary full-width" onclick="saveYoutubeHymn()">Adicionar louvor</button>
+
+      <details class="optional-audio-details">
+        <summary>Adicionar um áudio autorizado do celular</summary>
+        <div class="optional-audio-fields">
+          <input id="hymnAudioUrl" class="field" placeholder="URL direta MP3/OGG (opcional)">
+          <label class="audio-file-label">
+            <span>📁 Escolher áudio do celular</span>
+            <input id="hymnAudioFile" type="file" accept="audio/*">
+          </label>
+          <button class="btn-ghost full-width" onclick="savePlayableHymn()">Adicionar áudio local</button>
+        </div>
+      </details>
+    </section>`;
+}
+
+function renderWorshipTrack(track){
+  const current=state.currentWorshipTrackId===track.id;
+  const isIncluded=track.id.startsWith("br-");
+  const thumb=track.youtubeId ? `https://i.ytimg.com/vi/${track.youtubeId}/mqdefault.jpg` : "";
+  return `<article class="worship-track-card ${current?'playing':''}">
+    ${thumb
+      ? `<button class="worship-thumb-btn" onclick="playWorshipTrack('${track.id}')"><img src="${thumb}" alt="" loading="lazy"><span>▶</span></button>`
+      : `<button class="worship-track-play" onclick="playWorshipTrack('${track.id}')">${current&&state.worshipPlaying?'❚❚':'▶'}</button>`}
+    <div class="worship-track-copy" onclick="playWorshipTrack('${track.id}')">
+      <small>${escapeHtml(track.category||"Louvor")} ${track.youtubeId?'• YouTube':''}</small>
+      <h3>${escapeHtml(track.title||"Sem título")}</h3>
+      <p>${escapeHtml(track.subtitle||"")}</p>
+      <span>${escapeHtml(track.performer||"")}</span>
+    </div>
+    <div class="worship-track-actions">
+      ${isIncluded?'':`<button class="icon-action-btn" onclick="event.stopPropagation();deleteHymn('${track.id}')">🗑</button>`}
+    </div>
+  </article>`;
+}
+
+function setHymnCategory(category){
+  state.hymnCategory=category;
+  renderHymns();
+}
+
+function extractYoutubeId(url){
+  if(!url) return null;
+  const text=url.trim();
+
+  if(/^[A-Za-z0-9_-]{11}$/.test(text)) return text;
+
+  try{
+    const u=new URL(text);
+    if(u.hostname.includes("youtu.be")){
+      return u.pathname.split("/").filter(Boolean)[0]?.slice(0,11)||null;
+    }
+    if(u.hostname.includes("youtube.com") || u.hostname.includes("youtube-nocookie.com")){
+      if(u.searchParams.get("v")) return u.searchParams.get("v").slice(0,11);
+      const parts=u.pathname.split("/").filter(Boolean);
+      const i=parts.findIndex(p=>["embed","shorts","live"].includes(p));
+      if(i>=0 && parts[i+1]) return parts[i+1].slice(0,11);
+    }
+  }catch(e){}
+  return null;
+}
+
+function saveYoutubeHymn(){
+  const title=document.getElementById("hymnTitle")?.value.trim();
+  const category=document.getElementById("hymnCategory")?.value||"Outros";
+  const performer=document.getElementById("hymnPerformer")?.value.trim()||"";
+  const youtubeUrl=document.getElementById("hymnYoutubeUrl")?.value.trim()||"";
+  const youtubeId=extractYoutubeId(youtubeUrl);
+
+  if(!title){toast("Digite o nome do louvor");return;}
+  if(!youtubeId){toast("Cole um link válido do YouTube");return;}
+
+  const items=getHymns();
+  items.unshift({
+    id:`yt-${Date.now()}`,
+    category,
+    title,
+    performer,
+    youtubeId,
+    subtitle:"YouTube",
+    source:"Link adicionado pelo usuário"
+  });
+  saveJSON("bs-hymns",items);
+  toast("Louvor brasileiro adicionado");
+  renderHymns();
+}
+
+function openWorshipDB(){
+  return new Promise((resolve,reject)=>{
+    const request=indexedDB.open("biblia-worship-audio",1);
+    request.onupgradeneeded=()=>{
+      const db=request.result;
+      if(!db.objectStoreNames.contains("audio")) db.createObjectStore("audio");
+    };
+    request.onsuccess=()=>resolve(request.result);
+    request.onerror=()=>reject(request.error);
+  });
+}
+
+async function saveAudioBlob(id,file){
+  const db=await openWorshipDB();
+  return new Promise((resolve,reject)=>{
+    const tx=db.transaction("audio","readwrite");
+    tx.objectStore("audio").put(file,id);
+    tx.oncomplete=()=>{db.close();resolve();};
+    tx.onerror=()=>{db.close();reject(tx.error);};
+  });
+}
+
+async function getAudioBlob(id){
+  const db=await openWorshipDB();
+  return new Promise((resolve,reject)=>{
+    const tx=db.transaction("audio","readonly");
+    const req=tx.objectStore("audio").get(id);
+    req.onsuccess=()=>{const value=req.result;db.close();resolve(value||null);};
+    req.onerror=()=>{db.close();reject(req.error);};
+  });
+}
+
+async function deleteAudioBlob(id){
+  try{
+    const db=await openWorshipDB();
+    await new Promise((resolve,reject)=>{
+      const tx=db.transaction("audio","readwrite");
+      tx.objectStore("audio").delete(id);
+      tx.oncomplete=resolve;
+      tx.onerror=()=>reject(tx.error);
+    });
+    db.close();
+  }catch(e){}
+}
+
+async function savePlayableHymn(){
+  const title=document.getElementById("hymnTitle")?.value.trim();
+  const category=document.getElementById("hymnCategory")?.value||"Outros";
+  const performer=document.getElementById("hymnPerformer")?.value.trim()||"";
+  const audioUrl=document.getElementById("hymnAudioUrl")?.value.trim()||"";
+  const file=document.getElementById("hymnAudioFile")?.files?.[0]||null;
+
+  if(!title){toast("Digite o nome do louvor");return;}
+  if(!audioUrl && !file){toast("Escolha um áudio ou coloque uma URL direta");return;}
+
+  const id=`user-${Date.now()}`;
+  if(file){
+    try{ await saveAudioBlob(id,file); }
+    catch(e){toast("Não foi possível salvar esse áudio");return;}
+  }
+
+  const items=getHymns();
+  items.unshift({
+    id,category,title,performer,
+    audioUrl:file?"":audioUrl,
+    localAudio:!!file,
+    subtitle:file?file.name:"Áudio por URL"
+  });
+  saveJSON("bs-hymns",items);
+  toast("Áudio adicionado");
+  renderHymns();
+}
+
+async function deleteHymn(id){
+  const item=getHymns().find(h=>h.id===id);
+  if(item?.localAudio) await deleteAudioBlob(id);
+  saveJSON("bs-hymns",getHymns().filter(h=>h.id!==id));
+  if(state.currentWorshipTrackId===id) stopWorship();
+  renderHymns();
+}
+
+async function resolveTrackAudio(track){
+  if(track.localAudio){
+    const blob=await getAudioBlob(track.id);
+    if(!blob) throw new Error("Arquivo local não encontrado");
+    if(state.worshipObjectUrl) URL.revokeObjectURL(state.worshipObjectUrl);
+    state.worshipObjectUrl=URL.createObjectURL(blob);
+    return state.worshipObjectUrl;
+  }
+  if(track.audioUrl) return track.audioUrl;
+  throw new Error("Áudio indisponível");
+}
+
+function enterYoutubeMode(track){
+  worshipAudioEl.pause();
+  worshipAudioEl.removeAttribute("src");
+  worshipAudioEl.load();
+
+  worshipPlayerEl.classList.remove("hidden");
+  worshipPlayerEl.classList.add("youtube-mode");
+  worshipYoutubeBoxEl.classList.remove("hidden");
+  worshipProgressEl.classList.add("hidden");
+  worshipPlayBtnEl.classList.add("hidden");
+
+  worshipYoutubeFrameEl.src=`https://www.youtube.com/embed/${track.youtubeId}?autoplay=1&playsinline=1&rel=0&modestbranding=1`;
+  worshipPlayerTitleEl.textContent=track.title;
+  worshipPlayerSubtitleEl.textContent=`${track.performer||"Louvor brasileiro"} • YouTube`;
+  state.worshipPlaying=true;
+}
+
+function leaveYoutubeMode(){
+  worshipYoutubeFrameEl.src="";
+  worshipYoutubeBoxEl.classList.add("hidden");
+  worshipProgressEl.classList.remove("hidden");
+  worshipPlayBtnEl.classList.remove("hidden");
+  worshipPlayerEl.classList.remove("youtube-mode");
+}
+
+async function playWorshipTrack(id){
+  const tracks=getAllWorshipTracks().filter(t=>t.youtubeId||t.audioUrl||t.localAudio);
+  const track=tracks.find(t=>t.id===id);
+  if(!track){toast("Louvor não encontrado");return;}
+
+  state.worshipQueue=tracks.map(t=>t.id);
+  state.currentWorshipTrackId=id;
+
+  if(track.youtubeId){
+    enterYoutubeMode(track);
+    if(state.page==="hymns") renderHymns();
+    return;
+  }
+
+  leaveYoutubeMode();
+
+  try{
+    const src=await resolveTrackAudio(track);
+    worshipAudioEl.src=src;
+    worshipPlayerTitleEl.textContent=track.title;
+    worshipPlayerSubtitleEl.textContent=track.subtitle||track.performer||track.category||"Louvor";
+    worshipPlayerEl.classList.remove("hidden");
+    await worshipAudioEl.play();
+    state.worshipPlaying=true;
+    updateWorshipPlayerState();
+    if(state.page==="hymns") renderHymns();
+  }catch(e){
+    state.worshipPlaying=false;
+    updateWorshipPlayerState();
+    toast("Não foi possível tocar este áudio");
+  }
+}
+
+function toggleWorshipPlayback(){
+  const track=getAllWorshipTracks().find(t=>t.id===state.currentWorshipTrackId);
+  if(track?.youtubeId){
+    toast("Use os controles do vídeo para pausar ou continuar");
+    return;
+  }
+  if(!state.currentWorshipTrackId) return;
+  if(worshipAudioEl.paused){
+    worshipAudioEl.play().then(()=>{
+      state.worshipPlaying=true;
+      updateWorshipPlayerState();
+    }).catch(()=>toast("Não foi possível iniciar o áudio"));
+  }else{
+    worshipAudioEl.pause();
+    state.worshipPlaying=false;
+    updateWorshipPlayerState();
+  }
+}
+
+function updateWorshipPlayerState(){
+  worshipPlayBtnEl.textContent=state.worshipPlaying?"❚❚":"▶";
+}
+
+function formatAudioTime(seconds){
+  if(!Number.isFinite(seconds)) return "0:00";
+  const m=Math.floor(seconds/60);
+  const s=Math.floor(seconds%60).toString().padStart(2,"0");
+  return `${m}:${s}`;
+}
+
+function seekWorship(value){
+  if(!Number.isFinite(worshipAudioEl.duration)||!worshipAudioEl.duration) return;
+  worshipAudioEl.currentTime=(Number(value)/100)*worshipAudioEl.duration;
+}
+
+function playNextWorship(){
+  const queue=state.worshipQueue.length
+    ? state.worshipQueue
+    : getAllWorshipTracks().filter(t=>t.youtubeId||t.audioUrl||t.localAudio).map(t=>t.id);
+  if(!queue.length)return;
+  const i=Math.max(0,queue.indexOf(state.currentWorshipTrackId));
+  playWorshipTrack(queue[(i+1)%queue.length]);
+}
+
+function playPreviousWorship(){
+  const queue=state.worshipQueue.length
+    ? state.worshipQueue
+    : getAllWorshipTracks().filter(t=>t.youtubeId||t.audioUrl||t.localAudio).map(t=>t.id);
+  if(!queue.length)return;
+  const i=Math.max(0,queue.indexOf(state.currentWorshipTrackId));
+  playWorshipTrack(queue[(i-1+queue.length)%queue.length]);
+}
+
+function stopWorship(){
+  worshipAudioEl.pause();
+  worshipAudioEl.removeAttribute("src");
+  worshipAudioEl.load();
+  worshipYoutubeFrameEl.src="";
+  worshipYoutubeBoxEl.classList.add("hidden");
+  worshipPlayerEl.classList.remove("youtube-mode");
+  worshipPlayerEl.classList.add("hidden");
+  worshipProgressEl.classList.remove("hidden");
+  worshipPlayBtnEl.classList.remove("hidden");
+
+  state.worshipPlaying=false;
+  state.currentWorshipTrackId=null;
+  worshipSeekEl.value=0;
+  worshipCurrentTimeEl.textContent="0:00";
+  worshipDurationEl.textContent="0:00";
+
+  if(state.worshipObjectUrl){
+    URL.revokeObjectURL(state.worshipObjectUrl);
+    state.worshipObjectUrl=null;
+  }
+  if(state.page==="hymns") renderHymns();
+}
+
+worshipAudioEl.addEventListener("play",()=>{state.worshipPlaying=true;updateWorshipPlayerState();});
+worshipAudioEl.addEventListener("pause",()=>{state.worshipPlaying=false;updateWorshipPlayerState();});
+worshipAudioEl.addEventListener("ended",()=>playNextWorship());
+worshipAudioEl.addEventListener("timeupdate",()=>{
+  worshipCurrentTimeEl.textContent=formatAudioTime(worshipAudioEl.currentTime);
+  worshipDurationEl.textContent=formatAudioTime(worshipAudioEl.duration);
+  worshipSeekEl.value=Number.isFinite(worshipAudioEl.duration)&&worshipAudioEl.duration
+    ? (worshipAudioEl.currentTime/worshipAudioEl.duration)*100 : 0;
+});
+worshipAudioEl.addEventListener("loadedmetadata",()=>{
+  worshipDurationEl.textContent=formatAudioTime(worshipAudioEl.duration);
+});
+
 
 function renderDonation(){
   pageTitle.textContent="Doação de Bíblias";const entries=JSON.parse(localStorage.getItem("bs-bible-donations")||"[]");
@@ -1598,7 +2077,7 @@ function exportBackup(){const data={};for(let i=0;i<localStorage.length;i++){con
 function importBackupFile(event){const file=event.target.files?.[0];if(!file)return;const reader=new FileReader();reader.onload=()=>{try{const obj=JSON.parse(reader.result);if(!obj.data)throw new Error();for(const [k,v] of Object.entries(obj.data)){if(k.startsWith("bs-"))localStorage.setItem(k,v);}alert("Backup restaurado. O aplicativo será recarregado.");location.reload();}catch(e){toast("Arquivo de backup inválido");}};reader.readAsText(file);}
 function clearAppData(){if(!confirm("Tem certeza? Isso apaga favoritos, notas e progresso deste aparelho."))return;const keys=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k?.startsWith("bs-"))keys.push(k);}keys.forEach(k=>localStorage.removeItem(k));location.reload();}
 
-function renderMore(){pageTitle.textContent="Mais informações";content.innerHTML=`<div class="setting-row" onclick="toggleTheme()"><div class="setting-left"><div class="setting-icon">${state.dark?'☀':'☾'}</div><div><h3>Modo ${state.dark?'claro':'escuro'}</h3><div class="small">Mude a aparência do aplicativo</div></div></div><span>›</span></div><div class="setting-row" onclick="installAppFromMenu()"><div class="setting-left"><div class="setting-icon">⇩</div><div><h3>Instalar aplicativo</h3><div class="small">Adicionar à tela inicial do celular</div></div></div><span>›</span></div><div class="setting-row" onclick="shareApp()"><div class="setting-left"><div class="setting-icon">↗</div><div><h3>Compartilhar app</h3><div class="small">Envie o Palavra Viva para alguém</div></div></div><span>›</span></div><div class="version-card"><div class="cross">✝</div><h3>Bíblia Sagrada</h3><p>Palavra Viva • versão 1.3</p><p style="margin-top:8px">Desenvolvido por JNR</p></div><div class="panel" style="margin-top:12px"><strong>📖 Recursos desta versão</strong><p class="small">Menu reorganizado, planos, devocionais, histórias, pesquisa avançada, hinários pessoais, áudio por voz do aparelho, quiz, dicionário, temas, estudos por localização, backup e versões que realmente trocam o texto bíblico.</p></div>`;}
+function renderMore(){pageTitle.textContent="Mais informações";content.innerHTML=`<div class="setting-row" onclick="toggleTheme()"><div class="setting-left"><div class="setting-icon">${state.dark?'☀':'☾'}</div><div><h3>Modo ${state.dark?'claro':'escuro'}</h3><div class="small">Mude a aparência do aplicativo</div></div></div><span>›</span></div><div class="setting-row" onclick="installAppFromMenu()"><div class="setting-left"><div class="setting-icon">⇩</div><div><h3>Instalar aplicativo</h3><div class="small">Adicionar à tela inicial do celular</div></div></div><span>›</span></div><div class="setting-row" onclick="shareApp()"><div class="setting-left"><div class="setting-icon">↗</div><div><h3>Compartilhar app</h3><div class="small">Envie o Palavra Viva para alguém</div></div></div><span>›</span></div><div class="version-card"><div class="cross">✝</div><h3>Bíblia Sagrada</h3><p>Palavra Viva • versão 1.5</p><p style="margin-top:8px">Desenvolvido por JNR</p></div><div class="panel" style="margin-top:12px"><strong>📖 Recursos desta versão</strong><p class="small">Menu reorganizado, planos, devocionais, histórias, pesquisa avançada, hinários pessoais, áudio por voz do aparelho, quiz, dicionário, temas, estudos por localização, backup e versões que realmente trocam o texto bíblico.</p></div>`;}
 
 function installAppFromMenu(){ if(deferredPrompt) installBtn.click(); else toast("No Chrome: menu ⋮ → Adicionar à tela inicial"); }
 function shareApp(){ const data={title:"Bíblia Sagrada • Palavra Viva",text:"Conheça o aplicativo Bíblia Sagrada • Palavra Viva",url:location.href}; if(navigator.share) navigator.share(data).catch(()=>{}); else if(navigator.clipboard){navigator.clipboard.writeText(location.href);toast("Link copiado");} }
@@ -1667,8 +2146,11 @@ Object.assign(window,{ state,openDrawer,closeDrawer,quickOpenVersions,navigate,t
   setReadMarkColor,toggleVerseReadByNumber,markAllChapterRead,clearChapterReadMarks,
   startNewQuizRound,restartQuiz,answerQuiz,nextQuiz,
   showBookQuickPicker,showChapterQuickPicker,showVerseQuickPicker,closeBibleQuickPicker,
-  jumpToBook,jumpToChapter,jumpToVerse,showLicensedVersionInfo
-});
+  jumpToBook,jumpToChapter,jumpToVerse,showLicensedVersionInfo,
+  renderHymns,setHymnCategory,savePlayableHymn,deleteHymn,playWorshipTrack,
+  toggleWorshipPlayback,playNextWorship,playPreviousWorship,stopWorship,seekWorship
+
+,saveYoutubeHymn});
 
 if('serviceWorker' in navigator){ navigator.serviceWorker.register('./sw.js').catch(()=>{}); }
 render();
