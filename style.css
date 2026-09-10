@@ -1004,3 +1004,45 @@ body:has(.worship-player.youtube-mode:not(.hidden)) .bottom-nav{
     bottom:270px;
   }
 }
+
+
+/* v1.6 — leitura limpa: player não ocupa a tela da Bíblia */
+body.reading-clean-mode .worship-player:not(.hidden){
+  position:fixed !important;
+  left:-10000px !important;
+  bottom:auto !important;
+  top:0 !important;
+  width:1px !important;
+  height:1px !important;
+  min-height:0 !important;
+  max-height:1px !important;
+  padding:0 !important;
+  margin:0 !important;
+  opacity:0 !important;
+  overflow:hidden !important;
+  pointer-events:none !important;
+  transform:none !important;
+  border:0 !important;
+  box-shadow:none !important;
+}
+
+body.reading-clean-mode .app-shell{
+  padding-bottom:96px !important;
+}
+
+body.reading-clean-mode .bottom-nav{
+  bottom:0 !important;
+}
+
+/* Destaque para sons leves de leitura */
+.worship-category-chip.active{
+  box-shadow:0 5px 14px rgba(90,55,20,.12);
+}
+
+.worship-track-card:has(.worship-track-copy small:first-child){
+  transition:transform .15s ease,border-color .15s ease;
+}
+
+.worship-track-card:active{
+  transform:scale(.995);
+}

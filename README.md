@@ -1,37 +1,37 @@
-# Bíblia Sagrada • Palavra Viva — versão 1.5
+# Bíblia Sagrada • Palavra Viva — versão 1.6
 
-## Louvores brasileiros dentro da Bíblia
+## Leitura sem player atrapalhando
+Quando a pessoa entra na Bíblia, no versículo, na meditação da passagem ou no estudo,
+o player de louvores sai completamente da tela.
 
-A lista principal agora é em português e usa vídeos do YouTube para reprodução dentro do próprio aplicativo.
+O áudio/vídeo continua ativo em segundo plano dentro da página.
+Para controlar a música novamente, basta voltar à área de Louvores.
 
-Incluídos inicialmente:
-- Gabriela Rocha — Lugar Secreto
-- Preto no Branco feat. Gabriela Rocha — Ninguém Explica Deus
-- Gabriela Gomes — Deus Proverá
-- Samuel Messias — Todavia Me Alegrarei
-- Midian Lima — Prioridade
-- Fernandinho — Galileu
-- Casa Worship — A Casa É Sua
+## Mais louvores brasileiros
+Foram acrescentados:
+- Me Atraiu — Gabriela Rocha
+- Bondade de Deus — Isaias Saad
+- Aquieta Minh'alma — Ministério Zoe
+- Bênçãos Que Não Têm Fim — Isadora Pompeo
+- Me Ajude a Melhorar — Eli Soares
+- Deus de Promessas — Davi Sacer
 
-## Como funciona
-- toque em um louvor;
-- o vídeo abre dentro do player do aplicativo;
-- você pode voltar para a Bíblia e continuar lendo;
-- o player permanece no aplicativo;
-- use os controles do próprio YouTube para pausar, continuar e ajustar o vídeo;
-- botões de anterior/próximo trocam de louvor.
+Além dos louvores brasileiros que já estavam na v1.5.
 
-## Adicionar mais louvores
-Na área de Louvores, cole um link do YouTube e salve o louvor. Ele passa a fazer parte da sua lista.
+## Instrumental para Leitura
+Nova categoria com sons leves:
+- Piano Gospel para Orar e Ler — Piano Worship Life
+- Piano Worship • 3 Horas — Jerry Kim
 
-Categorias:
-- Adoração
-- Louvores Pentecostais
-- Corinhos de Fogo
-- Harpa Cristã
-- Louvores Antigos
-- Outros
-
-Todos os recursos da v1.4 foram mantidos, incluindo AEC na lista e marcação de versículos por toque.
+## Mantido
+- AEC na lista de versões
+- marcação do versículo tocando diretamente no texto
+- Livro → Capítulo → Palavra
+- seletor rápido Livro / Capítulo / Versículo / Versão
+- quiz
+- anotações
+- favoritos
+- meditações
+- demais menus
 
 Desenvolvido por JNR.

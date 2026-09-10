@@ -136,13 +136,67 @@ const INCLUDED_WORSHIP_TRACKS = [
     source:"YouTube • canal oficial"
   },
   {
+    id:"br-me-atraiu",
+    category:"Adoração",
+    title:"Me Atraiu",
+    subtitle:"Reimagined",
+    performer:"Gabriela Rocha",
+    youtubeId:"_UN2gwabRBI",
+    source:"YouTube • canal oficial"
+  },
+  {
+    id:"br-bondade-de-deus",
+    category:"Adoração",
+    title:"Bondade de Deus",
+    subtitle:"Ao vivo",
+    performer:"Isaias Saad",
+    youtubeId:"mZ9yZYo9Mmk",
+    source:"YouTube • canal oficial"
+  },
+  {
+    id:"br-aquieta-minhalma",
+    category:"Adoração",
+    title:"Aquieta Minh'alma",
+    subtitle:"Vídeo oficial",
+    performer:"Ministério Zoe",
+    youtubeId:"ANfpF0pNob4",
+    source:"YouTube • canal oficial"
+  },
+  {
+    id:"br-bencaos",
+    category:"Adoração",
+    title:"Bênçãos Que Não Têm Fim",
+    subtitle:"Vídeo oficial",
+    performer:"Isadora Pompeo",
+    youtubeId:"Xq_07hEF2AQ",
+    source:"YouTube • canal oficial"
+  },
+  {
+    id:"br-me-ajude-a-melhorar",
+    category:"Adoração",
+    title:"Me Ajude a Melhorar",
+    subtitle:"Ao vivo",
+    performer:"Eli Soares",
+    youtubeId:"N4W011dK1uM",
+    source:"YouTube • canal oficial"
+  },
+  {
+    id:"br-deus-de-promessas",
+    category:"Louvores Antigos",
+    title:"Deus de Promessas",
+    subtitle:"DVD No Caminho do Milagre",
+    performer:"Davi Sacer",
+    youtubeId:"03QIkzzom1s",
+    source:"YouTube • Você Adora"
+  },
+  {
     id:"br-ninguem-explica-deus",
     category:"Adoração",
     title:"Ninguém Explica Deus",
     subtitle:"Ao vivo • feat. Gabriela Rocha",
     performer:"Preto no Branco",
     youtubeId:"LYsaKn8FRhc",
-    source:"YouTube • canal oficial"
+    source:"YouTube"
   },
   {
     id:"br-deus-provera",
@@ -151,13 +205,13 @@ const INCLUDED_WORSHIP_TRACKS = [
     subtitle:"Vídeo oficial",
     performer:"Gabriela Gomes",
     youtubeId:"tf1rVE3mbpg",
-    source:"YouTube • canal oficial"
+    source:"YouTube"
   },
   {
     id:"br-todavia",
     category:"Louvores Pentecostais",
     title:"Todavia Me Alegrarei",
-    subtitle:"Clipe oficial MK Music",
+    subtitle:"Clipe oficial",
     performer:"Samuel Messias",
     youtubeId:"81GaF34veWA",
     source:"YouTube • MK Music"
@@ -166,10 +220,10 @@ const INCLUDED_WORSHIP_TRACKS = [
     id:"br-prioridade",
     category:"Louvores Pentecostais",
     title:"Prioridade",
-    subtitle:"Ao vivo na MK Music",
+    subtitle:"Ao vivo",
     performer:"Midian Lima",
     youtubeId:"1Zyu6Ec57tU",
-    source:"YouTube • canal oficial"
+    source:"YouTube • MK Music"
   },
   {
     id:"br-galileu",
@@ -178,7 +232,7 @@ const INCLUDED_WORSHIP_TRACKS = [
     subtitle:"Ao Vivo no Mineirão",
     performer:"Fernandinho",
     youtubeId:"bcLC42v-eyE",
-    source:"YouTube • canal oficial"
+    source:"YouTube"
   },
   {
     id:"br-a-casa-e-sua",
@@ -188,11 +242,30 @@ const INCLUDED_WORSHIP_TRACKS = [
     performer:"Casa Worship",
     youtubeId:"qWkQnQIFm_E",
     source:"YouTube"
+  },
+  {
+    id:"inst-piano-oracao",
+    category:"Instrumental para Leitura",
+    title:"Piano Gospel para Orar e Ler",
+    subtitle:"Instrumental leve • sem distrações",
+    performer:"Piano Worship Life",
+    youtubeId:"4S2-Dgrftxs",
+    source:"YouTube • Official Artist Channel"
+  },
+  {
+    id:"inst-piano-worship-3h",
+    category:"Instrumental para Leitura",
+    title:"Piano Worship • 3 Horas",
+    subtitle:"Instrumental suave para leitura e oração",
+    performer:"Jerry Kim",
+    youtubeId:"bZ_Q_3CWwIA",
+    source:"YouTube • Official Artist Channel"
   }
 ];
 
 const WORSHIP_CATEGORIES = [
   "Todos",
+  "Instrumental para Leitura",
   "Adoração",
   "Louvores Pentecostais",
   "Corinhos de Fogo",
@@ -616,8 +689,15 @@ function resetReadingState(){
   state.activeReadingVerse=null;
 }
 
+
+function syncWorshipPlayerForReading(){
+  const readingPages=["bible","verse","passage","study"];
+  document.body.classList.toggle("reading-clean-mode",readingPages.includes(state.page));
+}
+
 function navigate(page){
   state.page=page;
+  syncWorshipPlayerForReading();
   if(["home","versions","favorites","search","more","notes","plans","progress","devotional","stories","study","devotionals","hymns","donation","ads","apostolic","message","audio","store","way","salt","questions","dictionary","themes","maps","blog","instagram","youtube","history","backup"].includes(page)){
     if(page !== "favorites" && page !== "notes" && page !== "history") resetReadingState();
   }
@@ -1579,7 +1659,7 @@ function renderHymns(){
       <div>
         <span class="eyebrow">LOUVORES BRASILEIROS</span>
         <h2>Louvores em Português</h2>
-        <p>Toque no louvor e o vídeo oficial abre no player dentro da Bíblia. Depois volte para a leitura sem sair do aplicativo.</p>
+        <p>Toque no louvor para ouvir dentro do aplicativo. Ao voltar para a Bíblia, o player sai da tela para não atrapalhar a leitura, mas o louvor continua tocando.</p>
       </div>
     </section>
 
@@ -1605,7 +1685,7 @@ function renderHymns(){
       <p class="small">Cole o link de um vídeo do YouTube. Depois ele fica salvo na sua lista dentro da Bíblia.</p>
 
       <select id="hymnCategory" class="field">
-        <option>Corinhos de Fogo</option>
+        <option>Instrumental para Leitura</option><option>Corinhos de Fogo</option>
         <option>Louvores Pentecostais</option>
         <option>Adoração</option>
         <option>Harpa Cristã</option>
@@ -2077,7 +2157,7 @@ function exportBackup(){const data={};for(let i=0;i<localStorage.length;i++){con
 function importBackupFile(event){const file=event.target.files?.[0];if(!file)return;const reader=new FileReader();reader.onload=()=>{try{const obj=JSON.parse(reader.result);if(!obj.data)throw new Error();for(const [k,v] of Object.entries(obj.data)){if(k.startsWith("bs-"))localStorage.setItem(k,v);}alert("Backup restaurado. O aplicativo será recarregado.");location.reload();}catch(e){toast("Arquivo de backup inválido");}};reader.readAsText(file);}
 function clearAppData(){if(!confirm("Tem certeza? Isso apaga favoritos, notas e progresso deste aparelho."))return;const keys=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k?.startsWith("bs-"))keys.push(k);}keys.forEach(k=>localStorage.removeItem(k));location.reload();}
 
-function renderMore(){pageTitle.textContent="Mais informações";content.innerHTML=`<div class="setting-row" onclick="toggleTheme()"><div class="setting-left"><div class="setting-icon">${state.dark?'☀':'☾'}</div><div><h3>Modo ${state.dark?'claro':'escuro'}</h3><div class="small">Mude a aparência do aplicativo</div></div></div><span>›</span></div><div class="setting-row" onclick="installAppFromMenu()"><div class="setting-left"><div class="setting-icon">⇩</div><div><h3>Instalar aplicativo</h3><div class="small">Adicionar à tela inicial do celular</div></div></div><span>›</span></div><div class="setting-row" onclick="shareApp()"><div class="setting-left"><div class="setting-icon">↗</div><div><h3>Compartilhar app</h3><div class="small">Envie o Palavra Viva para alguém</div></div></div><span>›</span></div><div class="version-card"><div class="cross">✝</div><h3>Bíblia Sagrada</h3><p>Palavra Viva • versão 1.5</p><p style="margin-top:8px">Desenvolvido por JNR</p></div><div class="panel" style="margin-top:12px"><strong>📖 Recursos desta versão</strong><p class="small">Menu reorganizado, planos, devocionais, histórias, pesquisa avançada, hinários pessoais, áudio por voz do aparelho, quiz, dicionário, temas, estudos por localização, backup e versões que realmente trocam o texto bíblico.</p></div>`;}
+function renderMore(){pageTitle.textContent="Mais informações";content.innerHTML=`<div class="setting-row" onclick="toggleTheme()"><div class="setting-left"><div class="setting-icon">${state.dark?'☀':'☾'}</div><div><h3>Modo ${state.dark?'claro':'escuro'}</h3><div class="small">Mude a aparência do aplicativo</div></div></div><span>›</span></div><div class="setting-row" onclick="installAppFromMenu()"><div class="setting-left"><div class="setting-icon">⇩</div><div><h3>Instalar aplicativo</h3><div class="small">Adicionar à tela inicial do celular</div></div></div><span>›</span></div><div class="setting-row" onclick="shareApp()"><div class="setting-left"><div class="setting-icon">↗</div><div><h3>Compartilhar app</h3><div class="small">Envie o Palavra Viva para alguém</div></div></div><span>›</span></div><div class="version-card"><div class="cross">✝</div><h3>Bíblia Sagrada</h3><p>Palavra Viva • versão 1.6</p><p style="margin-top:8px">Desenvolvido por JNR</p></div><div class="panel" style="margin-top:12px"><strong>📖 Recursos desta versão</strong><p class="small">Menu reorganizado, planos, devocionais, histórias, pesquisa avançada, hinários pessoais, áudio por voz do aparelho, quiz, dicionário, temas, estudos por localização, backup e versões que realmente trocam o texto bíblico.</p></div>`;}
 
 function installAppFromMenu(){ if(deferredPrompt) installBtn.click(); else toast("No Chrome: menu ⋮ → Adicionar à tela inicial"); }
 function shareApp(){ const data={title:"Bíblia Sagrada • Palavra Viva",text:"Conheça o aplicativo Bíblia Sagrada • Palavra Viva",url:location.href}; if(navigator.share) navigator.share(data).catch(()=>{}); else if(navigator.clipboard){navigator.clipboard.writeText(location.href);toast("Link copiado");} }
@@ -2094,6 +2174,7 @@ function handleDrawerItem(key){
 }
 
 function render(){
+  syncWorshipPlayerForReading();
   window.scrollTo({top:0,behavior:"smooth"});
   if(state.page==="home") renderHome();
   else if(state.page==="bible") renderBible();
