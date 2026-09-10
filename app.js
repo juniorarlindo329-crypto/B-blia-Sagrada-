@@ -104,6 +104,8 @@ const state = {
   selectedVerseNumbers:[],
   chapterMode:"select",
   currentChapterVerses:[],
+  selectedMeditationOption:0,
+  selectedPassageMeditationOption:0,
   bookCache:new Map(),
   fullFavorites:JSON.parse(localStorage.getItem("bs-full-favorites")||"[]"),
   dark:localStorage.getItem("bs-dark")==="1",
@@ -152,6 +154,8 @@ function setPage(page){
   state.selectedVerseNumbers=[];
   state.chapterMode="select";
   state.currentChapterVerses=[];
+  state.selectedMeditationOption=0;
+  state.selectedPassageMeditationOption=0;
   document.querySelectorAll(".nav-item").forEach(b=>b.classList.toggle("active",b.dataset.page===page));
   render();
 }
@@ -215,6 +219,7 @@ async function openDailyVerse(){
 
 function openVerseObject(verse){
   state.selectedVerse=verse;
+  state.selectedMeditationOption=0;
   state.page="verse";
   localStorage.setItem("bs-read-date",new Date().toDateString());
   state.readToday=true;
@@ -225,15 +230,65 @@ function openVerseFromBible(code,chapter,verse,text){
   openVerseObject({code,bookName:NAME_BY_CODE[code]||code,chapter:Number(chapter),verse:Number(verse),text});
 }
 
-function guidedMeditation(verse){
-  const special=SPECIAL_MEDITATIONS[verse.id || refId(verse.code,verse.chapter,verse.verse)];
-  if(special) return {...special,special:true};
-  return {
-    meditation:"Leia este versículo novamente, com calma. Observe a palavra ou frase que mais chama sua atenção. Pense no que o texto revela, no que ele desperta em você e em qual atitude concreta pode nascer dessa leitura hoje.",
-    reflect:"O que este versículo convida você a lembrar, praticar ou entregar a Deus hoje?",
-    prayer:"Senhor, ajuda-me a compreender tua Palavra com sabedoria e a colocá-la em prática na minha vida. Amém.",
-    special:false
-  };
+function normalizeTextSnippet(text){
+  const clean = String(text || "").replace(/\s+/g," ").trim();
+  return clean.length > 130 ? clean.slice(0,130).trim() + "..." : clean;
+}
+
+function verseReference(verse){
+  return `${verse.bookName || NAME_BY_CODE[verse.code] || verse.code} ${verse.chapter}:${verse.verse}`;
+}
+
+function buildGenericMeditationOptions(verse){
+  const ref = verseReference(verse);
+  const snippet = normalizeTextSnippet(verse.text);
+  return [
+    {
+      title:"Reflexão",
+      icon:"📖",
+      meditation:`Leia ${ref} com calma. Observe a frase que mais chamou sua atenção: “${snippet}”. Pense no que Deus pode estar falando ao seu coração por meio dessa palavra e como ela conversa com o momento que você está vivendo hoje.`,
+      reflect:`Qual parte desse versículo mais tocou você e por quê?`,
+      prayer:"Senhor, abre meu entendimento para a tua Palavra e fala ao meu coração com clareza. Amém."
+    },
+    {
+      title:"Aplicação",
+      icon:"✨",
+      meditation:`Esse versículo não foi dado apenas para ser lido, mas também vivido. Depois de meditar em ${ref}, pense em uma atitude prática para hoje: uma decisão, um cuidado, uma mudança de postura ou uma palavra que você precisa guardar.`,
+      reflect:`Que atitude concreta você pode tomar hoje a partir desse versículo?`,
+      prayer:"Deus, ajuda-me a colocar tua Palavra em prática no meu dia a dia. Amém."
+    },
+    {
+      title:"Oração",
+      icon:"🙏",
+      meditation:`Transforme o conteúdo de ${ref} em conversa com Deus. O que esse versículo desperta em você? Gratidão, pedido de ajuda, arrependimento, confiança ou esperança? Use a própria Palavra como base para sua oração.`,
+      reflect:`Se você fosse orar agora com base nesse versículo, o que diria a Deus?`,
+      prayer:"Senhor, recebe minha oração e molda meu coração segundo a tua vontade. Amém."
+    },
+    {
+      title:"Encorajamento",
+      icon:"💛",
+      meditation:`A Palavra também serve para fortalecer e renovar. Ao ler ${ref}, lembre-se de que Deus continua presente, agindo e sustentando sua caminhada. Mesmo em dias difíceis, um único versículo pode reacender fé, paz e coragem.`,
+      reflect:`De que forma esse versículo pode fortalecer você hoje?`,
+      prayer:"Pai, renova minha fé e enche meu coração de esperança por meio da tua Palavra. Amém."
+    }
+  ];
+}
+
+function guidedMeditationOptions(verse){
+  const key = verse.id || refId(verse.code,verse.chapter,verse.verse);
+  const special=SPECIAL_MEDITATIONS[key];
+  const generic=buildGenericMeditationOptions(verse);
+  if(!special) return generic;
+  return [
+    {
+      title:"Meditação principal",
+      icon:"☀",
+      meditation:special.meditation,
+      reflect:special.reflect,
+      prayer:special.prayer
+    },
+    ...generic
+  ];
 }
 
 async function openBook(code){
@@ -366,6 +421,7 @@ function buildSelectedPassage(){
 function meditateSelectedVerses(){
   if(!state.selectedVerseNumbers.length){toast("Escolha pelo menos um versículo");return;}
   state.selectedPassage=buildSelectedPassage();
+  state.selectedPassageMeditationOption=0;
   state.page="passage";
   localStorage.setItem("bs-read-date",new Date().toDateString());
   state.readToday=true;
@@ -563,7 +619,9 @@ function renderVerse(){
   if(!v){setPage("home");return;}
   pageTitle.textContent=`${v.bookName} ${v.chapter}`;
   const id=refId(v.code,v.chapter,v.verse);
-  const med=guidedMeditation({...v,id});
+  const options=guidedMeditationOptions({...v,id});
+  if(state.selectedMeditationOption >= options.length) state.selectedMeditationOption = 0;
+  const current=options[state.selectedMeditationOption];
   const liked=!!getFavorite(id);
   content.innerHTML=`
     <article class="verse-card">
@@ -576,24 +634,45 @@ function renderVerse(){
       </div>
     </article>
 
+    <div class="meditation-options-bar">
+      ${options.map((opt,index)=>`
+        <button class="meditation-option-chip ${state.selectedMeditationOption===index?"active":""}" onclick="setMeditationOption(${index})">
+          <span>${opt.icon}</span>${opt.title}
+        </button>`).join("")}
+    </div>
+
     <section class="meditation-card">
-      <h3>📖 ${med.special?"Meditação":"Meditação guiada"}</h3>
-      <p>${med.meditation}</p>
+      <h3>${current.icon} ${current.title}</h3>
+      <p>${current.meditation}</p>
       <div class="reflect-box">
         <strong>💡 Para refletir</strong>
-        <p style="margin-top:7px">${med.reflect}</p>
+        <p style="margin-top:7px">${current.reflect}</p>
       </div>
     </section>
 
     <section class="meditation-card">
       <h3>🙏 Oração</h3>
-      <div class="prayer-box">${med.prayer}</div>
+      <div class="prayer-box">${current.prayer}</div>
     </section>
 
-    <div class="card-actions">
-      <button class="btn-primary" onclick="backToChapter()">Voltar ao capítulo</button>
+    <div class="reading-bottom-actions">
+      <button class="btn-primary" onclick="nextMeditationOption()">Ver outra meditação</button>
+      <button class="btn-ghost" onclick="backToChapter()">Voltar ao capítulo</button>
       <button class="btn-ghost" onclick="setPage('bible')">Escolher outro livro</button>
     </div>`;
+}
+
+function setMeditationOption(index){
+  state.selectedMeditationOption = Number(index) || 0;
+  renderVerse();
+}
+
+function nextMeditationOption(){
+  const v = state.selectedVerse;
+  if(!v) return;
+  const options = guidedMeditationOptions({...v, id:refId(v.code,v.chapter,v.verse)});
+  state.selectedMeditationOption = (state.selectedMeditationOption + 1) % options.length;
+  renderVerse();
 }
 
 async function backToChapter(){
@@ -614,6 +693,49 @@ function shareCurrentVerse(){
 }
 
 
+function buildPassageMeditationOptions(passage){
+  const first=passage[0];
+  const last=passage[passage.length-1];
+  const ref=passage.length===1
+    ? `${first.bookName} ${first.chapter}:${first.verse}`
+    : `${first.bookName} ${first.chapter}:${first.verse}-${last.verse}`;
+
+  if(passage.length===1){
+    return guidedMeditationOptions(first);
+  }
+
+  return [
+    {
+      title:"Reflexão da passagem",
+      icon:"📖",
+      meditation:`Você escolheu ${passage.length} versículos de ${ref}. Leia tudo novamente com calma e perceba a mensagem principal. Procure notar a verdade que se repete, o ensino central ou a direção que essa passagem oferece para sua vida hoje.`,
+      reflect:"Qual foi a principal mensagem que você percebeu nessa passagem inteira?",
+      prayer:"Senhor, ajuda-me a compreender a mensagem desta passagem e a guardá-la no coração. Amém."
+    },
+    {
+      title:"Aplicação da passagem",
+      icon:"✨",
+      meditation:`Toda passagem bíblica pode gerar prática. Depois de ler ${ref}, pense no que ela pede de você: confiar mais, obedecer, mudar uma atitude, perseverar, perdoar, agradecer ou buscar mais a presença de Deus.`,
+      reflect:"Qual atitude prática essa passagem inspira em você hoje?",
+      prayer:"Deus, dá-me disposição para viver na prática aquilo que aprendi nessa leitura. Amém."
+    },
+    {
+      title:"Oração da passagem",
+      icon:"🙏",
+      meditation:`Agora transforme essa leitura em oração. Use os versículos de ${ref} como base para falar com Deus. A Palavra pode virar clamor, gratidão, entrega e fortalecimento espiritual.`,
+      reflect:"Que oração nasce no seu coração depois de ler essa passagem?",
+      prayer:"Pai, recebe minha oração e faz tua Palavra produzir fruto na minha vida. Amém."
+    },
+    {
+      title:"Encorajamento",
+      icon:"💛",
+      meditation:`Ao meditar em ${ref}, lembre-se de que Deus continua presente em sua caminhada. Esta passagem pode servir como direção, consolo e fortalecimento. Guarde ao menos uma frase no coração para carregar durante o dia.`,
+      reflect:"Que parte dessa passagem mais fortalece você neste momento?",
+      prayer:"Senhor, renova minha esperança e fortalece-me por meio da tua Palavra. Amém."
+    }
+  ];
+}
+
 function renderPassageMeditation(){
   const passage=state.selectedPassage||[];
   if(!passage.length){setPage("bible");return;}
@@ -625,19 +747,9 @@ function renderPassageMeditation(){
     ? `${first.bookName} ${first.chapter}:${first.verse}`
     : `${first.bookName} ${first.chapter}:${first.verse}-${last.verse}`;
 
-  let meditation, reflect, prayer, heading;
-  if(isSingle){
-    const med=guidedMeditation(first);
-    meditation=med.meditation;
-    reflect=med.reflect;
-    prayer=med.prayer;
-    heading=med.special?"Meditação":"Meditação guiada";
-  }else{
-    heading="Meditação da passagem";
-    meditation=`Você escolheu ${passage.length} versículos para meditar juntos. Leia a passagem mais uma vez devagar e observe a ideia que se repete, a promessa, o ensinamento ou o chamado que mais toca você. Não tente absorver tudo de uma vez: escolha uma verdade desta passagem para levar para o seu dia.`;
-    reflect="O que esses versículos, lidos juntos, mostram a você e qual atitude prática você pode tomar a partir deles?";
-    prayer="Senhor, ajuda-me a compreender esta passagem com sabedoria. Mostra-me o que preciso guardar no coração e dá-me força para viver a tua Palavra. Amém.";
-  }
+  const options=buildPassageMeditationOptions(passage);
+  if(state.selectedPassageMeditationOption >= options.length) state.selectedPassageMeditationOption = 0;
+  const current=options[state.selectedPassageMeditationOption];
 
   pageTitle.textContent="Meditação";
   content.innerHTML=`
@@ -653,25 +765,46 @@ function renderPassageMeditation(){
       </div>
     </div>
 
+    <div class="meditation-options-bar">
+      ${options.map((opt,index)=>`
+        <button class="meditation-option-chip ${state.selectedPassageMeditationOption===index?"active":""}" onclick="setPassageMeditationOption(${index})">
+          <span>${opt.icon}</span>${opt.title}
+        </button>`).join("")}
+    </div>
+
     <section class="meditation-card">
-      <h3>☀ ${heading}</h3>
-      <p>${meditation}</p>
+      <h3>${current.icon} ${current.title}</h3>
+      <p>${current.meditation}</p>
       <div class="reflect-box">
         <strong>💡 Para refletir</strong>
-        <p style="margin-top:7px">${reflect}</p>
+        <p style="margin-top:7px">${current.reflect}</p>
       </div>
     </section>
 
     <section class="meditation-card">
       <h3>🙏 Oração</h3>
-      <div class="prayer-box">${prayer}</div>
+      <div class="prayer-box">${current.prayer}</div>
     </section>
 
     <div class="reading-bottom-actions">
-      <button class="btn-primary" onclick="shareSelectedPassage()">↗ Compartilhar passagem</button>
+      <button class="btn-primary" onclick="nextPassageMeditationOption()">Ver outra meditação</button>
+      <button class="btn-ghost" onclick="shareSelectedPassage()">↗ Compartilhar passagem</button>
       <button class="btn-ghost" onclick="backToSelectedChapter()">Voltar aos versículos</button>
       <button class="btn-ghost" onclick="chooseVersesAgain()">Escolher outros versículos</button>
     </div>`;
+}
+
+function setPassageMeditationOption(index){
+  state.selectedPassageMeditationOption = Number(index) || 0;
+  renderPassageMeditation();
+}
+
+function nextPassageMeditationOption(){
+  const passage = state.selectedPassage || [];
+  if(!passage.length) return;
+  const options = buildPassageMeditationOptions(passage);
+  state.selectedPassageMeditationOption = (state.selectedPassageMeditationOption + 1) % options.length;
+  renderPassageMeditation();
 }
 
 function shareSelectedPassage(){
@@ -777,7 +910,7 @@ function renderMore(){
     <div class="version-card">
       <div class="cross">✝</div>
       <h3>Bíblia Sagrada</h3>
-      <p>Palavra Viva • versão 0.5</p>
+      <p>Palavra Viva • versão 0.6</p>
       <p style="margin-top:8px">Desenvolvido por JNR</p>
     </div>
 
@@ -817,7 +950,8 @@ Object.assign(window,{
   installAppFromMenu,shareApp,showPrayerInfo,
   toggleVerseSelection,selectAllVerses,clearVerseSelection,readSelectedVerses,readWholeChapter,
   meditateSelectedVerses,meditateCurrentReading,openVerseByNumber,toggleFavoriteByNumber,
-  renderVersePicker,renderPassageMeditation,shareSelectedPassage,backToSelectedChapter,chooseVersesAgain
+  renderVersePicker,renderPassageMeditation,shareSelectedPassage,backToSelectedChapter,chooseVersesAgain,
+  setMeditationOption,nextMeditationOption,setPassageMeditationOption,nextPassageMeditationOption
 });
 
 if("serviceWorker" in navigator){

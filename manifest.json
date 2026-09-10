@@ -6,7 +6,7 @@
   "display": "standalone",
   "background_color": "#f7f2eb",
   "theme_color": "#17100b",
-  "description": "Bíblia Sagrada com capa personalizada, livros, capítulos, versículos e meditações.",
+  "description": "Bíblia Sagrada com capa na abertura e várias opções de meditação em qualquer versículo.",
   "icons": [
     {
       "src": "./icon.svg",

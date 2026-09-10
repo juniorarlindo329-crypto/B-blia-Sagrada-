@@ -1,5 +1,5 @@
 
-const CACHE="biblia-sagrada-v05";
+const CACHE="biblia-sagrada-v06";
 const ASSETS=["./","./index.html","./style.css","./app.js","./manifest.json","./icon.svg","./cover-biblia.png"];
 self.addEventListener("install",event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)));

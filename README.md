@@ -1,23 +1,34 @@
-# Bíblia Sagrada • Palavra Viva — v0.5
+# Bíblia Sagrada • Palavra Viva — v0.6
 
-## Novidade
-Foi adicionada a **capa da Bíblia** dentro do aplicativo, usando a arte com:
-- título **BÍBLIA SAGRADA**
-- logo da **Igreja Batista Rhema**
-- visual dourado com Bíblia aberta
+## Novidades desta versão
+- A **capa da Bíblia** agora aparece também na **tela de abertura**.
+- Cada versículo agora tem **várias opções de meditação**.
 
-## Recursos
+## Opções de meditação por versículo
+- Reflexão
+- Aplicação
+- Oração
+- Encorajamento
+
+Em alguns versículos especiais também existe a **Meditação principal**.
+
+## Para passagens com vários versículos
+Quando o usuário escolhe vários versículos, também pode alternar entre:
+- reflexão da passagem
+- aplicação da passagem
+- oração da passagem
+- encorajamento
+
+## Mantido
 - 66 livros
 - capítulos e versículos
-- escolha de 1, vários ou todos os versículos
-- ler selecionados
-- meditar selecionados
+- escolher 1, vários ou todos os versículos
 - favoritos
 - busca por referência
 - modo escuro
 - compartilhamento
 - PWA
-- capa da Bíblia na tela inicial
+- capa personalizada
 - Desenvolvido por JNR
 
 ## Atualização
