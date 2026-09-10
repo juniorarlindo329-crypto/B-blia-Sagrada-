@@ -1,102 +1,107 @@
 
+const BIBLE_BASE = "https://raw.githubusercontent.com/midvash/bible-data/main/versions/pt/almeida-livre/books/";
+
 const BOOKS = {
-  old:["Gênesis","Êxodo","Levítico","Números","Deuteronômio","Josué","Juízes","Rute","1 Samuel","2 Samuel","1 Reis","2 Reis","1 Crônicas","2 Crônicas","Esdras","Neemias","Ester","Jó","Salmos","Provérbios","Eclesiastes","Cânticos","Isaías","Jeremias","Lamentações","Ezequiel","Daniel","Oséias","Joel","Amós","Obadias","Jonas","Miquéias","Naum","Habacuque","Sofonias","Ageu","Zacarias","Malaquias"],
-  new:["Mateus","Marcos","Lucas","João","Atos","Romanos","1 Coríntios","2 Coríntios","Gálatas","Efésios","Filipenses","Colossenses","1 Tessalonicenses","2 Tessalonicenses","1 Timóteo","2 Timóteo","Tito","Filemom","Hebreus","Tiago","1 Pedro","2 Pedro","1 João","2 João","3 João","Judas","Apocalipse"]
+  old:[
+    ["Gênesis","Gen"],["Êxodo","Exod"],["Levítico","Lev"],["Números","Num"],["Deuteronômio","Deut"],
+    ["Josué","Josh"],["Juízes","Judg"],["Rute","Ruth"],["1 Samuel","1Sam"],["2 Samuel","2Sam"],
+    ["1 Reis","1Kgs"],["2 Reis","2Kgs"],["1 Crônicas","1Chr"],["2 Crônicas","2Chr"],["Esdras","Ezra"],
+    ["Neemias","Neh"],["Ester","Esth"],["Jó","Job"],["Salmos","Ps"],["Provérbios","Prov"],
+    ["Eclesiastes","Eccl"],["Cânticos","Song"],["Isaías","Isa"],["Jeremias","Jer"],["Lamentações","Lam"],
+    ["Ezequiel","Ezek"],["Daniel","Dan"],["Oséias","Hos"],["Joel","Joel"],["Amós","Amos"],
+    ["Obadias","Obad"],["Jonas","Jonah"],["Miquéias","Mic"],["Naum","Nah"],["Habacuque","Hab"],
+    ["Sofonias","Zeph"],["Ageu","Hag"],["Zacarias","Zech"],["Malaquias","Mal"]
+  ],
+  new:[
+    ["Mateus","Matt"],["Marcos","Mark"],["Lucas","Luke"],["João","John"],["Atos","Acts"],
+    ["Romanos","Rom"],["1 Coríntios","1Cor"],["2 Coríntios","2Cor"],["Gálatas","Gal"],["Efésios","Eph"],
+    ["Filipenses","Phil"],["Colossenses","Col"],["1 Tessalonicenses","1Thess"],["2 Tessalonicenses","2Thess"],
+    ["1 Timóteo","1Tim"],["2 Timóteo","2Tim"],["Tito","Titus"],["Filemom","Phlm"],["Hebreus","Heb"],
+    ["Tiago","Jas"],["1 Pedro","1Pet"],["2 Pedro","2Pet"],["1 João","1John"],["2 João","2John"],
+    ["3 João","3John"],["Judas","Jude"],["Apocalipse","Rev"]
+  ]
 };
 
-const VERSES = [
-  {
-    id:"fp4-13",book:"Filipenses",chapter:4,verse:13,
-    text:"Tudo posso naquele que me fortalece.",
+const NAME_BY_CODE = Object.fromEntries([...BOOKS.old,...BOOKS.new].map(([name,code])=>[code,name]));
+
+/* Meditações especiais já escritas para algumas passagens.
+   Nos demais versículos o app mostra uma meditação guiada, sem alterar o texto bíblico. */
+const SPECIAL_MEDITATIONS = {
+  "Phil-4-13":{
     meditation:"Este versículo aponta para uma força que não depende apenas das nossas próprias capacidades. Em momentos de dificuldade, a fé nos ajuda a continuar com coragem, reconhecendo que Deus pode nos sustentar no caminho.",
     reflect:"Em qual área da sua vida você precisa de força para continuar hoje?",
     prayer:"Senhor, fortalece meu coração e ajuda-me a caminhar com fé, sabedoria e perseverança. Amém."
   },
-  {
-    id:"sl23-1",book:"Salmos",chapter:23,verse:1,
-    text:"O Senhor é o meu pastor; nada me faltará.",
+  "Ps-23-1":{
     meditation:"A figura do pastor transmite cuidado, direção e presença. Este versículo convida a confiar que Deus conhece nossas necessidades e pode nos guiar mesmo quando não conseguimos enxergar todo o caminho.",
     reflect:"Que preocupação você pode entregar aos cuidados de Deus hoje?",
     prayer:"Senhor, guia os meus passos e ensina-me a descansar no teu cuidado. Amém."
   },
-  {
-    id:"mt11-28",book:"Mateus",chapter:11,verse:28,
-    text:"Vinde a mim, todos os que estais cansados e sobrecarregados, e eu vos aliviarei.",
+  "Matt-11-28":{
     meditation:"Jesus acolhe quem chega cansado. A fé não exige que escondamos nossos limites; ela nos convida a levar a Deus aquilo que pesa no coração e encontrar nele descanso para recomeçar.",
     reflect:"Qual peso você precisa colocar diante de Deus neste momento?",
     prayer:"Jesus, recebe minhas preocupações, renova minhas forças e dá descanso ao meu coração. Amém."
   },
-  {
-    id:"jr29-11",book:"Jeremias",chapter:29,verse:11,
-    text:"Porque eu bem sei os pensamentos que tenho a vosso respeito, pensamentos de paz e não de mal.",
+  "Jer-29-11":{
     meditation:"Nem sempre entendemos a fase que estamos vivendo. Este texto nos chama a lembrar que o futuro não está limitado ao que vemos hoje e que a esperança pode permanecer mesmo em tempos de incerteza.",
     reflect:"Você consegue manter a esperança mesmo sem saber exatamente como tudo vai acontecer?",
     prayer:"Deus, ajuda-me a confiar em ti quando o futuro parecer incerto e dá-me paz para viver um dia de cada vez. Amém."
   },
-  {
-    id:"pv3-5",book:"Provérbios",chapter:3,verse:5,
-    text:"Confia no Senhor de todo o teu coração e não te estribes no teu próprio entendimento.",
+  "Prov-3-5":{
     meditation:"Confiar em Deus não significa deixar de pensar ou planejar, mas reconhecer que nossa visão é limitada. Há momentos em que precisamos fazer nossa parte e, ao mesmo tempo, entregar a Deus aquilo que não conseguimos controlar.",
     reflect:"Existe alguma situação em que você está tentando controlar tudo sozinho?",
     prayer:"Senhor, dá-me sabedoria para agir e humildade para confiar em ti naquilo que não posso controlar. Amém."
   },
-  {
-    id:"is41-10",book:"Isaías",chapter:41,verse:10,
-    text:"Não temas, porque eu sou contigo; não te assombres, porque eu sou teu Deus.",
+  "Isa-41-10":{
     meditation:"O medo pode fazer parecer que estamos sozinhos diante dos problemas. Este versículo nos convida a recordar a presença de Deus e a buscar coragem para dar o próximo passo, mesmo que seja pequeno.",
     reflect:"Qual medo está impedindo você de avançar?",
     prayer:"Deus, fica comigo nos meus medos e dá-me coragem para seguir com confiança. Amém."
   },
-  {
-    id:"sl46-1",book:"Salmos",chapter:46,verse:1,
-    text:"Deus é o nosso refúgio e fortaleza, socorro bem presente na angústia.",
+  "Ps-46-1":{
     meditation:"Em tempos de pressão, precisamos de um lugar seguro. O salmista descreve Deus como refúgio e força, lembrando-nos de que podemos buscar nele estabilidade quando as circunstâncias parecem agitadas.",
     reflect:"Onde você costuma procurar segurança quando tudo parece difícil?",
     prayer:"Senhor, sê meu refúgio nos dias difíceis e firma meu coração em tua presença. Amém."
   },
-  {
-    id:"rm8-28",book:"Romanos",chapter:8,verse:28,
-    text:"Todas as coisas contribuem juntamente para o bem daqueles que amam a Deus.",
+  "Rom-8-28":{
     meditation:"Nem tudo o que acontece é bom, mas este versículo aponta para a esperança de que Deus pode trabalhar até mesmo em circunstâncias difíceis, produzindo aprendizado, amadurecimento e novos caminhos.",
     reflect:"Existe alguma experiência difícil da qual você já conseguiu tirar um aprendizado?",
     prayer:"Deus, ajuda-me a confiar que tu podes produzir algo bom mesmo em meio às situações que eu não entendo. Amém."
   },
-  {
-    id:"jo3-16",book:"João",chapter:3,verse:16,
-    text:"Porque Deus amou o mundo de tal maneira que deu o seu Filho unigênito.",
-    meditation:"Este é um dos textos mais conhecidos da fé cristã porque resume a mensagem do amor de Deus. Ele nos lembra que a fé nasce de um amor que se oferece, acolhe e convida a uma nova vida.",
+  "John-3-16":{
+    meditation:"Este texto resume de forma marcante a mensagem do amor de Deus. Ele nos lembra de um amor que se oferece, acolhe e chama para uma vida de fé.",
     reflect:"Como você pode demonstrar amor de forma prática a alguém hoje?",
-    prayer:"Deus, obrigado pelo teu amor. Ensina-me a receber esse amor e também a compartilhá-lo com outras pessoas. Amém."
+    prayer:"Deus, obrigado pelo teu amor. Ensina-me a receber esse amor e também a compartilhá-lo. Amém."
   },
-  {
-    id:"sl119-105",book:"Salmos",chapter:119,verse:105,
-    text:"Lâmpada para os meus pés é tua palavra e luz para o meu caminho.",
-    meditation:"Uma lâmpada não mostra toda a estrada de uma vez; ela ilumina o próximo trecho. Assim também a Palavra pode nos orientar passo a passo, trazendo direção para decisões e atitudes do dia a dia.",
+  "Ps-119-105":{
+    meditation:"Uma lâmpada não mostra toda a estrada de uma vez; ela ilumina o próximo trecho. Assim também a Palavra pode nos orientar passo a passo nas decisões e atitudes do dia a dia.",
     reflect:"Qual é o próximo passo que você precisa tomar com sabedoria?",
     prayer:"Senhor, ilumina minhas decisões e ajuda-me a caminhar de acordo com aquilo que é bom e verdadeiro. Amém."
   },
-  {
-    id:"2co5-7",book:"2 Coríntios",chapter:5,verse:7,
-    text:"Porque andamos por fé, e não por vista.",
+  "2Cor-5-7":{
     meditation:"A fé nos ensina a não limitar nossas escolhas somente ao que está visível no momento. Há períodos em que avançar significa confiar, perseverar e manter os valores mesmo sem garantias imediatas.",
     reflect:"Em qual área você precisa continuar caminhando mesmo sem enxergar o resultado final?",
     prayer:"Deus, dá-me fé para continuar e sabedoria para não desistir diante das incertezas. Amém."
   },
-  {
-    id:"fp4-6",book:"Filipenses",chapter:4,verse:6,
-    text:"Não estejais inquietos por coisa alguma; antes, as vossas petições sejam em tudo conhecidas diante de Deus.",
-    meditation:"A ansiedade pode ocupar nossa mente com possibilidades e preocupações. Este texto nos convida a transformar inquietação em oração, levando a Deus aquilo que está além das nossas forças.",
+  "Phil-4-6":{
+    meditation:"A inquietação pode ocupar nossa mente com possibilidades e preocupações. Este texto nos convida a transformar preocupação em oração, levando a Deus aquilo que está além das nossas forças.",
     reflect:"Qual preocupação você pode transformar em oração agora?",
     prayer:"Senhor, recebe minhas preocupações e dá-me serenidade para lidar com aquilo que está diante de mim. Amém."
   }
+};
+
+const DAILY_REFS = [
+  ["Phil",4,13],["Ps",23,1],["Matt",11,28],["Jer",29,11],["Prov",3,5],["Isa",41,10],
+  ["Ps",46,1],["Rom",8,28],["John",3,16],["Ps",119,105],["2Cor",5,7],["Phil",4,6]
 ];
 
 const state = {
   page:"home",
   testament:"old",
-  selectedBook:null,
+  selectedBookCode:null,
+  selectedChapter:null,
   selectedVerse:null,
-  favorites:JSON.parse(localStorage.getItem("bs-favorites")||"[]"),
+  bookCache:new Map(),
+  fullFavorites:JSON.parse(localStorage.getItem("bs-full-favorites")||"[]"),
   dark:localStorage.getItem("bs-dark")==="1",
   readToday:localStorage.getItem("bs-read-date")==new Date().toDateString()
 };
@@ -110,7 +115,6 @@ let deferredPrompt = null;
 
 if(state.dark) document.body.classList.add("dark");
 themeBtn.textContent = state.dark ? "☀" : "☾";
-
 setTimeout(()=>document.getElementById("splash")?.classList.add("hide"),750);
 
 window.addEventListener("beforeinstallprompt",(e)=>{
@@ -125,12 +129,8 @@ installBtn.addEventListener("click",async()=>{
   deferredPrompt=null;
   installBtn.classList.add("hidden");
 });
-
 themeBtn.addEventListener("click",toggleTheme);
-
-document.querySelectorAll(".nav-item").forEach(btn=>{
-  btn.addEventListener("click",()=>setPage(btn.dataset.page));
-});
+document.querySelectorAll(".nav-item").forEach(btn=>btn.addEventListener("click",()=>setPage(btn.dataset.page)));
 
 function toast(msg){
   toastEl.textContent=msg;
@@ -141,7 +141,8 @@ function toast(msg){
 
 function setPage(page){
   state.page=page;
-  state.selectedBook=null;
+  state.selectedBookCode=null;
+  state.selectedChapter=null;
   state.selectedVerse=null;
   document.querySelectorAll(".nav-item").forEach(b=>b.classList.toggle("active",b.dataset.page===page));
   render();
@@ -154,213 +155,323 @@ function toggleTheme(){
   themeBtn.textContent=state.dark?"☀":"☾";
 }
 
-function todayVerse(){
-  const d=new Date();
-  const seed=d.getFullYear()*372+(d.getMonth()+1)*31+d.getDate();
-  return VERSES[seed%VERSES.length];
+function refId(code,chapter,verse){ return `${code}-${chapter}-${verse}`; }
+
+async function fetchBook(code){
+  if(state.bookCache.has(code)) return state.bookCache.get(code);
+  const response = await fetch(`${BIBLE_BASE}${code}.json`, {cache:"force-cache"});
+  if(!response.ok) throw new Error("Falha ao carregar livro");
+  const data = await response.json();
+  state.bookCache.set(code,data);
+  return data;
 }
 
-function toggleFavorite(id){
-  if(state.favorites.includes(id)){
-    state.favorites=state.favorites.filter(x=>x!==id);
+function getFavorite(id){ return state.fullFavorites.find(x=>x.id===id); }
+
+function toggleFullFavorite(code,bookName,chapter,verse,text){
+  const id=refId(code,chapter,verse);
+  if(getFavorite(id)){
+    state.fullFavorites=state.fullFavorites.filter(x=>x.id!==id);
     toast("Removido dos favoritos");
   }else{
-    state.favorites=[...state.favorites,id];
+    state.fullFavorites.unshift({id,code,bookName,chapter,verse,text});
     toast("Versículo salvo");
   }
-  localStorage.setItem("bs-favorites",JSON.stringify(state.favorites));
-  render();
+  localStorage.setItem("bs-full-favorites",JSON.stringify(state.fullFavorites.slice(0,300)));
+  if(state.page==="bible") renderBible();
+  else if(state.page==="verse") renderVerse();
+  else if(state.page==="favorites") renderFavorites();
 }
 
-function markRead(){
-  localStorage.setItem("bs-read-date",new Date().toDateString());
-  state.readToday=true;
+async function getVerse(code,chapter,verse){
+  const book = await fetchBook(code);
+  const ch = book.chapters.find(c=>Number(c.chapter)===Number(chapter));
+  const v = ch?.verses.find(v=>Number(v.number)===Number(verse));
+  if(!v) throw new Error("Versículo não encontrado");
+  return {code,bookName:NAME_BY_CODE[code]||code,chapter:Number(chapter),verse:Number(verse),text:v.text};
 }
 
-function openVerse(id){
-  const v=VERSES.find(x=>x.id===id);
-  if(!v) return;
-  state.selectedVerse=v;
-  state.page="verse";
-  markRead();
-  render();
-}
-
-function openBook(book){
-  state.selectedBook=book;
-  renderBible();
-}
-
-function shareVerse(id){
-  const v=VERSES.find(x=>x.id===id);
-  if(!v) return;
-  const text=`${v.book} ${v.chapter}:${v.verse}\n“${v.text}”\n\nMeditação: ${v.meditation}\n\nBíblia Sagrada • Palavra Viva`;
-  if(navigator.share){
-    navigator.share({title:"Bíblia Sagrada",text}).catch(()=>{});
-  }else if(navigator.clipboard){
-    navigator.clipboard.writeText(text);
-    toast("Texto copiado");
-  }else{
-    toast("Compartilhamento não disponível");
+async function openDailyVerse(){
+  const d=new Date();
+  const seed=d.getFullYear()*372+(d.getMonth()+1)*31+d.getDate();
+  const [code,ch,v]=DAILY_REFS[seed%DAILY_REFS.length];
+  showLoading("Carregando o versículo do dia...");
+  try{
+    const verse=await getVerse(code,ch,v);
+    openVerseObject(verse);
+  }catch(e){
+    toast("Não foi possível carregar. Confira sua internet.");
+    renderHome();
   }
 }
 
-function verseCard(v){
-  const liked=state.favorites.includes(v.id);
-  return `<article class="verse-card">
-    <div class="verse-line">
-      <span class="verse-number">${v.verse}</span>
-      <div class="verse-body">${v.text}</div>
+function openVerseObject(verse){
+  state.selectedVerse=verse;
+  state.page="verse";
+  localStorage.setItem("bs-read-date",new Date().toDateString());
+  state.readToday=true;
+  render();
+}
+
+function openVerseFromBible(code,chapter,verse,text){
+  openVerseObject({code,bookName:NAME_BY_CODE[code]||code,chapter:Number(chapter),verse:Number(verse),text});
+}
+
+function guidedMeditation(verse){
+  const special=SPECIAL_MEDITATIONS[verse.id || refId(verse.code,verse.chapter,verse.verse)];
+  if(special) return {...special,special:true};
+  return {
+    meditation:"Leia este versículo novamente, com calma. Observe a palavra ou frase que mais chama sua atenção. Pense no que o texto revela, no que ele desperta em você e em qual atitude concreta pode nascer dessa leitura hoje.",
+    reflect:"O que este versículo convida você a lembrar, praticar ou entregar a Deus hoje?",
+    prayer:"Senhor, ajuda-me a compreender tua Palavra com sabedoria e a colocá-la em prática na minha vida. Amém.",
+    special:false
+  };
+}
+
+async function openBook(code){
+  state.selectedBookCode=code;
+  state.selectedChapter=null;
+  await renderBible();
+}
+
+async function openChapter(chapter){
+  state.selectedChapter=Number(chapter);
+  await renderBible();
+}
+
+function showLoading(text="Carregando..."){
+  content.innerHTML=`<div class="empty"><span class="spinner"></span><br><br>${text}</div>`;
+}
+
+function fullVerseRow(code,bookName,chapter,v){
+  const id=refId(code,chapter,v.number);
+  const liked=!!getFavorite(id);
+  return `<article class="bible-verse">
+    <div class="bible-verse-line">
+      <button class="verse-number-btn" onclick="openVerseFromBible('${code}',${chapter},${v.number},${JSON.stringify(v.text).replace(/"/g,'&quot;')})">${v.number}</button>
+      <div class="bible-verse-text">${escapeHtml(v.text)}</div>
     </div>
-    <div class="small" style="margin-top:10px">${v.book} ${v.chapter}:${v.verse}</div>
-    <div class="card-actions">
-      <button class="btn-primary" onclick="openVerse('${v.id}')">Meditar</button>
-      <button class="btn-ghost" onclick="toggleFavorite('${v.id}')">${liked?"♥ Salvo":"♡ Favoritar"}</button>
+    <div class="verse-tools">
+      <button class="verse-tool" onclick="openVerseFromBible('${code}',${chapter},${v.number},${JSON.stringify(v.text).replace(/"/g,'&quot;')})">☀ Meditar</button>
+      <button class="verse-tool" onclick="toggleFullFavorite('${code}',${JSON.stringify(bookName)},${chapter},${v.number},${JSON.stringify(v.text).replace(/"/g,'&quot;')})">${liked?"♥ Salvo":"♡ Salvar"}</button>
     </div>
   </article>`;
 }
 
-function renderHome(){
+function escapeHtml(str){
+  return String(str).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
+}
+
+async function renderHome(){
   pageTitle.textContent="Início";
-  const v=todayVerse();
   content.innerHTML=`
     <section class="hero">
       <div class="hero-kicker">✦ Bíblia + Meditação</div>
       <h2>Uma palavra para fortalecer o seu dia.</h2>
-      <p>Leia, medite, reflita e leve a Palavra de Deus para a sua rotina.</p>
+      <p>Agora você pode abrir os 66 livros, escolher o capítulo e ler os versículos dentro da Bíblia.</p>
       <div class="hero-buttons">
-        <button class="btn-primary" onclick="openVerse('${v.id}')">Começar agora</button>
+        <button class="btn-primary" onclick="openDailyVerse()">Versículo do dia</button>
         <button class="btn-secondary" onclick="setPage('bible')">Abrir Bíblia</button>
       </div>
     </section>
 
-    <article class="daily-card">
-      <div class="reference"><span class="reference-badge">☀</span> Versículo do dia</div>
-      <div class="verse-text">“${v.text}”</div>
-      <div class="muted">${v.book} ${v.chapter}:${v.verse}</div>
-      <div class="card-actions">
-        <button class="btn-primary" onclick="openVerse('${v.id}')">Ler meditação</button>
-        <button class="btn-ghost" onclick="toggleFavorite('${v.id}')">${state.favorites.includes(v.id)?"♥ Salvo":"♡ Salvar"}</button>
-      </div>
-    </article>
+    <div class="section-head"><h2>Bíblia completa</h2><span>66 livros • 1.189 capítulos</span></div>
+    <section class="quick-grid">
+      <div class="quick-card" onclick="setPage('bible')"><div class="icon">📖</div><h3>Ler a Bíblia</h3><p>Escolha livro, capítulo e versículo.</p></div>
+      <div class="quick-card" onclick="setPage('favorites')"><div class="icon">❤️</div><h3>Favoritos</h3><p>Guarde passagens importantes.</p></div>
+      <div class="quick-card" onclick="setPage('search')"><div class="icon">🔎</div><h3>Buscar referência</h3><p>Abra rapidamente uma passagem.</p></div>
+      <div class="quick-card" onclick="showPrayerInfo()"><div class="icon">🙏</div><h3>Meditar</h3><p>Reflexão e oração em cada versículo.</p></div>
+    </section>
 
     <div class="section-head"><h2>Seu momento com Deus</h2><span>${state.readToday?"Leitura feita hoje ✓":"Comece hoje"}</span></div>
     <div class="progress-card">
       <div class="progress-ring"><span>${state.readToday?"100%":"72%"}</span></div>
       <div>
-        <strong>${state.readToday?"Leitura de hoje concluída":"Continue sua jornada"}</strong>
-        <div class="small" style="margin-top:5px">${state.readToday?"Volte amanhã para uma nova meditação.":"Abra o versículo do dia e reserve alguns minutos para refletir."}</div>
+        <strong>${state.readToday?"Leitura de hoje concluída":"Reserve alguns minutos"}</strong>
+        <div class="small" style="margin-top:5px">${state.readToday?"Volte amanhã para uma nova leitura.":"Escolha um capítulo e leia com calma."}</div>
       </div>
     </div>
-
-    <div class="section-head"><h2>Explore</h2><span>Recursos do app</span></div>
-    <section class="quick-grid">
-      <div class="quick-card" onclick="setPage('bible')"><div class="icon">📖</div><h3>Bíblia</h3><p>Livros e passagens organizados.</p></div>
-      <div class="quick-card" onclick="setPage('search')"><div class="icon">🔎</div><h3>Buscar</h3><p>Encontre palavras e temas.</p></div>
-      <div class="quick-card" onclick="setPage('favorites')"><div class="icon">❤️</div><h3>Favoritos</h3><p>Guarde versículos especiais.</p></div>
-      <div class="quick-card" onclick="showPrayerInfo()"><div class="icon">🙏</div><h3>Orações</h3><p>Orações ligadas às meditações.</p></div>
-    </section>
   `;
 }
 
-function showPrayerInfo(){
-  toast("As orações aparecem dentro de cada meditação");
-}
-
-function renderBible(){
+async function renderBible(){
   pageTitle.textContent="Bíblia";
-  if(state.selectedBook){
-    const verses=VERSES.filter(v=>v.book===state.selectedBook);
+
+  if(!state.selectedBookCode){
+    const list=BOOKS[state.testament];
     content.innerHTML=`
-      <div class="chapter-header">
-        <div><span class="eyebrow">LIVRO</span><h2>${state.selectedBook}</h2></div>
-        <button class="btn-ghost" onclick="state.selectedBook=null;renderBible()">Voltar</button>
+      <div class="tabs">
+        <button class="tab ${state.testament==="old"?"active":""}" onclick="state.testament='old';renderBible()">Antigo Testamento</button>
+        <button class="tab ${state.testament==="new"?"active":""}" onclick="state.testament='new';renderBible()">Novo Testamento</button>
       </div>
-      ${verses.length
-        ? verses.map(verseCard).join("")
-        : `<div class="empty"><span class="big">📖</span><strong>${state.selectedBook}</strong><br><br><span class="small">A estrutura do livro está pronta. Os textos e meditações completos serão adicionados depois de definirmos uma tradução bíblica com licença adequada para uso no aplicativo.</span></div>`
-      }`;
+      <div class="book-list">
+        ${list.map(([name,code])=>`
+          <button class="book-btn" onclick="openBook('${code}')">
+            <span class="book-meta"><span class="book-letter">${name.replace(/[0-9 ]/g,"").charAt(0)}</span><strong>${name}</strong></span>
+            <span class="muted">›</span>
+          </button>`).join("")}
+      </div>
+      <div class="bible-credit">Texto bíblico: Bíblia Livre (BLIVRE). Uso conforme a licença indicada em “Mais”.</div>`;
     return;
   }
-  const list=BOOKS[state.testament];
-  content.innerHTML=`
-    <div class="tabs">
-      <button class="tab ${state.testament==="old"?"active":""}" onclick="state.testament='old';renderBible()">Antigo Testamento</button>
-      <button class="tab ${state.testament==="new"?"active":""}" onclick="state.testament='new';renderBible()">Novo Testamento</button>
-    </div>
-    <div class="book-list">
-      ${list.map(book=>`
-        <button class="book-btn" onclick='openBook(${JSON.stringify(book)})'>
-          <span class="book-meta"><span class="book-letter">${book.replace(/[0-9 ]/g,"").charAt(0)}</span><strong>${book}</strong></span>
-          <span class="muted">›</span>
-        </button>`).join("")}
-    </div>`;
+
+  const code=state.selectedBookCode;
+  const bookName=NAME_BY_CODE[code]||code;
+  showLoading(`Abrindo ${bookName}...`);
+
+  try{
+    const book=await fetchBook(code);
+
+    if(!state.selectedChapter){
+      content.innerHTML=`
+        <div class="chapter-header">
+          <div><span class="eyebrow">LIVRO</span><h2>${bookName}</h2><div class="small">${book.chapters.length} capítulo${book.chapters.length===1?"":"s"}</div></div>
+          <button class="btn-ghost" onclick="state.selectedBookCode=null;state.selectedChapter=null;renderBible()">Livros</button>
+        </div>
+        <div class="chapter-grid">
+          ${book.chapters.map(ch=>`<button class="chapter-btn" onclick="openChapter(${ch.chapter})">${ch.chapter}</button>`).join("")}
+        </div>
+        <div class="bible-credit">Escolha um capítulo para abrir os versículos.</div>`;
+      return;
+    }
+
+    const ch=book.chapters.find(c=>Number(c.chapter)===Number(state.selectedChapter));
+    if(!ch) throw new Error("Capítulo não encontrado");
+    const prev=state.selectedChapter>1?state.selectedChapter-1:null;
+    const next=state.selectedChapter<book.chapters.length?state.selectedChapter+1:null;
+
+    content.innerHTML=`
+      <div class="reading-toolbar">
+        <button class="btn-ghost" onclick="state.selectedChapter=null;renderBible()">‹ Capítulos</button>
+        <div class="reading-title"><strong>${bookName} ${state.selectedChapter}</strong><span>${ch.verses.length} versículos</span></div>
+        <button class="btn-ghost" onclick="state.selectedBookCode=null;state.selectedChapter=null;renderBible()">Livros</button>
+      </div>
+
+      <div class="chapter-nav">
+        <button class="mini-btn" ${!prev?"disabled":""} onclick="${prev?`openChapter(${prev})`:""}">‹ Anterior</button>
+        <span>Capítulo ${state.selectedChapter}</span>
+        <button class="mini-btn" ${!next?"disabled":""} onclick="${next?`openChapter(${next})`:""}">Próximo ›</button>
+      </div>
+
+      <section class="bible-reading">
+        ${ch.verses.map(v=>fullVerseRow(code,bookName,state.selectedChapter,v)).join("")}
+      </section>
+
+      <div class="chapter-nav bottom-chapter-nav">
+        <button class="mini-btn" ${!prev?"disabled":""} onclick="${prev?`openChapter(${prev})`:""}">‹ Capítulo anterior</button>
+        <button class="mini-btn" ${!next?"disabled":""} onclick="${next?`openChapter(${next})`:""}">Próximo capítulo ›</button>
+      </div>
+      <div class="bible-credit">Texto bíblico: Bíblia Livre (BLIVRE). Toque em “Meditar” em qualquer versículo.</div>`;
+  }catch(e){
+    content.innerHTML=`<div class="empty"><span class="big">📡</span><strong>Não foi possível carregar ${bookName}</strong><br><br><span class="small">Confira sua conexão com a internet e tente novamente.</span><br><br><button class="btn-primary" onclick="renderBible()">Tentar novamente</button></div>`;
+  }
 }
 
 function renderVerse(){
   const v=state.selectedVerse;
   if(!v){setPage("home");return;}
-  pageTitle.textContent=`${v.book} ${v.chapter}`;
-  const liked=state.favorites.includes(v.id);
+  pageTitle.textContent=`${v.bookName} ${v.chapter}`;
+  const id=refId(v.code,v.chapter,v.verse);
+  const med=guidedMeditation({...v,id});
+  const liked=!!getFavorite(id);
   content.innerHTML=`
     <article class="verse-card">
-      <div class="reference"><span class="reference-badge">${v.verse}</span>${v.book} ${v.chapter}:${v.verse}</div>
-      <div class="verse-text">“${v.text}”</div>
+      <div class="reference"><span class="reference-badge">${v.verse}</span>${v.bookName} ${v.chapter}:${v.verse}</div>
+      <div class="verse-text">“${escapeHtml(v.text)}”</div>
+      <div class="small">Bíblia Livre (BLIVRE)</div>
       <div class="card-actions">
-        <button class="btn-ghost" onclick="toggleFavorite('${v.id}')">${liked?"♥ Salvo":"♡ Favoritar"}</button>
-        <button class="btn-ghost" onclick="shareVerse('${v.id}')">↗ Compartilhar</button>
+        <button class="btn-ghost" onclick="toggleFullFavorite('${v.code}',${JSON.stringify(v.bookName)},${v.chapter},${v.verse},${JSON.stringify(v.text).replace(/"/g,'&quot;')})">${liked?"♥ Salvo":"♡ Favoritar"}</button>
+        <button class="btn-ghost" onclick="shareCurrentVerse()">↗ Compartilhar</button>
       </div>
     </article>
 
     <section class="meditation-card">
-      <h3>📖 Meditação</h3>
-      <p>${v.meditation}</p>
+      <h3>📖 ${med.special?"Meditação":"Meditação guiada"}</h3>
+      <p>${med.meditation}</p>
       <div class="reflect-box">
         <strong>💡 Para refletir</strong>
-        <p style="margin-top:7px">${v.reflect}</p>
+        <p style="margin-top:7px">${med.reflect}</p>
       </div>
     </section>
 
     <section class="meditation-card">
       <h3>🙏 Oração</h3>
-      <div class="prayer-box">${v.prayer}</div>
+      <div class="prayer-box">${med.prayer}</div>
     </section>
 
     <div class="card-actions">
-      <button class="btn-primary" onclick="setPage('home')">Voltar ao início</button>
-      <button class="btn-ghost" onclick="setPage('bible')">Continuar lendo</button>
+      <button class="btn-primary" onclick="backToChapter()">Voltar ao capítulo</button>
+      <button class="btn-ghost" onclick="setPage('bible')">Escolher outro livro</button>
     </div>`;
+}
+
+async function backToChapter(){
+  const v=state.selectedVerse;
+  state.page="bible";
+  state.selectedBookCode=v.code;
+  state.selectedChapter=v.chapter;
+  state.selectedVerse=null;
+  await renderBible();
+}
+
+function shareCurrentVerse(){
+  const v=state.selectedVerse;
+  if(!v) return;
+  const text=`${v.bookName} ${v.chapter}:${v.verse}\n“${v.text}”\n\nBíblia Sagrada • Palavra Viva`;
+  if(navigator.share) navigator.share({title:"Bíblia Sagrada",text}).catch(()=>{});
+  else if(navigator.clipboard){navigator.clipboard.writeText(text);toast("Texto copiado");}
 }
 
 function renderSearch(){
   pageTitle.textContent="Buscar";
   content.innerHTML=`
-    <div class="search-box">
-      <span>⌕</span>
-      <input id="searchInput" placeholder="Ex.: força, medo, Salmos..." autocomplete="off" oninput="doSearch(this.value)">
+    <div class="panel reference-search">
+      <h3>Buscar por referência</h3>
+      <p class="small">Escolha o livro e digite capítulo e versículo.</p>
+      <select id="refBook" class="field">
+        ${[...BOOKS.old,...BOOKS.new].map(([n,c])=>`<option value="${c}">${n}</option>`).join("")}
+      </select>
+      <div class="field-row">
+        <input id="refChapter" class="field" inputmode="numeric" placeholder="Capítulo">
+        <input id="refVerse" class="field" inputmode="numeric" placeholder="Versículo">
+      </div>
+      <button class="btn-primary full-btn" onclick="searchReference()">Abrir passagem</button>
     </div>
-    <div id="searchResults" class="search-results">
-      ${VERSES.slice(0,6).map(verseCard).join("")}
-    </div>`;
+    <div class="empty search-hint"><span class="big">⌕</span>Exemplo: João 3:16</div>`;
 }
 
-function doSearch(q){
-  q=(q||"").toLowerCase().trim();
-  const results=!q?VERSES.slice(0,6):VERSES.filter(v=>{
-    const hay=`${v.book} ${v.chapter}:${v.verse} ${v.text} ${v.meditation} ${v.reflect} ${v.prayer}`.toLowerCase();
-    return hay.includes(q);
-  });
-  document.getElementById("searchResults").innerHTML=results.length
-    ? results.map(verseCard).join("")
-    : `<div class="empty"><span class="big">⌕</span>Nenhum resultado encontrado.</div>`;
+async function searchReference(){
+  const code=document.getElementById("refBook").value;
+  const chapter=Number(document.getElementById("refChapter").value);
+  const verse=Number(document.getElementById("refVerse").value);
+  if(!chapter||!verse){toast("Digite capítulo e versículo");return;}
+  showLoading("Buscando passagem...");
+  try{
+    const v=await getVerse(code,chapter,verse);
+    openVerseObject(v);
+  }catch(e){
+    toast("Referência não encontrada");
+    renderSearch();
+  }
 }
 
 function renderFavorites(){
   pageTitle.textContent="Salvos";
-  const favs=VERSES.filter(v=>state.favorites.includes(v.id));
-  content.innerHTML=favs.length
-    ? favs.map(verseCard).join("")
-    : `<div class="empty"><span class="big">♡</span><strong>Nenhum versículo salvo</strong><br><br><span class="small">Toque em “Favoritar” para guardar suas passagens preferidas.</span></div>`;
+  content.innerHTML=state.fullFavorites.length
+    ? state.fullFavorites.map(v=>`
+      <article class="verse-card">
+        <div class="reference">${v.bookName} ${v.chapter}:${v.verse}</div>
+        <div class="verse-body" style="margin-top:10px">${escapeHtml(v.text)}</div>
+        <div class="card-actions">
+          <button class="btn-primary" onclick="openVerseObject(${escapeAttrObject(v)})">Meditar</button>
+          <button class="btn-ghost" onclick="toggleFullFavorite('${v.code}',${JSON.stringify(v.bookName)},${v.chapter},${v.verse},${JSON.stringify(v.text).replace(/"/g,'&quot;')})">♥ Remover</button>
+        </div>
+      </article>`).join("")
+    : `<div class="empty"><span class="big">♡</span><strong>Nenhum versículo salvo</strong><br><br><span class="small">Na leitura da Bíblia, toque em “Salvar” para guardar uma passagem.</span></div>`;
+}
+
+function escapeAttrObject(obj){
+  return JSON.stringify(obj).replace(/"/g,"&quot;");
 }
 
 function renderMore(){
@@ -375,36 +486,32 @@ function renderMore(){
     <div class="setting-row" onclick="shareApp()">
       <div class="setting-left"><div class="setting-icon">↗</div><div><h3>Compartilhar app</h3><div class="small">Envie o Palavra Viva para alguém</div></div></div><span>›</span>
     </div>
-    <div class="setting-row">
-      <div class="setting-left"><div class="setting-icon">🔔</div><div><h3>Notificação diária</h3><div class="small">Preparado para uma próxima atualização</div></div></div><span class="small">Em breve</span>
-    </div>
 
     <div class="version-card">
       <div class="cross">✝</div>
       <h3>Bíblia Sagrada</h3>
-      <p>Palavra Viva • versão 0.2</p>
+      <p>Palavra Viva • versão 0.3</p>
       <p style="margin-top:8px">Desenvolvido por JNR</p>
     </div>
 
-    <div class="panel" style="padding:17px;margin-top:12px">
-      <strong>Sobre o conteúdo</strong>
-      <p class="small" style="line-height:1.6;margin-bottom:0">Esta versão contém textos demonstrativos e uma estrutura pronta para receber a Bíblia completa. Antes da publicação completa, deve ser escolhida uma tradução cuja licença permita uso no aplicativo.</p>
+    <div class="panel license-panel">
+      <strong>📖 Texto bíblico</strong>
+      <p class="small">Bíblia Livre (BLIVRE), atualizada a partir da tradução de 1819 de João Ferreira de Almeida.</p>
+      <p class="small">Copyright © 2018 Diego Santos, Mario Sérgio e Marco Teles. Licença Creative Commons Atribuição 4.0 Brasil. Reprodução permitida com atribuição.</p>
+      <p class="small">As meditações são conteúdo do aplicativo e não fazem parte do texto da Bíblia Livre.</p>
     </div>`;
 }
 
 function installAppFromMenu(){
-  if(deferredPrompt){
-    installBtn.click();
-  }else{
-    toast("No Chrome: menu ⋮ → Adicionar à tela inicial");
-  }
+  if(deferredPrompt) installBtn.click();
+  else toast("No Chrome: menu ⋮ → Adicionar à tela inicial");
 }
-
 function shareApp(){
   const data={title:"Bíblia Sagrada • Palavra Viva",text:"Conheça o aplicativo Bíblia Sagrada • Palavra Viva",url:location.href};
   if(navigator.share) navigator.share(data).catch(()=>{});
   else if(navigator.clipboard){navigator.clipboard.writeText(location.href);toast("Link copiado");}
 }
+function showPrayerInfo(){ toast("Abra um versículo e toque em “Meditar”"); }
 
 function render(){
   window.scrollTo({top:0,behavior:"smooth"});
@@ -416,17 +523,11 @@ function render(){
   else if(state.page==="more") renderMore();
 }
 
-window.setPage=setPage;
-window.openVerse=openVerse;
-window.toggleFavorite=toggleFavorite;
-window.openBook=openBook;
-window.renderBible=renderBible;
-window.shareVerse=shareVerse;
-window.doSearch=doSearch;
-window.showPrayerInfo=showPrayerInfo;
-window.installAppFromMenu=installAppFromMenu;
-window.shareApp=shareApp;
-window.state=state;
+Object.assign(window,{
+  state,setPage,toggleTheme,renderBible,openBook,openChapter,openVerseFromBible,openVerseObject,
+  toggleFullFavorite,openDailyVerse,backToChapter,shareCurrentVerse,searchReference,
+  installAppFromMenu,shareApp,showPrayerInfo
+});
 
 if("serviceWorker" in navigator){
   navigator.serviceWorker.register("./sw.js").catch(()=>{});

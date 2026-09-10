@@ -6,7 +6,7 @@
   "display": "standalone",
   "background_color": "#f7f2eb",
   "theme_color": "#17100b",
-  "description": "Bíblia Sagrada com meditações, reflexões e orações.",
+  "description": "Bíblia Sagrada com 66 livros, capítulos, versículos, meditações, reflexões e orações.",
   "icons": [
     {
       "src": "./icon.svg",
