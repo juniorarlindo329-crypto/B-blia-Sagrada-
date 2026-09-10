@@ -436,6 +436,7 @@ const state = {
   quizIndex:0,
   quizScore:0,
   quizAnswered:null,
+  bibleQuickPicker:null,
   drawerOpen:false
 };
 
@@ -754,6 +755,127 @@ async function openChapter(chapter){
   await renderBible();
   requestAnimationFrame(()=>window.scrollTo({top:0,behavior:"auto"}));
 }
+async function jumpToBook(code){
+  closeBibleQuickPicker();
+  state.selectedBookCode=code;
+  state.selectedChapter=null;
+  state.selectedVerseNumbers=[];
+  state.chapterMode="read";
+  state.activeReadingVerse=null;
+  await renderBible();
+}
+
+async function jumpToChapter(chapter){
+  closeBibleQuickPicker();
+  await openChapter(Number(chapter));
+}
+
+function jumpToVerse(number){
+  closeBibleQuickPicker();
+  const el=document.getElementById(`verse-${Number(number)}`);
+  if(el){
+    const v=getCurrentVerse(number);
+    if(v){
+      state.activeReadingVerse={
+        code:state.selectedBookCode,
+        bookName:NAME_BY_CODE[state.selectedBookCode]||state.selectedBookCode,
+        chapter:Number(state.selectedChapter),
+        verse:Number(v.number),
+        text:v.text
+      };
+    }
+    el.scrollIntoView({behavior:"smooth",block:"start"});
+    setTimeout(()=>renderReadingActionSheet(),250);
+  }
+}
+
+function ensureBibleQuickPicker(){
+  let picker=document.getElementById("bibleQuickPicker");
+  if(!picker){
+    picker=document.createElement("div");
+    picker.id="bibleQuickPicker";
+    picker.className="bible-quick-picker";
+    picker.innerHTML=`<button class="bible-picker-backdrop" onclick="closeBibleQuickPicker()" aria-label="Fechar"></button><div class="bible-picker-sheet"><div id="biblePickerContent"></div></div>`;
+    document.body.appendChild(picker);
+  }
+  return picker;
+}
+
+function closeBibleQuickPicker(){
+  state.bibleQuickPicker=null;
+  document.getElementById("bibleQuickPicker")?.classList.remove("open");
+}
+
+function showBookQuickPicker(){
+  state.bibleQuickPicker="book";
+  const picker=ensureBibleQuickPicker();
+  const mount=picker.querySelector("#biblePickerContent");
+  mount.innerHTML=`
+    <div class="picker-head">
+      <div><span class="eyebrow">BÍBLIA</span><h2>Escolha o livro</h2></div>
+      <button class="circle-btn" onclick="closeBibleQuickPicker()">✕</button>
+    </div>
+    <div class="picker-testament-tabs">
+      <button class="tab ${state.testament==="old"?"active":""}" onclick="state.testament='old';showBookQuickPicker()">Antigo Testamento</button>
+      <button class="tab ${state.testament==="new"?"active":""}" onclick="state.testament='new';showBookQuickPicker()">Novo Testamento</button>
+    </div>
+    <div class="picker-book-list">
+      ${BOOKS[state.testament].map(([name,code])=>`
+        <button class="picker-book-btn ${state.selectedBookCode===code?"active":""}" onclick="jumpToBook('${code}')">
+          <span class="book-letter">${name.replace(/[0-9 ]/g,"").charAt(0)}</span>
+          <span><strong>${name}</strong><small>${state.selectedBookCode===code?"Livro atual":"Abrir capítulos"}</small></span>
+          <b>›</b>
+        </button>`).join("")}
+    </div>`;
+  picker.classList.add("open");
+}
+
+async function showChapterQuickPicker(){
+  if(!state.selectedBookCode){showBookQuickPicker();return;}
+  state.bibleQuickPicker="chapter";
+  const picker=ensureBibleQuickPicker();
+  const mount=picker.querySelector("#biblePickerContent");
+  const bookName=NAME_BY_CODE[state.selectedBookCode]||state.selectedBookCode;
+  mount.innerHTML=`<div class="picker-loading"><span class="spinner"></span><strong>Carregando capítulos...</strong></div>`;
+  picker.classList.add("open");
+  try{
+    const book=await fetchBook(state.selectedBookCode);
+    mount.innerHTML=`
+      <div class="picker-head">
+        <div><span class="eyebrow">ESCOLHA O CAPÍTULO</span><h2>${bookName}</h2></div>
+        <button class="circle-btn" onclick="closeBibleQuickPicker()">✕</button>
+      </div>
+      <button class="picker-change-book" onclick="showBookQuickPicker()">📖 Trocar livro</button>
+      <div class="picker-chapter-grid">
+        ${book.chapters.map(ch=>`<button class="picker-number-btn ${Number(state.selectedChapter)===Number(ch.chapter)?"active":""}" onclick="jumpToChapter(${ch.chapter})">${ch.chapter}</button>`).join("")}
+      </div>`;
+  }catch(e){
+    mount.innerHTML=`<div class="picker-head"><div><h2>${bookName}</h2></div><button class="circle-btn" onclick="closeBibleQuickPicker()">✕</button></div><div class="empty-state">Não foi possível carregar os capítulos.</div>`;
+  }
+}
+
+function showVerseQuickPicker(){
+  if(!state.selectedChapter || !state.currentChapterVerses.length){return;}
+  state.bibleQuickPicker="verse";
+  const picker=ensureBibleQuickPicker();
+  const mount=picker.querySelector("#biblePickerContent");
+  const bookName=NAME_BY_CODE[state.selectedBookCode]||state.selectedBookCode;
+  const current=state.activeReadingVerse?.verse;
+  mount.innerHTML=`
+    <div class="picker-head">
+      <div><span class="eyebrow">IR PARA VERSÍCULO</span><h2>${bookName} ${state.selectedChapter}</h2></div>
+      <button class="circle-btn" onclick="closeBibleQuickPicker()">✕</button>
+    </div>
+    <div class="picker-location-actions">
+      <button class="picker-change-book" onclick="showBookQuickPicker()">Livro</button>
+      <button class="picker-change-book" onclick="showChapterQuickPicker()">Capítulo</button>
+    </div>
+    <div class="picker-chapter-grid verse-jump-grid">
+      ${state.currentChapterVerses.map(v=>`<button class="picker-number-btn ${Number(current)===Number(v.number)?"active":""}" onclick="jumpToVerse(${v.number})">${v.number}</button>`).join("")}
+    </div>`;
+  picker.classList.add("open");
+}
+
 function showLoading(text="Carregando..."){ content.innerHTML=`<div class="empty-state"><span class="spinner"></span><br><br>${text}</div>`; }
 function getCurrentVerse(number){ return state.currentChapterVerses.find(v=>Number(v.number)===Number(number)); }
 function toggleVerseSelection(number){
@@ -825,7 +947,11 @@ function openVerseByNumber(number){
 function toggleFavoriteByNumber(number){ const v=getCurrentVerse(number); if(!v) return; toggleFullFavorite(state.selectedBookCode,NAME_BY_CODE[state.selectedBookCode]||state.selectedBookCode,Number(state.selectedChapter),Number(v.number),v.text); }
 function copyReadingVerse(number){ const v=getCurrentVerse(number); if(!v) return; const txt=`${NAME_BY_CODE[state.selectedBookCode]} ${state.selectedChapter}:${v.number}\n${v.text}`; navigator.clipboard?.writeText(txt); toast("Versículo copiado"); }
 function shareReadingVerse(number){ const v=getCurrentVerse(number); if(!v) return; const txt=`${NAME_BY_CODE[state.selectedBookCode]} ${state.selectedChapter}:${v.number}\n${v.text}\n\nBíblia Sagrada • Palavra Viva`; if(navigator.share) navigator.share({title:"Bíblia Sagrada", text:txt}).catch(()=>{}); else {navigator.clipboard?.writeText(txt); toast("Texto copiado");} }
-function setReadingActionVerse(number){ openVerseByNumber(number); }
+function setReadingActionVerse(number){
+  openVerseByNumber(number);
+  const verseChip=document.querySelector(".location-chip:nth-of-type(4) strong");
+  if(verseChip) verseChip.textContent=Number(number);
+}
 function fontUp(){ state.fontScale=Math.min(1.5, +(state.fontScale+0.1).toFixed(2)); localStorage.setItem("bs-font-scale", String(state.fontScale)); render(); }
 function fontDown(){ state.fontScale=Math.max(0.85, +(state.fontScale-0.1).toFixed(2)); localStorage.setItem("bs-font-scale", String(state.fontScale)); render(); }
 
@@ -934,10 +1060,15 @@ async function renderBible(){
         <div class="hero-content">
           <div class="badge-chip">${version.code} • ${version.name}</div>
           <h2>Bíblia com capa personalizada</h2>
-          <p>A capa agora aparece também aqui na Bíblia. Escolha o livro e o capítulo. Ao tocar no capítulo, a Palavra abre na hora.</p>
+          <p>Escolha o livro, depois o capítulo. A Palavra abre imediatamente, igual a uma Bíblia digital.</p>
           <div class="hero-buttons"><button class="btn-primary" onclick="navigate('versions')">Trocar versão</button></div>
         </div>
       </section>
+      <button class="digital-bible-picker-card" onclick="showBookQuickPicker()">
+        <span>📖</span>
+        <div><strong>Escolher livro da Bíblia</strong><small>Toque aqui para encontrar qualquer livro rapidamente</small></div>
+        <b>›</b>
+      </button>
       <div class="tabs">
         <button class="tab ${state.testament==='old'?'active':''}" onclick="state.testament='old';renderBible()">Antigo Testamento</button>
         <button class="tab ${state.testament==='new'?'active':''}" onclick="state.testament='new';renderBible()">Novo Testamento</button>
@@ -956,8 +1087,8 @@ async function renderBible(){
     if(!state.selectedChapter){
       content.innerHTML=`
         <div class="chapter-header">
-          <div><span class="eyebrow">ESCOLHA O CAPÍTULO</span><h2>${bookName}</h2><div class="small">${book.chapters.length} capítulo${book.chapters.length===1?'':'s'}</div></div>
-          <button class="btn-ghost" onclick="state.selectedBookCode=null;state.selectedChapter=null;renderBible()">Livros</button>
+          <div><span class="eyebrow">ESCOLHA O CAPÍTULO</span><h2>${bookName}</h2><div class="small">${book.chapters.length} capítulo${book.chapters.length===1?'':'s'} • toque no número para abrir</div></div>
+          <button class="btn-ghost" onclick="showBookQuickPicker()">Trocar livro</button>
         </div>
         <div class="chapter-grid">${book.chapters.map(ch=>`<button class="chapter-btn" onclick="openChapter(${ch.chapter})">${ch.chapter}</button>`).join('')}</div>
         <div class="bible-credit">Toque em um capítulo e a Palavra abre imediatamente com todos os versículos.</div>`;
@@ -975,11 +1106,12 @@ async function renderBible(){
     addHistory({id:`${code}-${state.selectedChapter}-${state.currentVersionCode}`,label:`${bookName} ${state.selectedChapter}`,when:new Date().toLocaleString("pt-BR")});
     content.innerHTML=`
       <div class="reading-shell">
-        <div class="reading-toolbar-top">
+        <div class="reading-toolbar-top digital-reading-toolbar">
           <button class="top-icon-btn" onclick="openDrawer()">☰</button>
-          <button class="top-chip" onclick="state.selectedChapter=null;state.chapterMode='select';renderBible()">${bookName}</button>
-          <button class="top-chip" onclick="state.selectedChapter=null;state.selectedVerseNumbers=[];state.chapterMode='read';renderBible()">${state.selectedChapter}</button>
-          <button class="top-chip" onclick="navigate('versions')">${getVersionLabel()}</button>
+          <button class="top-chip book-selector-chip" onclick="showBookQuickPicker()"><small>Livro</small><strong>${bookName}</strong></button>
+          <button class="top-chip location-chip" onclick="showChapterQuickPicker()"><small>Cap.</small><strong>${state.selectedChapter}</strong></button>
+          <button class="top-chip location-chip" onclick="showVerseQuickPicker()"><small>Vers.</small><strong>${state.activeReadingVerse?.verse||1}</strong></button>
+          <button class="top-chip version-selector-chip" onclick="navigate('versions')"><small>Versão</small><strong>${getVersionLabel()}</strong></button>
           <button class="top-icon-btn" onclick="toast('Áudio em desenvolvimento')">🔊</button>
           <button class="top-icon-btn" onclick="fontUp()">T+</button>
           <button class="top-icon-btn" onclick="fontDown()">T-</button>
@@ -1413,7 +1545,7 @@ function exportBackup(){const data={};for(let i=0;i<localStorage.length;i++){con
 function importBackupFile(event){const file=event.target.files?.[0];if(!file)return;const reader=new FileReader();reader.onload=()=>{try{const obj=JSON.parse(reader.result);if(!obj.data)throw new Error();for(const [k,v] of Object.entries(obj.data)){if(k.startsWith("bs-"))localStorage.setItem(k,v);}alert("Backup restaurado. O aplicativo será recarregado.");location.reload();}catch(e){toast("Arquivo de backup inválido");}};reader.readAsText(file);}
 function clearAppData(){if(!confirm("Tem certeza? Isso apaga favoritos, notas e progresso deste aparelho."))return;const keys=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k?.startsWith("bs-"))keys.push(k);}keys.forEach(k=>localStorage.removeItem(k));location.reload();}
 
-function renderMore(){pageTitle.textContent="Mais informações";content.innerHTML=`<div class="setting-row" onclick="toggleTheme()"><div class="setting-left"><div class="setting-icon">${state.dark?'☀':'☾'}</div><div><h3>Modo ${state.dark?'claro':'escuro'}</h3><div class="small">Mude a aparência do aplicativo</div></div></div><span>›</span></div><div class="setting-row" onclick="installAppFromMenu()"><div class="setting-left"><div class="setting-icon">⇩</div><div><h3>Instalar aplicativo</h3><div class="small">Adicionar à tela inicial do celular</div></div></div><span>›</span></div><div class="setting-row" onclick="shareApp()"><div class="setting-left"><div class="setting-icon">↗</div><div><h3>Compartilhar app</h3><div class="small">Envie o Palavra Viva para alguém</div></div></div><span>›</span></div><div class="version-card"><div class="cross">✝</div><h3>Bíblia Sagrada</h3><p>Palavra Viva • versão 1.0</p><p style="margin-top:8px">Desenvolvido por JNR</p></div><div class="panel" style="margin-top:12px"><strong>📖 Recursos desta versão</strong><p class="small">Menu reorganizado, planos, devocionais, histórias, pesquisa avançada, hinários pessoais, áudio por voz do aparelho, quiz, dicionário, temas, estudos por localização, backup e versões que realmente trocam o texto bíblico.</p></div>`;}
+function renderMore(){pageTitle.textContent="Mais informações";content.innerHTML=`<div class="setting-row" onclick="toggleTheme()"><div class="setting-left"><div class="setting-icon">${state.dark?'☀':'☾'}</div><div><h3>Modo ${state.dark?'claro':'escuro'}</h3><div class="small">Mude a aparência do aplicativo</div></div></div><span>›</span></div><div class="setting-row" onclick="installAppFromMenu()"><div class="setting-left"><div class="setting-icon">⇩</div><div><h3>Instalar aplicativo</h3><div class="small">Adicionar à tela inicial do celular</div></div></div><span>›</span></div><div class="setting-row" onclick="shareApp()"><div class="setting-left"><div class="setting-icon">↗</div><div><h3>Compartilhar app</h3><div class="small">Envie o Palavra Viva para alguém</div></div></div><span>›</span></div><div class="version-card"><div class="cross">✝</div><h3>Bíblia Sagrada</h3><p>Palavra Viva • versão 1.1</p><p style="margin-top:8px">Desenvolvido por JNR</p></div><div class="panel" style="margin-top:12px"><strong>📖 Recursos desta versão</strong><p class="small">Menu reorganizado, planos, devocionais, histórias, pesquisa avançada, hinários pessoais, áudio por voz do aparelho, quiz, dicionário, temas, estudos por localização, backup e versões que realmente trocam o texto bíblico.</p></div>`;}
 
 function installAppFromMenu(){ if(deferredPrompt) installBtn.click(); else toast("No Chrome: menu ⋮ → Adicionar à tela inicial"); }
 function shareApp(){ const data={title:"Bíblia Sagrada • Palavra Viva",text:"Conheça o aplicativo Bíblia Sagrada • Palavra Viva",url:location.href}; if(navigator.share) navigator.share(data).catch(()=>{}); else if(navigator.clipboard){navigator.clipboard.writeText(location.href);toast("Link copiado");} }
@@ -1480,7 +1612,9 @@ Object.assign(window,{ state,openDrawer,closeDrawer,quickOpenVersions,navigate,t
   setReadingActionVerse,shareReadingVerse,copyReadingVerse,fontUp,fontDown,saveVerseNote,setVerseHighlight,renderVersions,setVersionsTab,toggleDualVersion,selectVersion,removeNote,handleDrawerItem,
   openActiveReadingVerseStudy,toggleCurrentVerseFavorite,openFavoriteById,removeFavoriteById,
   setReadMarkColor,toggleVerseReadByNumber,markAllChapterRead,clearChapterReadMarks,
-  startNewQuizRound,restartQuiz,answerQuiz,nextQuiz
+  startNewQuizRound,restartQuiz,answerQuiz,nextQuiz,
+  showBookQuickPicker,showChapterQuickPicker,showVerseQuickPicker,closeBibleQuickPicker,
+  jumpToBook,jumpToChapter,jumpToVerse
 });
 
 if('serviceWorker' in navigator){ navigator.serviceWorker.register('./sw.js').catch(()=>{}); }
