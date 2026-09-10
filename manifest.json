@@ -1,12 +1,11 @@
 {
   "name": "Bíblia Sagrada • Palavra Viva",
-  "short_name": "Bíblia Sagrada",
-  "start_url": "./",
-  "scope": "./",
+  "short_name": "Bíblia Viva",
+  "description": "Bíblia Sagrada com capa personalizada, menu completo, versões, meditações, destaques e anotações.",
+  "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#f7f2eb",
-  "theme_color": "#17100b",
-  "description": "Bíblia Sagrada com capa na abertura e várias opções de meditação em qualquer versículo.",
+  "background_color": "#151311",
+  "theme_color": "#151311",
   "icons": [
     {
       "src": "./icon.svg",

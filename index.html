@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="theme-color" content="#17100b" />
-  <meta name="description" content="Bíblia Sagrada com meditações, reflexões e orações." />
+  <meta name="theme-color" content="#151311" />
+  <meta name="description" content="Bíblia Sagrada com capa personalizada, versões, meditações, destaques e menu completo." />
   <title>Bíblia Sagrada • Palavra Viva</title>
   <link rel="manifest" href="./manifest.json" />
   <link rel="icon" href="./icon.svg" type="image/svg+xml" />
@@ -12,23 +12,41 @@
 </head>
 <body>
   <div id="splash" class="splash">
-    <img src="./cover-biblia.png" alt="Capa Bíblia Sagrada" class="splash-cover">
+    <img src="./cover-biblia.png" alt="Capa Bíblia Sagrada" class="splash-cover" />
     <div class="splash-overlay"></div>
     <div class="splash-content">
       <div class="splash-mark">✝</div>
-      <h1>Bíblia Sagrada</h1>
+      <h1>BÍBLIA SAGRADA</h1>
       <p>Palavra Viva</p>
     </div>
   </div>
 
   <div id="app" class="app-shell">
+    <aside id="drawer" class="drawer">
+      <div class="drawer-panel">
+        <div class="drawer-head">
+          <div>
+            <div class="drawer-title">Menu</div>
+            <div class="drawer-subtitle">Bíblia Sagrada • Palavra Viva</div>
+          </div>
+          <button class="circle-btn" onclick="closeDrawer()" aria-label="Fechar menu">✕</button>
+        </div>
+        <div id="drawerContent"></div>
+      </div>
+      <button class="drawer-backdrop" onclick="closeDrawer()" aria-label="Fechar menu"></button>
+    </aside>
+
     <header class="topbar">
-      <div>
-        <span class="eyebrow">PALAVRA VIVA</span>
-        <h1 id="pageTitle">Início</h1>
+      <div class="topbar-left">
+        <button class="circle-btn" onclick="openDrawer()" aria-label="Abrir menu">☰</button>
+        <div>
+          <span class="eyebrow">PALAVRA VIVA</span>
+          <h1 id="pageTitle">Início</h1>
+        </div>
       </div>
       <div class="top-actions">
         <button id="installBtn" class="circle-btn hidden" aria-label="Instalar aplicativo">⇩</button>
+        <button class="circle-btn" onclick="quickOpenVersions()" aria-label="Abrir versões">🅰</button>
         <button id="themeBtn" class="circle-btn" aria-label="Alternar tema">☾</button>
       </div>
     </header>
@@ -37,10 +55,10 @@
 
     <nav class="bottom-nav">
       <button class="nav-item active" data-page="home"><span>⌂</span><small>Início</small></button>
-      <button class="nav-item" data-page="bible"><span>▤</span><small>Bíblia</small></button>
+      <button class="nav-item" data-page="bible"><span>📖</span><small>Bíblia</small></button>
       <button class="nav-item" data-page="search"><span>⌕</span><small>Buscar</small></button>
+      <button class="nav-item" data-page="versions"><span>🅰</span><small>Versões</small></button>
       <button class="nav-item" data-page="favorites"><span>♡</span><small>Salvos</small></button>
-      <button class="nav-item" data-page="more"><span>☰</span><small>Mais</small></button>
     </nav>
   </div>
 
