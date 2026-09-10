@@ -1,44 +1,34 @@
-# Bíblia Sagrada • Palavra Viva — v0.3
+# Bíblia Sagrada • Palavra Viva — v0.4
 
-## Principal novidade
-Agora a área **Bíblia** abre os 66 livros, todos os capítulos e os versículos.
+## Nova experiência de leitura
+Agora o usuário escolhe exatamente o que quer:
 
-Fluxo:
-**Bíblia → Livro → Capítulo → Versículos → Meditar**
+**Bíblia → Livro → Capítulo → Versículos → Ler ou Meditar**
 
-## Recursos
-- 66 livros da Bíblia
-- 1.189 capítulos
-- Versículos carregados por livro
-- Navegação anterior/próximo capítulo
-- Meditação guiada em qualquer versículo
-- Meditações especiais em passagens selecionadas
-- Oração e pergunta para reflexão
-- Favoritos
-- Busca direta por livro/capítulo/versículo
-- Modo escuro
-- Compartilhamento
-- PWA instalável
-- Desenvolvido por JNR
+Depois de abrir um capítulo:
+- aparecem os números de todos os versículos;
+- o usuário pode marcar **1, vários ou todos**;
+- botão **Ler selecionados**;
+- botão **Meditar selecionados**;
+- opção **Ler capítulo inteiro**;
+- pode voltar e alterar a seleção quando quiser.
 
-## Fonte do texto bíblico
-Bíblia Livre (BLIVRE), atualizada a partir da tradução de 1819 de João Ferreira de Almeida.
+## Meditação
+- 1 versículo: abre a meditação daquele versículo;
+- vários versículos: abre a passagem escolhida junta e uma meditação guiada para o conjunto;
+- inclui reflexão e oração;
+- passagem selecionada pode ser compartilhada.
 
-Copyright © 2018 Diego Santos, Mario Sérgio e Marco Teles.
-Licença Creative Commons Atribuição 4.0 Brasil.
-Reprodução permitida desde que a fonte e os autores sejam devidamente mencionados.
+## Mantido da v0.3
+- 66 livros;
+- capítulos e versículos;
+- favoritos;
+- busca por referência;
+- modo escuro;
+- PWA;
+- Bíblia Livre (BLIVRE);
+- Desenvolvido por JNR.
 
-O aplicativo busca os arquivos estruturados da versão `almeida-livre` hospedada no projeto aberto `midvash/bible-data`.
-As meditações são conteúdo separado do aplicativo e não fazem parte do texto bíblico.
-
-## Atualizar no GitHub
-Substitua:
-- index.html
-- style.css
-- app.js
-- manifest.json
-- sw.js
-- icon.svg
-- README.md
-
-Depois faça **Commit changes**. O GitHub Pages atualizará o mesmo link.
+## Atualização no GitHub
+Substitua os arquivos antigos pelos arquivos desta pasta e faça **Commit changes**.
+O GitHub Pages continuará usando o mesmo link.

@@ -272,3 +272,71 @@ main{padding:8px 16px 24px}
 @media(min-width:620px){
   .chapter-grid{grid-template-columns:repeat(10,1fr)}
 }
+
+
+/* v0.4 — escolha de versículos */
+.selection-help{
+  margin:12px 0 14px;padding:15px 16px;border:1px solid var(--line);
+  border-radius:18px;background:var(--surface-soft);display:flex;flex-direction:column;gap:5px
+}
+.selection-help strong{font-size:14px}
+.selection-help span{font-size:12px;color:var(--muted);line-height:1.45}
+.verse-picker-grid{
+  display:grid;grid-template-columns:repeat(5,1fr);gap:9px;
+  padding:15px;border-radius:22px;background:var(--surface);border:1px solid var(--line);
+  box-shadow:var(--shadow)
+}
+.verse-pick{
+  min-height:54px;border:1px solid var(--line);border-radius:15px;
+  background:var(--surface-soft);color:var(--text);font-weight:900;
+  display:flex;align-items:center;justify-content:center;gap:4px;position:relative
+}
+.verse-pick span{font-size:16px}
+.verse-pick small{font-size:10px}
+.verse-pick.selected{
+  background:linear-gradient(135deg,var(--gold-dark),var(--gold-2));
+  color:white;border-color:transparent;box-shadow:0 9px 20px rgba(120,79,27,.20)
+}
+.selection-actions{display:flex;justify-content:space-between;gap:9px;margin:10px 0}
+.selection-actions .mini-btn{flex:1}
+.selected-summary{
+  margin:10px 0;padding:14px 15px;border-radius:17px;border:1px dashed var(--line);
+  background:var(--surface);display:flex;align-items:center;justify-content:space-between
+}
+.selected-summary.has-selection{border-style:solid;border-color:color-mix(in srgb,var(--gold) 50%,var(--line))}
+.selection-main-actions{
+  display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:10px
+}
+.selection-main-actions button{min-height:52px}
+.selection-main-actions button:disabled{opacity:.38;cursor:default}
+.selection-main-actions .full-chapter-action{grid-column:1/-1}
+.meditation-action{background:linear-gradient(135deg,#72501e,var(--gold-2))}
+.chosen-passage-banner{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  margin:3px 0 12px;padding:13px 14px;border-radius:18px;
+  background:var(--surface-soft);border:1px solid var(--line)
+}
+.chosen-passage-banner div{display:flex;flex-direction:column;gap:3px}
+.chosen-passage-banner span{font-size:11px;color:var(--muted);max-width:190px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.reading-bottom-actions{display:grid;gap:9px;margin-top:14px}
+.passage-reference-card{
+  background:var(--surface);border:1px solid var(--line);border-radius:23px;
+  box-shadow:var(--shadow);padding:18px
+}
+.passage-reference-card h2{font-family:Georgia,serif;margin:6px 0 14px}
+.selected-passage-verses{display:grid;gap:11px}
+.selected-passage-verse{
+  display:grid;grid-template-columns:33px 1fr;gap:10px;align-items:flex-start;
+  padding-top:11px;border-top:1px solid var(--line)
+}
+.selected-passage-verse:first-child{border-top:0;padding-top:0}
+.selected-passage-verse span{
+  width:31px;height:31px;border-radius:50%;display:grid;place-items:center;
+  background:var(--surface-soft);color:var(--gold);font-weight:900
+}
+.selected-passage-verse p{
+  margin:1px 0 0;font-family:Georgia,serif;font-size:18px;line-height:1.55
+}
+@media(min-width:620px){
+  .verse-picker-grid{grid-template-columns:repeat(10,1fr)}
+}

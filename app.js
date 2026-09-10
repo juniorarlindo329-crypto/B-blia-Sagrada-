@@ -100,6 +100,10 @@ const state = {
   selectedBookCode:null,
   selectedChapter:null,
   selectedVerse:null,
+  selectedPassage:null,
+  selectedVerseNumbers:[],
+  chapterMode:"select",
+  currentChapterVerses:[],
   bookCache:new Map(),
   fullFavorites:JSON.parse(localStorage.getItem("bs-full-favorites")||"[]"),
   dark:localStorage.getItem("bs-dark")==="1",
@@ -144,6 +148,10 @@ function setPage(page){
   state.selectedBookCode=null;
   state.selectedChapter=null;
   state.selectedVerse=null;
+  state.selectedPassage=null;
+  state.selectedVerseNumbers=[];
+  state.chapterMode="select";
+  state.currentChapterVerses=[];
   document.querySelectorAll(".nav-item").forEach(b=>b.classList.toggle("active",b.dataset.page===page));
   render();
 }
@@ -236,6 +244,9 @@ async function openBook(code){
 
 async function openChapter(chapter){
   state.selectedChapter=Number(chapter);
+  state.selectedVerseNumbers=[];
+  state.chapterMode="select";
+  state.currentChapterVerses=[];
   await renderBible();
 }
 
@@ -243,17 +254,159 @@ function showLoading(text="Carregando..."){
   content.innerHTML=`<div class="empty"><span class="spinner"></span><br><br>${text}</div>`;
 }
 
+function getCurrentVerse(number){
+  return state.currentChapterVerses.find(v=>Number(v.number)===Number(number));
+}
+
+function toggleVerseSelection(number){
+  number=Number(number);
+  if(state.selectedVerseNumbers.includes(number)){
+    state.selectedVerseNumbers=state.selectedVerseNumbers.filter(n=>n!==number);
+  }else{
+    state.selectedVerseNumbers=[...state.selectedVerseNumbers,number].sort((a,b)=>a-b);
+  }
+  renderVersePicker();
+}
+
+function selectAllVerses(){
+  state.selectedVerseNumbers=state.currentChapterVerses.map(v=>Number(v.number));
+  renderVersePicker();
+}
+
+function clearVerseSelection(){
+  state.selectedVerseNumbers=[];
+  renderVersePicker();
+}
+
+function selectionLabel(){
+  const n=state.selectedVerseNumbers.length;
+  return n===0 ? "Nenhum selecionado" : `${n} versículo${n===1?"":"s"} selecionado${n===1?"":"s"}`;
+}
+
+function verseSelectionChip(v){
+  const selected=state.selectedVerseNumbers.includes(Number(v.number));
+  return `<button class="verse-pick ${selected?"selected":""}" onclick="toggleVerseSelection(${v.number})">
+    <span>${v.number}</span>
+    ${selected?'<small>✓</small>':""}
+  </button>`;
+}
+
+function renderVersePicker(){
+  const code=state.selectedBookCode;
+  const bookName=NAME_BY_CODE[code]||code;
+  const count=state.selectedVerseNumbers.length;
+  pageTitle.textContent=`${bookName} ${state.selectedChapter}`;
+  content.innerHTML=`
+    <div class="chapter-header">
+      <div>
+        <span class="eyebrow">ESCOLHA OS VERSÍCULOS</span>
+        <h2>${bookName} ${state.selectedChapter}</h2>
+        <div class="small">${selectionLabel()}</div>
+      </div>
+      <button class="btn-ghost" onclick="state.selectedChapter=null;state.selectedVerseNumbers=[];renderBible()">Capítulos</button>
+    </div>
+
+    <div class="selection-help">
+      <strong>Toque nos números que você quer ler ou meditar.</strong>
+      <span>Você pode escolher um versículo, vários versículos ou o capítulo inteiro.</span>
+    </div>
+
+    <div class="verse-picker-grid">
+      ${state.currentChapterVerses.map(verseSelectionChip).join("")}
+    </div>
+
+    <div class="selection-actions">
+      <button class="mini-btn" onclick="selectAllVerses()">Selecionar todos</button>
+      <button class="mini-btn" onclick="clearVerseSelection()">Limpar</button>
+    </div>
+
+    <div class="selected-summary ${count?"has-selection":""}">
+      <div>
+        <strong>${selectionLabel()}</strong>
+        <div class="small">${count ? "Agora escolha o que deseja fazer." : "Marque os números acima."}</div>
+      </div>
+    </div>
+
+    <div class="selection-main-actions">
+      <button class="btn-primary" ${!count?"disabled":""} onclick="readSelectedVerses()">📖 Ler selecionados</button>
+      <button class="btn-primary meditation-action" ${!count?"disabled":""} onclick="meditateSelectedVerses()">☀ Meditar selecionados</button>
+      <button class="btn-ghost full-chapter-action" onclick="readWholeChapter()">Ler capítulo inteiro</button>
+    </div>
+
+    <div class="bible-credit">Texto bíblico: Bíblia Livre (BLIVRE). A meditação é conteúdo separado do aplicativo.</div>`;
+}
+
+function readSelectedVerses(){
+  if(!state.selectedVerseNumbers.length){toast("Escolha pelo menos um versículo");return;}
+  state.chapterMode="read";
+  renderBible();
+}
+
+function readWholeChapter(){
+  state.selectedVerseNumbers=state.currentChapterVerses.map(v=>Number(v.number));
+  state.chapterMode="read";
+  renderBible();
+}
+
+function buildSelectedPassage(){
+  const code=state.selectedBookCode;
+  const bookName=NAME_BY_CODE[code]||code;
+  return state.currentChapterVerses
+    .filter(v=>state.selectedVerseNumbers.includes(Number(v.number)))
+    .map(v=>({
+      id:refId(code,state.selectedChapter,v.number),
+      code,
+      bookName,
+      chapter:Number(state.selectedChapter),
+      verse:Number(v.number),
+      text:v.text
+    }));
+}
+
+function meditateSelectedVerses(){
+  if(!state.selectedVerseNumbers.length){toast("Escolha pelo menos um versículo");return;}
+  state.selectedPassage=buildSelectedPassage();
+  state.page="passage";
+  localStorage.setItem("bs-read-date",new Date().toDateString());
+  state.readToday=true;
+  render();
+}
+
+function openVerseByNumber(number){
+  const v=getCurrentVerse(number);
+  if(!v) return;
+  openVerseObject({
+    code:state.selectedBookCode,
+    bookName:NAME_BY_CODE[state.selectedBookCode]||state.selectedBookCode,
+    chapter:Number(state.selectedChapter),
+    verse:Number(v.number),
+    text:v.text
+  });
+}
+
+function toggleFavoriteByNumber(number){
+  const v=getCurrentVerse(number);
+  if(!v) return;
+  toggleFullFavorite(
+    state.selectedBookCode,
+    NAME_BY_CODE[state.selectedBookCode]||state.selectedBookCode,
+    Number(state.selectedChapter),
+    Number(v.number),
+    v.text
+  );
+}
+
 function fullVerseRow(code,bookName,chapter,v){
   const id=refId(code,chapter,v.number);
   const liked=!!getFavorite(id);
   return `<article class="bible-verse">
     <div class="bible-verse-line">
-      <button class="verse-number-btn" onclick="openVerseFromBible('${code}',${chapter},${v.number},${JSON.stringify(v.text).replace(/"/g,'&quot;')})">${v.number}</button>
+      <button class="verse-number-btn" onclick="openVerseByNumber(${v.number})">${v.number}</button>
       <div class="bible-verse-text">${escapeHtml(v.text)}</div>
     </div>
     <div class="verse-tools">
-      <button class="verse-tool" onclick="openVerseFromBible('${code}',${chapter},${v.number},${JSON.stringify(v.text).replace(/"/g,'&quot;')})">☀ Meditar</button>
-      <button class="verse-tool" onclick="toggleFullFavorite('${code}',${JSON.stringify(bookName)},${chapter},${v.number},${JSON.stringify(v.text).replace(/"/g,'&quot;')})">${liked?"♥ Salvo":"♡ Salvar"}</button>
+      <button class="verse-tool" onclick="openVerseByNumber(${v.number})">☀ Meditar este</button>
+      <button class="verse-tool" onclick="toggleFavoriteByNumber(${v.number})">${liked?"♥ Salvo":"♡ Salvar"}</button>
     </div>
   </article>`;
 }
@@ -311,7 +464,7 @@ async function renderBible(){
             <span class="muted">›</span>
           </button>`).join("")}
       </div>
-      <div class="bible-credit">Texto bíblico: Bíblia Livre (BLIVRE). Uso conforme a licença indicada em “Mais”.</div>`;
+      <div class="bible-credit">Escolha um livro, depois um capítulo e os versículos que deseja ler ou meditar.</div>`;
     return;
   }
 
@@ -325,46 +478,74 @@ async function renderBible(){
     if(!state.selectedChapter){
       content.innerHTML=`
         <div class="chapter-header">
-          <div><span class="eyebrow">LIVRO</span><h2>${bookName}</h2><div class="small">${book.chapters.length} capítulo${book.chapters.length===1?"":"s"}</div></div>
+          <div><span class="eyebrow">ESCOLHA O CAPÍTULO</span><h2>${bookName}</h2><div class="small">${book.chapters.length} capítulo${book.chapters.length===1?"":"s"}</div></div>
           <button class="btn-ghost" onclick="state.selectedBookCode=null;state.selectedChapter=null;renderBible()">Livros</button>
         </div>
         <div class="chapter-grid">
           ${book.chapters.map(ch=>`<button class="chapter-btn" onclick="openChapter(${ch.chapter})">${ch.chapter}</button>`).join("")}
         </div>
-        <div class="bible-credit">Escolha um capítulo para abrir os versículos.</div>`;
+        <div class="bible-credit">Depois de escolher o capítulo, você poderá marcar exatamente quais versículos quer ler ou meditar.</div>`;
       return;
     }
 
     const ch=book.chapters.find(c=>Number(c.chapter)===Number(state.selectedChapter));
     if(!ch) throw new Error("Capítulo não encontrado");
+
+    state.currentChapterVerses=ch.verses;
+
+    if(state.chapterMode==="select"){
+      renderVersePicker();
+      return;
+    }
+
     const prev=state.selectedChapter>1?state.selectedChapter-1:null;
     const next=state.selectedChapter<book.chapters.length?state.selectedChapter+1:null;
+    const chosen = state.selectedVerseNumbers.length
+      ? ch.verses.filter(v=>state.selectedVerseNumbers.includes(Number(v.number)))
+      : ch.verses;
 
     content.innerHTML=`
       <div class="reading-toolbar">
-        <button class="btn-ghost" onclick="state.selectedChapter=null;renderBible()">‹ Capítulos</button>
-        <div class="reading-title"><strong>${bookName} ${state.selectedChapter}</strong><span>${ch.verses.length} versículos</span></div>
-        <button class="btn-ghost" onclick="state.selectedBookCode=null;state.selectedChapter=null;renderBible()">Livros</button>
+        <button class="btn-ghost" onclick="state.chapterMode='select';renderBible()">‹ Escolher</button>
+        <div class="reading-title">
+          <strong>${bookName} ${state.selectedChapter}</strong>
+          <span>${chosen.length} de ${ch.verses.length} versículos</span>
+        </div>
+        <button class="btn-ghost" onclick="state.selectedChapter=null;state.selectedVerseNumbers=[];state.chapterMode='select';renderBible()">Capítulos</button>
       </div>
 
-      <div class="chapter-nav">
-        <button class="mini-btn" ${!prev?"disabled":""} onclick="${prev?`openChapter(${prev})`:""}">‹ Anterior</button>
-        <span>Capítulo ${state.selectedChapter}</span>
-        <button class="mini-btn" ${!next?"disabled":""} onclick="${next?`openChapter(${next})`:""}">Próximo ›</button>
+      <div class="chosen-passage-banner">
+        <div>
+          <strong>Passagem escolhida</strong>
+          <span>${chosen.length===ch.verses.length ? "Capítulo inteiro" : chosen.map(v=>v.number).join(", ")}</span>
+        </div>
+        <button class="mini-btn" onclick="meditateCurrentReading()">☀ Meditar</button>
       </div>
 
       <section class="bible-reading">
-        ${ch.verses.map(v=>fullVerseRow(code,bookName,state.selectedChapter,v)).join("")}
+        ${chosen.map(v=>fullVerseRow(code,bookName,state.selectedChapter,v)).join("")}
       </section>
+
+      <div class="reading-bottom-actions">
+        <button class="btn-primary" onclick="meditateCurrentReading()">☀ Meditar nesses versículos</button>
+        <button class="btn-ghost" onclick="state.chapterMode='select';renderBible()">Alterar versículos</button>
+      </div>
 
       <div class="chapter-nav bottom-chapter-nav">
         <button class="mini-btn" ${!prev?"disabled":""} onclick="${prev?`openChapter(${prev})`:""}">‹ Capítulo anterior</button>
         <button class="mini-btn" ${!next?"disabled":""} onclick="${next?`openChapter(${next})`:""}">Próximo capítulo ›</button>
       </div>
-      <div class="bible-credit">Texto bíblico: Bíblia Livre (BLIVRE). Toque em “Meditar” em qualquer versículo.</div>`;
+      <div class="bible-credit">Texto bíblico: Bíblia Livre (BLIVRE).</div>`;
   }catch(e){
     content.innerHTML=`<div class="empty"><span class="big">📡</span><strong>Não foi possível carregar ${bookName}</strong><br><br><span class="small">Confira sua conexão com a internet e tente novamente.</span><br><br><button class="btn-primary" onclick="renderBible()">Tentar novamente</button></div>`;
   }
+}
+
+function meditateCurrentReading(){
+  if(!state.selectedVerseNumbers.length){
+    state.selectedVerseNumbers=state.currentChapterVerses.map(v=>Number(v.number));
+  }
+  meditateSelectedVerses();
 }
 
 function renderVerse(){
@@ -420,6 +601,102 @@ function shareCurrentVerse(){
   const text=`${v.bookName} ${v.chapter}:${v.verse}\n“${v.text}”\n\nBíblia Sagrada • Palavra Viva`;
   if(navigator.share) navigator.share({title:"Bíblia Sagrada",text}).catch(()=>{});
   else if(navigator.clipboard){navigator.clipboard.writeText(text);toast("Texto copiado");}
+}
+
+
+function renderPassageMeditation(){
+  const passage=state.selectedPassage||[];
+  if(!passage.length){setPage("bible");return;}
+
+  const first=passage[0];
+  const last=passage[passage.length-1];
+  const isSingle=passage.length===1;
+  const reference=isSingle
+    ? `${first.bookName} ${first.chapter}:${first.verse}`
+    : `${first.bookName} ${first.chapter}:${first.verse}-${last.verse}`;
+
+  let meditation, reflect, prayer, heading;
+  if(isSingle){
+    const med=guidedMeditation(first);
+    meditation=med.meditation;
+    reflect=med.reflect;
+    prayer=med.prayer;
+    heading=med.special?"Meditação":"Meditação guiada";
+  }else{
+    heading="Meditação da passagem";
+    meditation=`Você escolheu ${passage.length} versículos para meditar juntos. Leia a passagem mais uma vez devagar e observe a ideia que se repete, a promessa, o ensinamento ou o chamado que mais toca você. Não tente absorver tudo de uma vez: escolha uma verdade desta passagem para levar para o seu dia.`;
+    reflect="O que esses versículos, lidos juntos, mostram a você e qual atitude prática você pode tomar a partir deles?";
+    prayer="Senhor, ajuda-me a compreender esta passagem com sabedoria. Mostra-me o que preciso guardar no coração e dá-me força para viver a tua Palavra. Amém.";
+  }
+
+  pageTitle.textContent="Meditação";
+  content.innerHTML=`
+    <div class="passage-reference-card">
+      <span class="eyebrow">PASSAGEM ESCOLHIDA</span>
+      <h2>${reference}</h2>
+      <div class="selected-passage-verses">
+        ${passage.map(v=>`
+          <div class="selected-passage-verse">
+            <span>${v.verse}</span>
+            <p>${escapeHtml(v.text)}</p>
+          </div>`).join("")}
+      </div>
+    </div>
+
+    <section class="meditation-card">
+      <h3>☀ ${heading}</h3>
+      <p>${meditation}</p>
+      <div class="reflect-box">
+        <strong>💡 Para refletir</strong>
+        <p style="margin-top:7px">${reflect}</p>
+      </div>
+    </section>
+
+    <section class="meditation-card">
+      <h3>🙏 Oração</h3>
+      <div class="prayer-box">${prayer}</div>
+    </section>
+
+    <div class="reading-bottom-actions">
+      <button class="btn-primary" onclick="shareSelectedPassage()">↗ Compartilhar passagem</button>
+      <button class="btn-ghost" onclick="backToSelectedChapter()">Voltar aos versículos</button>
+      <button class="btn-ghost" onclick="chooseVersesAgain()">Escolher outros versículos</button>
+    </div>`;
+}
+
+function shareSelectedPassage(){
+  const passage=state.selectedPassage||[];
+  if(!passage.length) return;
+  const first=passage[0], last=passage[passage.length-1];
+  const ref=passage.length===1
+    ? `${first.bookName} ${first.chapter}:${first.verse}`
+    : `${first.bookName} ${first.chapter}:${first.verse}-${last.verse}`;
+  const verses=passage.map(v=>`${v.verse}. ${v.text}`).join("\n");
+  const text=`${ref}\n\n${verses}\n\nBíblia Sagrada • Palavra Viva`;
+  if(navigator.share) navigator.share({title:"Bíblia Sagrada",text}).catch(()=>{});
+  else if(navigator.clipboard){navigator.clipboard.writeText(text);toast("Passagem copiada");}
+}
+
+function backToSelectedChapter(){
+  const passage=state.selectedPassage||[];
+  if(!passage.length){setPage("bible");return;}
+  state.page="bible";
+  state.selectedBookCode=passage[0].code;
+  state.selectedChapter=passage[0].chapter;
+  state.selectedVerse=null;
+  state.chapterMode="read";
+  renderBible();
+}
+
+function chooseVersesAgain(){
+  const passage=state.selectedPassage||[];
+  if(!passage.length){setPage("bible");return;}
+  state.page="bible";
+  state.selectedBookCode=passage[0].code;
+  state.selectedChapter=passage[0].chapter;
+  state.selectedVerse=null;
+  state.chapterMode="select";
+  renderBible();
 }
 
 function renderSearch(){
@@ -490,7 +767,7 @@ function renderMore(){
     <div class="version-card">
       <div class="cross">✝</div>
       <h3>Bíblia Sagrada</h3>
-      <p>Palavra Viva • versão 0.3</p>
+      <p>Palavra Viva • versão 0.4</p>
       <p style="margin-top:8px">Desenvolvido por JNR</p>
     </div>
 
@@ -518,6 +795,7 @@ function render(){
   if(state.page==="home") renderHome();
   else if(state.page==="bible") renderBible();
   else if(state.page==="verse") renderVerse();
+  else if(state.page==="passage") renderPassageMeditation();
   else if(state.page==="search") renderSearch();
   else if(state.page==="favorites") renderFavorites();
   else if(state.page==="more") renderMore();
@@ -526,7 +804,10 @@ function render(){
 Object.assign(window,{
   state,setPage,toggleTheme,renderBible,openBook,openChapter,openVerseFromBible,openVerseObject,
   toggleFullFavorite,openDailyVerse,backToChapter,shareCurrentVerse,searchReference,
-  installAppFromMenu,shareApp,showPrayerInfo
+  installAppFromMenu,shareApp,showPrayerInfo,
+  toggleVerseSelection,selectAllVerses,clearVerseSelection,readSelectedVerses,readWholeChapter,
+  meditateSelectedVerses,meditateCurrentReading,openVerseByNumber,toggleFavoriteByNumber,
+  renderVersePicker,renderPassageMeditation,shareSelectedPassage,backToSelectedChapter,chooseVersesAgain
 });
 
 if("serviceWorker" in navigator){
