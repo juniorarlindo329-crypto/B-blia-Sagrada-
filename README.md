@@ -1,19 +1,23 @@
-# Bíblia Sagrada • Palavra Viva — v0.7
+# Bíblia Sagrada • Palavra Viva — v0.8
 
-## Novidades desta versão
-- correção e reforço da **capa da Bíblia** em destaque na abertura e dentro do app
-- tela de **Versões** inspirada nas capturas enviadas
-- **menu lateral completo** com várias opções
-- leitura com barra superior estilo app de Bíblia
-- **destaques por cor** nos versículos
-- **anotações** por versículo
-- favoritos
-- histórico
-- várias opções de meditação
-- páginas extras do menu sem erro
+## Mudança principal
+O fluxo da Bíblia agora é direto:
 
-## Observação
-O texto bíblico base continua sendo carregado online. As versões já estão organizadas na interface e a seleção fica salva no aparelho.
+**Bíblia → Livro → Capítulo → Palavra**
 
-## Desenvolvido por
-JNR
+Ao tocar em um capítulo, o aplicativo abre imediatamente todos os versículos.
+Foi removida a etapa intermediária de escolher versículos / “Ler capítulo inteiro”.
+
+Dentro da Palavra continuam funcionando:
+- Estudo Bíblico / meditação
+- Compartilhar
+- Copiar
+- Favoritar
+- Anotar
+- Cores de destaque
+- Troca de versão
+- Tamanho do texto
+
+Também foi melhorado o cache para facilitar o recebimento das próximas atualizações.
+
+Desenvolvido por JNR.

@@ -435,7 +435,7 @@ async function openBook(code){ state.selectedBookCode=code; state.selectedChapte
 async function openChapter(chapter){
   state.selectedChapter=Number(chapter);
   state.selectedVerseNumbers=[];
-  state.chapterMode="select";
+  state.chapterMode="read";
   state.currentChapterVerses=[];
   state.activeReadingVerse=null;
   await renderBible();
@@ -616,7 +616,7 @@ async function renderBible(){
         <div class="hero-content">
           <div class="badge-chip">${version.code} • ${version.name}</div>
           <h2>Bíblia com capa personalizada</h2>
-          <p>A capa agora aparece também aqui na Bíblia. Escolha o livro, o capítulo e os versículos que deseja ler ou meditar.</p>
+          <p>A capa agora aparece também aqui na Bíblia. Escolha o livro e o capítulo. Ao tocar no capítulo, a Palavra abre na hora.</p>
           <div class="hero-buttons"><button class="btn-primary" onclick="navigate('versions')">Trocar versão</button></div>
         </div>
       </section>
@@ -642,7 +642,7 @@ async function renderBible(){
           <button class="btn-ghost" onclick="state.selectedBookCode=null;state.selectedChapter=null;renderBible()">Livros</button>
         </div>
         <div class="chapter-grid">${book.chapters.map(ch=>`<button class="chapter-btn" onclick="openChapter(${ch.chapter})">${ch.chapter}</button>`).join('')}</div>
-        <div class="bible-credit">Depois de escolher o capítulo, você poderá marcar exatamente quais versículos quer ler ou meditar.</div>`;
+        <div class="bible-credit">Toque em um capítulo e a Palavra abre imediatamente com todos os versículos.</div>`;
       return;
     }
     const ch=book.chapters.find(c=>Number(c.chapter)===Number(state.selectedChapter));
@@ -659,7 +659,7 @@ async function renderBible(){
         <div class="reading-toolbar-top">
           <button class="top-icon-btn" onclick="openDrawer()">☰</button>
           <button class="top-chip" onclick="state.selectedChapter=null;state.chapterMode='select';renderBible()">${bookName}</button>
-          <button class="top-chip" onclick="state.chapterMode='select';renderBible()">${state.selectedChapter}</button>
+          <button class="top-chip" onclick="state.selectedChapter=null;state.selectedVerseNumbers=[];state.chapterMode='read';renderBible()">${state.selectedChapter}</button>
           <button class="top-chip" onclick="navigate('versions')">${getVersionLabel()}</button>
           <button class="top-icon-btn" onclick="toast('Áudio em desenvolvimento')">🔊</button>
           <button class="top-icon-btn" onclick="fontUp()">T+</button>
@@ -670,8 +670,7 @@ async function renderBible(){
       <div id="readingActionMount"></div>
       <div class="reading-bottom-actions">
         <button class="btn-primary" onclick="meditateCurrentReading()">☀ Meditar nesses versículos</button>
-        <button class="btn-ghost" onclick="state.chapterMode='select';renderBible()">Alterar versículos</button>
-        <button class="btn-ghost" onclick="state.selectedChapter=null;state.selectedVerseNumbers=[];state.chapterMode='select';renderBible()">Escolher outro capítulo</button>
+        <button class="btn-ghost" onclick="state.selectedChapter=null;state.selectedVerseNumbers=[];state.chapterMode='read';renderBible()">Escolher outro capítulo</button>
       </div>
       <div class="card-actions">
         <button class="mini-btn" ${!prev?"disabled":""} onclick="${prev?`openChapter(${prev})`:''}">‹ Capítulo anterior</button>
@@ -839,7 +838,7 @@ function renderMore(){
     <div class="setting-row" onclick="toggleTheme()"><div class="setting-left"><div class="setting-icon">${state.dark?'☀':'☾'}</div><div><h3>Modo ${state.dark?'claro':'escuro'}</h3><div class="small">Mude a aparência do aplicativo</div></div></div><span>›</span></div>
     <div class="setting-row" onclick="installAppFromMenu()"><div class="setting-left"><div class="setting-icon">⇩</div><div><h3>Instalar aplicativo</h3><div class="small">Adicionar à tela inicial do celular</div></div></div><span>›</span></div>
     <div class="setting-row" onclick="shareApp()"><div class="setting-left"><div class="setting-icon">↗</div><div><h3>Compartilhar app</h3><div class="small">Envie o Palavra Viva para alguém</div></div></div><span>›</span></div>
-    <div class="version-card"><div class="cross">✝</div><h3>Bíblia Sagrada</h3><p>Palavra Viva • versão 0.7</p><p style="margin-top:8px">Desenvolvido por JNR</p></div>
+    <div class="version-card"><div class="cross">✝</div><h3>Bíblia Sagrada</h3><p>Palavra Viva • versão 0.8</p><p style="margin-top:8px">Desenvolvido por JNR</p></div>
     <div class="panel" style="margin-top:12px"><strong>📖 Texto bíblico</strong><p class="small">O aplicativo carrega o texto bíblico base pela internet e agora possui tela de versões, menu lateral, destaques, anotações e capa personalizada.</p><p class="small">As meditações são conteúdo separado do aplicativo e não alteram o texto da Bíblia.</p></div>`;
 }
 
