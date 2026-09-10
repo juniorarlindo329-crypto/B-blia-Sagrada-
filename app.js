@@ -428,6 +428,16 @@ async function renderHome(){
       </div>
     </section>
 
+    <section class="cover-section">
+      <div class="section-head" style="margin-top:0">
+        <h2>Capa da Bíblia</h2>
+        <span>Igreja Batista Rhema</span>
+      </div>
+      <article class="cover-card">
+        <img src="./cover-biblia.png" alt="Capa Bíblia Sagrada Igreja Batista Rhema" class="cover-image">
+      </article>
+    </section>
+
     <div class="section-head"><h2>Bíblia completa</h2><span>66 livros • 1.189 capítulos</span></div>
     <section class="quick-grid">
       <div class="quick-card" onclick="setPage('bible')"><div class="icon">📖</div><h3>Ler a Bíblia</h3><p>Escolha livro, capítulo e versículo.</p></div>
@@ -767,7 +777,7 @@ function renderMore(){
     <div class="version-card">
       <div class="cross">✝</div>
       <h3>Bíblia Sagrada</h3>
-      <p>Palavra Viva • versão 0.4</p>
+      <p>Palavra Viva • versão 0.5</p>
       <p style="margin-top:8px">Desenvolvido por JNR</p>
     </div>
 
