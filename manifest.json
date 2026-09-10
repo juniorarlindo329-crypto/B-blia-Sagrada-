@@ -1,7 +1,7 @@
 {
   "name": "Bíblia Sagrada • Palavra Viva",
   "short_name": "Bíblia Viva",
-  "description": "Bíblia Sagrada com capa personalizada, menu completo, versões, meditações, destaques e anotações.",
+  "description": "Bíblia Sagrada com leitura, meditações, planos, histórias, estudo avançado, hinários, áudio, quiz, dicionário, temas, versões e backup.",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#151311",
