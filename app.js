@@ -178,14 +178,128 @@ const VERSION_GROUPS = [
 
 
 const INCLUDED_WORSHIP_TRACKS = [
-  {id:"local-paz",category:"Instrumental para Leitura",title:"Paz na Palavra",subtitle:"Instrumental original • leitura tranquila",performer:"Palavra Viva",audioUrl:"./audio/paz-na-palavra.mp3",source:"Áudio incluído no app"},
-  {id:"local-oracao",category:"Instrumental para Leitura",title:"Momento de Oração",subtitle:"Instrumental original • piano e ambiente suave",performer:"Palavra Viva",audioUrl:"./audio/momento-de-oracao.mp3",source:"Áudio incluído no app"},
-  {id:"local-descanso",category:"Instrumental para Leitura",title:"Descanso em Deus",subtitle:"Instrumental original • calmo",performer:"Palavra Viva",audioUrl:"./audio/descanso-em-deus.mp3",source:"Áudio incluído no app"},
-  {id:"local-manha",category:"Instrumental para Leitura",title:"Manhã com a Palavra",subtitle:"Instrumental original • leve e sereno",performer:"Palavra Viva",audioUrl:"./audio/manha-com-a-palavra.mp3",source:"Áudio incluído no app"},
-  {id:"local-adoracao",category:"Adoração",title:"Adoração Suave",subtitle:"Instrumental cristão original",performer:"Palavra Viva",audioUrl:"./audio/adoracao-suave.mp3",source:"Áudio incluído no app"},
-  {id:"local-noite",category:"Adoração",title:"Noite de Reflexão",subtitle:"Instrumental original • oração e descanso",performer:"Palavra Viva",audioUrl:"./audio/noite-de-reflexao.mp3",source:"Áudio incluído no app"},
-  {id:"local-corinho",category:"Corinhos de Fogo",title:"Corinho de Alegria",subtitle:"Instrumental original • ritmo alegre",performer:"Palavra Viva",audioUrl:"./audio/corinho-de-alegria.mp3",source:"Áudio incluído no app"},
-  {id:"local-fogo",category:"Louvores Pentecostais",title:"Fogo e Fé",subtitle:"Instrumental original • estilo pentecostal",performer:"Palavra Viva",audioUrl:"./audio/fogo-e-fe.mp3",source:"Áudio incluído no app"}
+  {
+    id:"br-lugar-secreto",
+    category:"Adoração",
+    title:"Lugar Secreto",
+    subtitle:"Louvor brasileiro",
+    performer:"Gabriela Rocha",
+    youtubeId:"YnrN0o0lubM",
+    source:"YouTube"
+  },
+  {
+    id:"br-me-atraiu",
+    category:"Adoração",
+    title:"Me Atraiu",
+    subtitle:"Louvor brasileiro",
+    performer:"Gabriela Rocha",
+    youtubeId:"_UN2gwabRBI",
+    source:"YouTube"
+  },
+  {
+    id:"br-bondade-de-deus",
+    category:"Adoração",
+    title:"Bondade de Deus",
+    subtitle:"Louvor brasileiro",
+    performer:"Isaias Saad",
+    youtubeId:"mZ9yZYo9Mmk",
+    source:"YouTube"
+  },
+  {
+    id:"br-aquieta-minhalma",
+    category:"Adoração",
+    title:"Aquieta Minh'alma",
+    subtitle:"Louvor brasileiro",
+    performer:"Ministério Zoe",
+    youtubeId:"ANfpF0pNob4",
+    source:"YouTube"
+  },
+  {
+    id:"br-bencaos-sem-fim",
+    category:"Adoração",
+    title:"Bênçãos Que Não Têm Fim",
+    subtitle:"Louvor brasileiro",
+    performer:"Isadora Pompeo",
+    youtubeId:"Xq_07hEF2AQ",
+    source:"YouTube"
+  },
+  {
+    id:"br-me-ajude",
+    category:"Adoração",
+    title:"Me Ajude a Melhorar",
+    subtitle:"Louvor brasileiro",
+    performer:"Eli Soares",
+    youtubeId:"N4W011dK1uM",
+    source:"YouTube"
+  },
+  {
+    id:"br-deus-promessas",
+    category:"Louvores Antigos",
+    title:"Deus de Promessas",
+    subtitle:"Louvor brasileiro",
+    performer:"Davi Sacer",
+    youtubeId:"03QIkzzom1s",
+    source:"YouTube"
+  },
+  {
+    id:"br-ninguem-explica",
+    category:"Adoração",
+    title:"Ninguém Explica Deus",
+    subtitle:"Louvor brasileiro",
+    performer:"Preto no Branco feat. Gabriela Rocha",
+    youtubeId:"LYsaKn8FRhc",
+    source:"YouTube"
+  },
+  {
+    id:"br-deus-provera",
+    category:"Louvores Pentecostais",
+    title:"Deus Proverá",
+    subtitle:"Louvor brasileiro",
+    performer:"Gabriela Gomes",
+    youtubeId:"tf1rVE3mbpg",
+    source:"YouTube"
+  },
+  {
+    id:"br-todavia",
+    category:"Louvores Pentecostais",
+    title:"Todavia Me Alegrarei",
+    subtitle:"Louvor brasileiro",
+    performer:"Samuel Messias",
+    youtubeId:"81GaF34veWA",
+    source:"YouTube"
+  },
+  {
+    id:"br-prioridade",
+    category:"Louvores Pentecostais",
+    title:"Prioridade",
+    subtitle:"Louvor brasileiro",
+    performer:"Midian Lima",
+    youtubeId:"1Zyu6Ec57tU",
+    source:"YouTube"
+  },
+  {
+    id:"br-galileu",
+    category:"Adoração",
+    title:"Galileu",
+    subtitle:"Louvor brasileiro",
+    performer:"Fernandinho",
+    youtubeId:"bcLC42v-eyE",
+    source:"YouTube"
+  },
+  {
+    id:"br-casa-e-sua",
+    category:"Adoração",
+    title:"A Casa É Sua",
+    subtitle:"Louvor brasileiro",
+    performer:"Casa Worship",
+    youtubeId:"qWkQnQIFm_E",
+    source:"YouTube"
+  },
+
+  {id:"local-paz",category:"Instrumental para Leitura",title:"Paz na Palavra",subtitle:"Instrumental leve • sem anúncio",performer:"Palavra Viva",audioUrl:"./audio/paz-na-palavra.mp3",source:"Áudio incluído no app"},
+  {id:"local-oracao",category:"Instrumental para Leitura",title:"Momento de Oração",subtitle:"Piano e ambiente suave",performer:"Palavra Viva",audioUrl:"./audio/momento-de-oracao.mp3",source:"Áudio incluído no app"},
+  {id:"local-descanso",category:"Instrumental para Leitura",title:"Descanso em Deus",subtitle:"Instrumental calmo",performer:"Palavra Viva",audioUrl:"./audio/descanso-em-deus.mp3",source:"Áudio incluído no app"},
+  {id:"local-manha",category:"Instrumental para Leitura",title:"Manhã com a Palavra",subtitle:"Instrumental leve e sereno",performer:"Palavra Viva",audioUrl:"./audio/manha-com-a-palavra.mp3",source:"Áudio incluído no app"}
 ];
 
 const WORSHIP_CATEGORIES = [
@@ -532,6 +646,7 @@ const state = {
   worshipQueue:[],
   worshipPlaying:false,
   worshipObjectUrl:null,
+  worshipPlayerHiddenByUser:false,
   drawerOpen:false
 };
 
@@ -1724,27 +1839,38 @@ function renderHymns(){
     return byCategory && (!q || hay.includes(q));
   });
 
+  const currentTrack=getAllWorshipTracks().find(t=>t.id===state.currentWorshipTrackId);
+
   content.innerHTML=`
     <section class="worship-hero brazilian-worship-hero">
       <div class="worship-icon">🇧🇷</div>
       <div>
-        <span class="eyebrow">SEM YOUTUBE • SEM ANÚNCIOS</span>
-        <h2>Louvores para Ler e Orar</h2>
-        <p>Áudios instrumentais já vêm dentro do aplicativo. Toque e ouça sem propaganda; ao voltar para a Bíblia, o player sai da tela para não atrapalhar.</p>
+        <span class="eyebrow">LOUVORES BRASILEIROS</span>
+        <h2>Louvores que Tocam no Coração</h2>
+        <p>Louvores conhecidos pelo YouTube e instrumentais leves para leitura. Você pode ocultar o player e continuar navegando pela Bíblia.</p>
       </div>
     </section>
+
+    ${currentTrack && state.worshipPlayerHiddenByUser ? `
+      <div class="hidden-player-card">
+        <div>
+          <span>🎵</span>
+          <div><strong>${escapeHtml(currentTrack.title)}</strong><small>${escapeHtml(currentTrack.performer||"Louvor")}</small></div>
+        </div>
+        <button class="btn-primary" onclick="showWorshipPlayer()">Mostrar player</button>
+      </div>` : ""}
 
     <div class="worship-category-scroll">
       ${WORSHIP_CATEGORIES.map(cat=>`<button class="worship-category-chip ${category===cat?'active':''}" onclick="setHymnCategory('${cat}')">${cat}</button>`).join("")}
     </div>
 
     <div class="search-card">
-      <input class="field" placeholder="Buscar louvor ou cantor brasileiro..." value="${escapeHtml(state.hymnSearch||"")}" oninput="state.hymnSearch=this.value;renderHymns()">
+      <input class="field" placeholder="Buscar louvor ou cantor..." value="${escapeHtml(state.hymnSearch||"")}" oninput="state.hymnSearch=this.value;renderHymns()">
     </div>
 
     <div class="panel worship-info-panel">
-      <strong>▶ Player próprio, sem propaganda</strong>
-      <p class="small">As faixas incluídas são instrumentais originais do Palavra Viva e tocam direto do aplicativo, sem YouTube.</p>
+      <strong>▶ Ouvir e continuar lendo</strong>
+      <p class="small">Nos louvores do YouTube pode aparecer anúncio. Depois que começar a tocar, use o botão <strong>⌄</strong> para ocultar o player. Ao entrar na Bíblia, o app também limpa a tela automaticamente.</p>
     </div>
 
     ${filtered.length
@@ -1752,22 +1878,25 @@ function renderHymns(){
       : `<div class="empty-state"><span class="big">🎵</span><strong>Nenhum louvor encontrado</strong></div>`}
 
     <section class="search-card add-worship-card">
-      <h3>＋ Adicionar outro áudio</h3>
-      <p class="small">Opcional: se um dia você tiver um MP3/OGG autorizado, pode adicionar pelo celular. Não é necessário para usar os louvores que já vêm no app.</p>
+      <h3>＋ Adicionar outro louvor do YouTube</h3>
+      <p class="small">Cole o link do vídeo e ele fica salvo na sua lista.</p>
 
       <select id="hymnCategory" class="field">
-        <option>Instrumental para Leitura</option><option>Corinhos de Fogo</option>
-        <option>Louvores Pentecostais</option>
         <option>Adoração</option>
+        <option>Louvores Pentecostais</option>
+        <option>Corinhos de Fogo</option>
         <option>Harpa Cristã</option>
         <option>Louvores Antigos</option>
+        <option>Instrumental para Leitura</option>
         <option>Outros</option>
       </select>
       <input id="hymnTitle" class="field" placeholder="Nome do louvor">
       <input id="hymnPerformer" class="field" placeholder="Cantor / grupo">
+      <input id="hymnYoutubeUrl" class="field" placeholder="Cole o link do YouTube">
+      <button class="btn-primary full-width" onclick="saveYoutubeHymn()">Adicionar louvor</button>
 
       <details class="optional-audio-details">
-        <summary>Adicionar um áudio autorizado do celular</summary>
+        <summary>Adicionar áudio autorizado do celular</summary>
         <div class="optional-audio-fields">
           <input id="hymnAudioUrl" class="field" placeholder="URL direta MP3/OGG (opcional)">
           <label class="audio-file-label">
@@ -1976,6 +2105,9 @@ async function playWorshipTrack(id){
 
   state.worshipQueue=tracks.map(t=>t.id);
   state.currentWorshipTrackId=id;
+  state.worshipPlayerHiddenByUser=false;
+  worshipPlayerEl.classList.remove("user-hidden");
+  document.body.classList.remove("worship-user-hidden");
 
   if(track.youtubeId){
     enterYoutubeMode(track);
@@ -2055,7 +2187,27 @@ function playPreviousWorship(){
   playWorshipTrack(queue[(i-1+queue.length)%queue.length]);
 }
 
+
+function hideWorshipPlayer(){
+  if(!state.currentWorshipTrackId) return;
+  state.worshipPlayerHiddenByUser=true;
+  worshipPlayerEl.classList.add("user-hidden");
+  document.body.classList.add("worship-user-hidden");
+  if(state.page==="hymns") renderHymns();
+  toast("Player ocultado. O louvor continua dentro do app.");
+}
+
+function showWorshipPlayer(){
+  state.worshipPlayerHiddenByUser=false;
+  worshipPlayerEl.classList.remove("user-hidden");
+  document.body.classList.remove("worship-user-hidden");
+  if(state.page==="hymns") renderHymns();
+}
+
 function stopWorship(){
+  state.worshipPlayerHiddenByUser=false;
+  worshipPlayerEl.classList.remove("user-hidden");
+  document.body.classList.remove("worship-user-hidden");
   worshipAudioEl.pause();
   worshipAudioEl.removeAttribute("src");
   worshipAudioEl.load();
@@ -2226,7 +2378,7 @@ function exportBackup(){const data={};for(let i=0;i<localStorage.length;i++){con
 function importBackupFile(event){const file=event.target.files?.[0];if(!file)return;const reader=new FileReader();reader.onload=()=>{try{const obj=JSON.parse(reader.result);if(!obj.data)throw new Error();for(const [k,v] of Object.entries(obj.data)){if(k.startsWith("bs-"))localStorage.setItem(k,v);}alert("Backup restaurado. O aplicativo será recarregado.");location.reload();}catch(e){toast("Arquivo de backup inválido");}};reader.readAsText(file);}
 function clearAppData(){if(!confirm("Tem certeza? Isso apaga favoritos, notas e progresso deste aparelho."))return;const keys=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k?.startsWith("bs-"))keys.push(k);}keys.forEach(k=>localStorage.removeItem(k));location.reload();}
 
-function renderMore(){pageTitle.textContent="Mais informações";content.innerHTML=`<div class="setting-row" onclick="toggleTheme()"><div class="setting-left"><div class="setting-icon">${state.dark?'☀':'☾'}</div><div><h3>Modo ${state.dark?'claro':'escuro'}</h3><div class="small">Mude a aparência do aplicativo</div></div></div><span>›</span></div><div class="setting-row" onclick="installAppFromMenu()"><div class="setting-left"><div class="setting-icon">⇩</div><div><h3>Instalar aplicativo</h3><div class="small">Adicionar à tela inicial do celular</div></div></div><span>›</span></div><div class="setting-row" onclick="shareApp()"><div class="setting-left"><div class="setting-icon">↗</div><div><h3>Compartilhar app</h3><div class="small">Envie o Palavra Viva para alguém</div></div></div><span>›</span></div><div class="version-card"><div class="cross">✝</div><h3>Bíblia Sagrada</h3><p>Palavra Viva • versão 1.8</p><p style="margin-top:8px">Desenvolvido por JNR</p></div><div class="panel" style="margin-top:12px"><strong>📖 Recursos desta versão</strong><p class="small">Menu reorganizado, planos, devocionais, histórias, pesquisa avançada, hinários pessoais, áudio por voz do aparelho, quiz, dicionário, temas, estudos por localização, backup e versões que realmente trocam o texto bíblico.</p></div>`;}
+function renderMore(){pageTitle.textContent="Mais informações";content.innerHTML=`<div class="setting-row" onclick="toggleTheme()"><div class="setting-left"><div class="setting-icon">${state.dark?'☀':'☾'}</div><div><h3>Modo ${state.dark?'claro':'escuro'}</h3><div class="small">Mude a aparência do aplicativo</div></div></div><span>›</span></div><div class="setting-row" onclick="installAppFromMenu()"><div class="setting-left"><div class="setting-icon">⇩</div><div><h3>Instalar aplicativo</h3><div class="small">Adicionar à tela inicial do celular</div></div></div><span>›</span></div><div class="setting-row" onclick="shareApp()"><div class="setting-left"><div class="setting-icon">↗</div><div><h3>Compartilhar app</h3><div class="small">Envie o Palavra Viva para alguém</div></div></div><span>›</span></div><div class="version-card"><div class="cross">✝</div><h3>Bíblia Sagrada</h3><p>Palavra Viva • versão 1.9</p><p style="margin-top:8px">Desenvolvido por JNR</p></div><div class="panel" style="margin-top:12px"><strong>📖 Recursos desta versão</strong><p class="small">Menu reorganizado, planos, devocionais, histórias, pesquisa avançada, hinários pessoais, áudio por voz do aparelho, quiz, dicionário, temas, estudos por localização, backup e versões que realmente trocam o texto bíblico.</p></div>`;}
 
 function installAppFromMenu(){ if(deferredPrompt) installBtn.click(); else toast("No Chrome: menu ⋮ → Adicionar à tela inicial"); }
 function shareApp(){ const data={title:"Bíblia Sagrada • Palavra Viva",text:"Conheça o aplicativo Bíblia Sagrada • Palavra Viva",url:location.href}; if(navigator.share) navigator.share(data).catch(()=>{}); else if(navigator.clipboard){navigator.clipboard.writeText(location.href);toast("Link copiado");} }
@@ -2300,7 +2452,7 @@ Object.assign(window,{ state,openDrawer,closeDrawer,quickOpenVersions,navigate,t
   renderHymns,setHymnCategory,savePlayableHymn,deleteHymn,playWorshipTrack,
   toggleWorshipPlayback,playNextWorship,playPreviousWorship,stopWorship,seekWorship
 
-,saveYoutubeHymn});
+,saveYoutubeHymn,hideWorshipPlayer,showWorshipPlayer});
 
 if('serviceWorker' in navigator){ navigator.serviceWorker.register('./sw.js').catch(()=>{}); }
 render();

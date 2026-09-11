@@ -1,37 +1,51 @@
-# Bíblia Sagrada • Palavra Viva — versão 1.8
+# Bíblia Sagrada • Palavra Viva — versão 1.9
 
-## Explicação e meditação embaixo de cada versículo
+## Louvores brasileiros + player ocultável
 
-Agora, durante a leitura de um capítulo, cada versículo mostra logo abaixo:
+A área de Louvores volta a ter louvores brasileiros conhecidos pelo YouTube, junto com instrumentais leves para leitura.
 
-### 💡 Explicação
-Uma explicação simples para ajudar a pessoa a entender melhor o sentido do texto.
+### Nova opção: Ocultar player
+Depois que o louvor começa:
+- toque no botão **⌄**;
+- o player sai da tela;
+- o aplicativo não encerra o louvor;
+- continue navegando pela Bíblia;
+- para trazer o player de volta, entre em **Louvores** e toque em **Mostrar player**.
 
-### 🙏 Meditação
-Uma pergunta ou aplicação curta para levar o versículo para a vida diária.
+Ao entrar na leitura bíblica, o app também usa o modo de leitura limpa para não deixar o player ocupando a tela.
 
-### Estudo completo
-O botão **Estudo completo** continua disponível para abrir a tela detalhada com reflexão, aplicação, oração e encorajamento.
+> Observação: em vídeos do YouTube, o navegador/Android ou o próprio YouTube pode interromper a reprodução em algumas situações, especialmente se a página for suspensa. O app não remove anúncios do YouTube.
 
-## Como funciona junto com a marcação
-A marcação de leitura continua igual:
-- escolha uma cor;
-- toque diretamente no texto do versículo;
-- o bloco é marcado;
-- a explicação e a meditação continuam visíveis abaixo.
+## Louvores brasileiros incluídos
+- Lugar Secreto — Gabriela Rocha
+- Me Atraiu — Gabriela Rocha
+- Bondade de Deus — Isaias Saad
+- Aquieta Minh'alma — Ministério Zoe
+- Bênçãos Que Não Têm Fim — Isadora Pompeo
+- Me Ajude a Melhorar — Eli Soares
+- Deus de Promessas — Davi Sacer
+- Ninguém Explica Deus — Preto no Branco feat. Gabriela Rocha
+- Deus Proverá — Gabriela Gomes
+- Todavia Me Alegrarei — Samuel Messias
+- Prioridade — Midian Lima
+- Galileu — Fernandinho
+- A Casa É Sua — Casa Worship
 
-## Observação
-As explicações rápidas são devocionais e contextuais. Para compreender uma passagem com maior profundidade, o aplicativo incentiva a leitura dos versículos ao redor e o uso do Estudo completo.
+## Instrumentais leves mantidos
+- Paz na Palavra
+- Momento de Oração
+- Descanso em Deus
+- Manhã com a Palavra
 
 ## Mantido
-- Louvores sem anúncios da v1.7
-- AEC na lista de versões
-- Livro → Capítulo → Palavra
-- seletor rápido de Livro / Capítulo / Versículo / Versão
-- quiz
-- anotações
-- favoritos
-- meditações
-- demais menus
+Todos os recursos da v1.8:
+- explicação e meditação embaixo de cada versículo;
+- marcação por toque;
+- AEC na lista;
+- Livro → Capítulo → Palavra;
+- quiz;
+- favoritos;
+- anotações;
+- demais menus.
 
 Desenvolvido por JNR.

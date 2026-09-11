@@ -1142,3 +1142,84 @@ body.dark .reading-verse.read-done .verse-meditation-box{
     line-height:1.55;
   }
 }
+
+
+/* v1.9 — opção de ocultar o player sem encerrar o louvor */
+.worship-player.user-hidden{
+  position:fixed !important;
+  left:-10000px !important;
+  top:0 !important;
+  bottom:auto !important;
+  width:1px !important;
+  height:1px !important;
+  min-height:0 !important;
+  max-height:1px !important;
+  padding:0 !important;
+  margin:0 !important;
+  opacity:0 !important;
+  overflow:hidden !important;
+  pointer-events:none !important;
+  transform:none !important;
+  border:0 !important;
+  box-shadow:none !important;
+}
+
+body.worship-user-hidden .app-shell{
+  padding-bottom:96px !important;
+}
+
+body.worship-user-hidden .bottom-nav{
+  bottom:0 !important;
+}
+
+.hidden-player-card{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin:12px 0;
+  padding:13px 14px;
+  border-radius:18px;
+  border:1px solid color-mix(in srgb,var(--gold) 36%,var(--line));
+  background:color-mix(in srgb,var(--gold) 7%,var(--surface));
+}
+
+.hidden-player-card>div{
+  display:flex;
+  align-items:center;
+  min-width:0;
+  gap:10px;
+}
+
+.hidden-player-card>div>span{
+  font-size:24px;
+}
+
+.hidden-player-card strong,
+.hidden-player-card small{
+  display:block;
+  max-width:180px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.hidden-player-card small{
+  color:var(--muted);
+  margin-top:2px;
+  font-size:10px;
+}
+
+.hide-player-btn{
+  font-size:17px !important;
+}
+
+@media(max-width:620px){
+  .hidden-player-card{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+  .hidden-player-card .btn-primary{
+    width:100%;
+  }
+}
