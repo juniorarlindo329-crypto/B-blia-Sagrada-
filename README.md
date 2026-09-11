@@ -1,30 +1,36 @@
-# Bíblia Sagrada • Palavra Viva — versão 2.0
+# Bíblia Sagrada • Palavra Viva — versão 2.1
 
-## Correção principal: explicação própria para cada versículo
+## Explicações mais profundas em cada versículo
 
-A explicação abaixo dos versículos não usa mais um texto genérico repetido.
+A explicação abaixo de cada versículo foi ampliada para funcionar como uma pequena aula de leitura bíblica.
 
-Agora o aplicativo considera:
-- o texto exato do versículo;
-- o livro e a referência;
-- se o versículo é fala, resposta, pergunta, ordem, narrativa, genealogia, ensino, profecia etc.;
-- o versículo anterior e o seguinte, quando disponíveis;
-- o tema real encontrado em palavras completas, evitando falsos resultados por pedaços de palavras.
+Agora ela procura mostrar:
+- o que está acontecendo naquele versículo;
+- o significado da frase dentro da história;
+- o tipo de livro bíblico em que o texto aparece;
+- o tema principal;
+- a relação com o versículo anterior e o seguinte.
 
-### Exemplo corrigido — Gênesis 3:2
-A explicação agora mostra que a mulher responde à serpente dizendo que eles podiam comer dos frutos das árvores do jardim, e prepara a restrição específica do versículo seguinte.
+### Exemplo — Gênesis 1:1
+A explicação não fica apenas em “Deus criou tudo”.
 
-Gênesis 3:1-7 recebeu explicações específicas revisadas, e o restante da Bíblia usa o novo mecanismo contextual por versículo.
+Ela mostra que:
+- o versículo abre toda a narrativa bíblica;
+- Deus é apresentado antes de qualquer coisa criada;
+- “céus e terra” abrange toda a criação;
+- o capítulo seguirá mostrando a criação sendo organizada passo a passo.
+
+Gênesis 1:1–5 recebeu explicações especialmente revisadas nesse novo formato.
 
 ## Mantido
+- explicação própria para cada versículo;
 - meditação abaixo de cada versículo;
-- Estudo completo;
-- marcação por toque e cores;
+- estudo completo;
+- marcação por cores tocando no texto;
 - louvores brasileiros e player ocultável;
-- AEC na lista de versões;
-- Livro → Capítulo → Palavra;
-- quiz, favoritos, anotações e demais menus.
+- AEC na lista;
+- quiz, favoritos, anotações e demais recursos.
 
-> As explicações rápidas são recursos devocionais de auxílio à leitura. Para estudo doutrinário aprofundado, é importante considerar o capítulo inteiro e fontes de estudo confiáveis.
+> As explicações são um auxílio devocional e de compreensão. Para estudo teológico aprofundado, é importante considerar o capítulo inteiro e fontes de estudo confiáveis.
 
 Desenvolvido por JNR.

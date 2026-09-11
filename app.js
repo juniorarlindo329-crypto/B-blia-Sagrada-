@@ -41,6 +41,27 @@ const SPECIAL_MEDITATIONS = {
 };
 
 const SPECIAL_INLINE_EXPLANATIONS = {
+  "Gen-1-1":{
+    explanation:"Este é o começo de toda a narrativa bíblica. Antes de falar de pessoas, povos ou acontecimentos, Gênesis apresenta Deus como aquele que já existe e que dá origem a tudo. A expressão “os céus e a terra” é uma forma abrangente de falar de toda a criação: o universo, o mundo e tudo o que nele existe. O versículo não começa explicando de onde Deus veio; ele parte da afirmação de que Deus é o Criador. A partir daqui, o capítulo vai mostrar a criação sendo organizada passo a passo, preparando um lugar onde a vida poderá existir.",
+    meditation:"Ao começar a Bíblia, somos lembrados de que a história não começa conosco, mas com Deus. O que muda na sua maneira de enxergar a vida quando você reconhece Deus como a origem de tudo?"
+  },
+  "Gen-1-2":{
+    explanation:"Depois de afirmar que Deus criou os céus e a terra, o texto descreve a terra ainda sem forma organizada e vazia, coberta pelas águas e pela escuridão. É como uma cena ainda não preparada para receber a vida. Ao mesmo tempo, o Espírito de Deus é apresentado movendo-se sobre as águas, mostrando que Deus já está presente e atuando antes de a ordem aparecer. Os versículos seguintes mostram justamente essa transformação: Deus começa a separar, organizar e preencher aquilo que estava sem forma.",
+    meditation:"Mesmo quando uma situação parece confusa ou sem forma, este versículo lembra que a presença de Deus pode estar atuando antes de conseguirmos enxergar o resultado."
+  },
+  "Gen-1-3":{
+    explanation:"Aqui aparece a primeira ordem divina registrada na criação: Deus diz que haja luz, e a luz passa a existir. O texto destaca o poder da palavra de Deus: ele fala e aquilo que ordena acontece. Essa luz surge antes da descrição do sol e da lua, que aparecem mais adiante no capítulo, mostrando que o foco do relato é a ação criadora de Deus. A partir da luz, começa a organização do tempo em períodos de dia e noite.",
+    meditation:"A primeira ação descrita é trazer luz ao que estava em trevas. Existe alguma área da sua vida em que você precisa pedir clareza, direção ou verdade a Deus?"
+  },
+  "Gen-1-4":{
+    explanation:"Depois que a luz surge, Deus a observa e declara que ela é boa. Em seguida, ele separa a luz das trevas. O versículo mostra que a criação não acontece de maneira desordenada: Deus avalia, distingue e organiza. A expressão “viu Deus que era boa” se repete ao longo do capítulo e reforça que aquilo que Deus cria possui propósito dentro da ordem que ele está estabelecendo.",
+    meditation:"Deus não apenas cria; ele também estabelece ordem. Há algo em sua rotina, escolhas ou pensamentos que precisa ser colocado em ordem?"
+  },
+  "Gen-1-5":{
+    explanation:"Deus dá nomes à luz e às trevas: Dia e Noite. Depois o texto registra tarde e manhã, formando o primeiro dia da narrativa da criação. Dar nome, no mundo bíblico, também comunica autoridade e organização. Assim, os primeiros versículos mostram uma sequência: Deus cria, separa, organiza e define. O relato seguirá esse mesmo movimento nos demais dias da criação.",
+    meditation:"Este versículo mostra ritmo e ordem. Como você pode organizar melhor seu tempo para que sua vida também tenha espaço para descanso, trabalho, oração e crescimento?"
+  },
+
   "Gen-3-1":{
     explanation:"A serpente inicia o diálogo questionando a ordem que Deus havia dado sobre as árvores do jardim. A pergunta distorce o mandamento ao sugerir que Deus teria proibido comer de todas as árvores, preparando a tentação que vem a seguir.",
     meditation:"Preste atenção quando uma dúvida começa mudando ou exagerando aquilo que Deus realmente disse. Conhecer bem a Palavra ajuda a reconhecer esse tipo de distorção."
@@ -1413,23 +1434,98 @@ function themeMeaning(theme){
   return meanings[theme]||"";
 }
 
-function contextualVerseExplanation(code,bookName,chapter,v){
-  const speech=speechSpecificExplanation(bookName,chapter,v);
-  let base=speech || actionSpecificExplanation(code,bookName,chapter,v);
-  const theme=detectVerseTheme(v.text);
-  const extra=themeMeaning(theme);
-  if(extra && !base.includes(extra)) base+=` ${extra}`;
+function detailedBookContext(code,bookName,chapter){
+  const group=verseBookGroup(code);
 
-  const {prev,next}=verseContext(code,chapter,v.number);
-  // Add a short, verse-specific context line without repeating a generic explanation.
-  if(prev && next){
-    base+=` No contexto imediato, ele vem depois de “${cleanInsightSnippet(prev.text,55)}” e antes de “${cleanInsightSnippet(next.text,55)}”.`;
-  }else if(prev){
-    base+=` Ele continua a ideia do versículo anterior: “${cleanInsightSnippet(prev.text,65)}”.`;
-  }else if(next){
-    base+=` A sequência continua no versículo seguinte: “${cleanInsightSnippet(next.text,65)}”.`;
+  const contexts={
+    history:`${bookName} apresenta acontecimentos dentro da história bíblica. Neste ponto do capítulo ${chapter}, cada ação ajuda a construir a sequência do relato e mostra como pessoas e escolhas participam da história maior.`,
+    gospel:`${bookName} relata a vida, as palavras e as ações de Jesus. Neste capítulo, o versículo faz parte de uma cena que deve ser acompanhada como um acontecimento completo, observando quem está presente, o que Jesus faz ou ensina e como as pessoas respondem.`,
+    acts:`Atos registra o crescimento da igreja e a missão dos primeiros cristãos. Este versículo está dentro dessa história de testemunho, decisões, viagens, conflitos e ação de Deus.`,
+    letter:`${bookName} é uma carta escrita para orientar cristãos. Por isso, este versículo faz parte de um raciocínio maior: o autor está ensinando, corrigindo, encorajando ou explicando algo aos leitores.`,
+    psalm:`Este versículo pertence aos Salmos, onde oração, poesia e experiência humana são colocadas diante de Deus. A linguagem pode expressar confiança, medo, alegria, arrependimento, pedido ou louvor.`,
+    wisdom:`${bookName} faz parte da literatura de sabedoria. O versículo procura ensinar uma maneira de pensar e viver, apresentando princípios que precisam ser aplicados com discernimento.`,
+    prophet:`${bookName} contém uma mensagem profética. Os profetas falam em situações históricas reais, podendo confrontar o pecado, chamar ao arrependimento, anunciar consequências ou trazer esperança.`,
+    poetry:`Este texto usa linguagem poética e reflexiva para tratar da experiência humana diante de Deus. Imagens e contrastes ajudam a comunicar verdades que vão além de uma leitura apenas literal.`,
+    revelation:`Apocalipse usa muitas imagens e símbolos para comunicar esperança, juízo, perseverança e a vitória final de Deus. Cada versículo deve ser lido dentro da visão e da cena em que aparece.`
+  };
+
+  return contexts[group] || `${bookName} faz parte da narrativa bíblica, e este versículo contribui para o desenvolvimento da mensagem do capítulo ${chapter}.`;
+}
+
+function explainVerseAction(code,bookName,chapter,v){
+  const text=String(v.text||"").replace(/\s+/g," ").trim();
+  const n=normalizeInsightText(text);
+  const ref=`${bookName} ${chapter}:${v.number}`;
+
+  if(code==="Gen" && Number(chapter)===1 && Number(v.number)>5){
+    if(/\bdisse deus\b/.test(n))
+      return `${ref} continua a sequência da criação mostrando Deus dando uma nova ordem. O capítulo apresenta a criação em etapas: Deus fala, algo passa a existir ou é organizado, e cada nova etapa prepara o ambiente para aquilo que virá depois.`;
+    if(/\bviu deus\b/.test(n))
+      return `${ref} mostra Deus avaliando aquilo que foi criado. A repetição de que a criação é “boa” reforça que ela possui ordem, propósito e valor dentro do plano apresentado no capítulo.`;
   }
-  return base;
+
+  const speech=speechSpecificExplanation(bookName,chapter,v);
+  if(speech){
+    return `${speech} Mais do que repetir as palavras, é importante perceber por que essa fala acontece naquele momento da história e qual resposta ela provoca em seguida.`;
+  }
+
+  if(/\bgerou\b|\bfilho de\b|\bfilhos de\b/.test(n))
+    return `${ref} registra descendência e continuidade familiar. Esses nomes podem parecer apenas uma lista, mas servem para ligar gerações, mostrar a continuidade da história e acompanhar como promessas e acontecimentos passam de uma família para outra.`;
+
+  if(/\b(criou|fez|formou)\b/.test(n) && code==="Gen")
+    return `${ref} descreve uma ação criadora de Deus. O texto apresenta Deus não apenas como alguém que observa o mundo, mas como aquele que dá origem, forma e propósito ao que passa a existir.`;
+
+  if(/\b(viu|tomou|comeu|deu|entrou|saiu|subiu|desceu|partiu|veio|foi|chegou|levantou|caiu|morreu|nasceu|edificou|chamou)\b/.test(n))
+    return `${ref} conta uma ação concreta dentro da história: “${cleanInsightSnippet(text,150)}”. Esse detalhe é importante porque move a narrativa adiante. Observe quem age, o que essa pessoa faz e quais consequências começam a aparecer depois dessa decisão.`;
+
+  if(/\bporque\b/.test(n))
+    return `${ref} apresenta uma explicação ou motivo. A palavra “porque” mostra que o autor está respondendo à pergunta “por quê?”, ligando esta frase ao que acabou de ser dito e explicando a razão daquela afirmação.`;
+
+  if(/\bportanto\b/.test(n))
+    return `${ref} apresenta uma conclusão. O autor chegou a este ponto depois de desenvolver uma ideia nos versículos anteriores; por isso, esta frase funciona como resultado ou aplicação do que já foi explicado.`;
+
+  if(/\bnao\b/.test(n) && /\b(comereis|faras|fazei|temais|matara|adulterar|furtar|mentir|toqueis|comais)\b/.test(n))
+    return `${ref} apresenta um limite, proibição ou orientação. Para entender o propósito dessa ordem, é importante observar quem a recebe, qual situação está acontecendo e quais consequências aparecem no contexto.`;
+
+  const group=verseBookGroup(code);
+  if(group==="psalm")
+    return `${ref} expressa em forma de oração ou poesia a experiência do autor diante de Deus. A frase “${cleanInsightSnippet(text,145)}” deve ser lida como parte de um sentimento ou declaração que vai sendo desenvolvido ao longo do salmo.`;
+
+  if(group==="gospel")
+    return `${ref} registra um momento do ministério de Jesus: “${cleanInsightSnippet(text,145)}”. Para compreender melhor, observe quem está na cena, o que aconteceu imediatamente antes e como essa fala ou ação contribui para revelar quem Jesus é e o que ele está ensinando.`;
+
+  if(group==="letter")
+    return `${ref} faz parte de um ensino dirigido aos cristãos: “${cleanInsightSnippet(text,145)}”. O autor não está soltando uma frase isolada; ele está construindo um argumento, então os versículos próximos ajudam a mostrar o problema tratado e a orientação dada.`;
+
+  if(group==="prophet")
+    return `${ref} faz parte de uma mensagem do profeta: “${cleanInsightSnippet(text,145)}”. Para entender bem, é necessário perceber se o povo está sendo advertido, corrigido, consolado ou chamado a voltar para Deus naquele trecho.`;
+
+  return `${ref} apresenta este detalhe da passagem: “${cleanInsightSnippet(text,150)}”. Ele acrescenta uma informação específica à história ou ao ensino do capítulo e deve ser entendido como parte da sequência, não como uma frase separada de tudo o que está ao redor.`;
+}
+
+function contextualVerseExplanation(code,bookName,chapter,v){
+  const id=refId(code,chapter,v.number);
+  const theme=detectVerseTheme(v.text);
+  const {prev,next}=verseContext(code,chapter,v.number);
+
+  let paragraphs=[];
+
+  paragraphs.push(explainVerseAction(code,bookName,chapter,v));
+
+  const themeText=themeMeaning(theme);
+  if(themeText) paragraphs.push(themeText);
+
+  paragraphs.push(detailedBookContext(code,bookName,chapter));
+
+  if(prev && next){
+    paragraphs.push(`Na sequência do texto, este versículo vem depois de “${cleanInsightSnippet(prev.text,70)}” e prepara o caminho para “${cleanInsightSnippet(next.text,70)}”. Isso ajuda a perceber como a ideia vai avançando de um versículo para o outro.`);
+  }else if(next){
+    paragraphs.push(`Como este versículo abre ou inicia uma parte da passagem, o versículo seguinte continua a ideia dizendo: “${cleanInsightSnippet(next.text,80)}”.`);
+  }else if(prev){
+    paragraphs.push(`Este versículo encerra ou conclui uma parte da passagem que vinha sendo desenvolvida. O versículo anterior dizia: “${cleanInsightSnippet(prev.text,80)}”.`);
+  }
+
+  return paragraphs.join("\n\n");
 }
 
 function contextualVerseMeditation(code,bookName,chapter,v){
@@ -1502,7 +1598,7 @@ function fullVerseRow(code,bookName,chapter,v){
 
     <div class="verse-understanding">
       <div class="verse-explanation-box">
-        <div class="verse-insight-title"><span>💡</span><strong>Explicação</strong></div>
+        <div class="verse-insight-title"><span>💡</span><strong>Explicação detalhada</strong></div>
         <p>${escapeHtml(insight.explanation)}</p>
       </div>
       <div class="verse-meditation-box">
@@ -2509,7 +2605,7 @@ function exportBackup(){const data={};for(let i=0;i<localStorage.length;i++){con
 function importBackupFile(event){const file=event.target.files?.[0];if(!file)return;const reader=new FileReader();reader.onload=()=>{try{const obj=JSON.parse(reader.result);if(!obj.data)throw new Error();for(const [k,v] of Object.entries(obj.data)){if(k.startsWith("bs-"))localStorage.setItem(k,v);}alert("Backup restaurado. O aplicativo será recarregado.");location.reload();}catch(e){toast("Arquivo de backup inválido");}};reader.readAsText(file);}
 function clearAppData(){if(!confirm("Tem certeza? Isso apaga favoritos, notas e progresso deste aparelho."))return;const keys=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k?.startsWith("bs-"))keys.push(k);}keys.forEach(k=>localStorage.removeItem(k));location.reload();}
 
-function renderMore(){pageTitle.textContent="Mais informações";content.innerHTML=`<div class="setting-row" onclick="toggleTheme()"><div class="setting-left"><div class="setting-icon">${state.dark?'☀':'☾'}</div><div><h3>Modo ${state.dark?'claro':'escuro'}</h3><div class="small">Mude a aparência do aplicativo</div></div></div><span>›</span></div><div class="setting-row" onclick="installAppFromMenu()"><div class="setting-left"><div class="setting-icon">⇩</div><div><h3>Instalar aplicativo</h3><div class="small">Adicionar à tela inicial do celular</div></div></div><span>›</span></div><div class="setting-row" onclick="shareApp()"><div class="setting-left"><div class="setting-icon">↗</div><div><h3>Compartilhar app</h3><div class="small">Envie o Palavra Viva para alguém</div></div></div><span>›</span></div><div class="version-card"><div class="cross">✝</div><h3>Bíblia Sagrada</h3><p>Palavra Viva • versão 2.0</p><p style="margin-top:8px">Desenvolvido por JNR</p></div><div class="panel" style="margin-top:12px"><strong>📖 Recursos desta versão</strong><p class="small">Menu reorganizado, planos, devocionais, histórias, pesquisa avançada, hinários pessoais, áudio por voz do aparelho, quiz, dicionário, temas, estudos por localização, backup e versões que realmente trocam o texto bíblico.</p></div>`;}
+function renderMore(){pageTitle.textContent="Mais informações";content.innerHTML=`<div class="setting-row" onclick="toggleTheme()"><div class="setting-left"><div class="setting-icon">${state.dark?'☀':'☾'}</div><div><h3>Modo ${state.dark?'claro':'escuro'}</h3><div class="small">Mude a aparência do aplicativo</div></div></div><span>›</span></div><div class="setting-row" onclick="installAppFromMenu()"><div class="setting-left"><div class="setting-icon">⇩</div><div><h3>Instalar aplicativo</h3><div class="small">Adicionar à tela inicial do celular</div></div></div><span>›</span></div><div class="setting-row" onclick="shareApp()"><div class="setting-left"><div class="setting-icon">↗</div><div><h3>Compartilhar app</h3><div class="small">Envie o Palavra Viva para alguém</div></div></div><span>›</span></div><div class="version-card"><div class="cross">✝</div><h3>Bíblia Sagrada</h3><p>Palavra Viva • versão 2.1</p><p style="margin-top:8px">Desenvolvido por JNR</p></div><div class="panel" style="margin-top:12px"><strong>📖 Recursos desta versão</strong><p class="small">Menu reorganizado, planos, devocionais, histórias, pesquisa avançada, hinários pessoais, áudio por voz do aparelho, quiz, dicionário, temas, estudos por localização, backup e versões que realmente trocam o texto bíblico.</p></div>`;}
 
 function installAppFromMenu(){ if(deferredPrompt) installBtn.click(); else toast("No Chrome: menu ⋮ → Adicionar à tela inicial"); }
 function shareApp(){ const data={title:"Bíblia Sagrada • Palavra Viva",text:"Conheça o aplicativo Bíblia Sagrada • Palavra Viva",url:location.href}; if(navigator.share) navigator.share(data).catch(()=>{}); else if(navigator.clipboard){navigator.clipboard.writeText(location.href);toast("Link copiado");} }

@@ -1238,3 +1238,26 @@ body.worship-user-hidden .bottom-nav{
   font-weight:850;
   letter-spacing:.02em;
 }
+
+
+/* v2.1 — explicações mais completas, em formato de mini estudo */
+.verse-explanation-box p{
+  white-space:pre-line;
+  font-size:13px;
+  line-height:1.68;
+}
+
+.verse-explanation-box{
+  padding:14px 14px;
+}
+
+.verse-insight-title strong{
+  font-size:13px;
+}
+
+@media(max-width:620px){
+  .verse-explanation-box p{
+    font-size:12.5px;
+    line-height:1.65;
+  }
+}
