@@ -377,7 +377,8 @@ const DRAWER_SECTIONS = [
     {key:"study", title:"Pesquisa Avançada & Estudo Bíblico", icon:"🔎", meta:"Ferramentas de estudo"},
     {key:"search", title:"Pesquisa", icon:"⌕", meta:"Buscar referência"},
     {key:"devotionals", title:"Devocionais", icon:"🙏", meta:"Momentos de reflexão"},
-    {key:"hymns", title:"Hinários", icon:"🎵", meta:"Louvor"}
+    {key:"hymns", title:"Louvores", icon:"🎵", meta:"Louvores e instrumentais"},
+    {key:"harpa", title:"Hinos da Harpa", icon:"🎼", meta:"640 hinos"}
   ],
   [
     {key:"donation", title:"Doação de Bíblias", icon:"♡", meta:"Ações solidárias"},
@@ -697,6 +698,7 @@ const state = {
   worshipPlaying:false,
   worshipObjectUrl:null,
   worshipPlayerHiddenByUser:false,
+  harpaCatalogLoaded:false,
   drawerOpen:false
 };
 
@@ -2472,6 +2474,83 @@ worshipAudioEl.addEventListener("loadedmetadata",()=>{
 });
 
 
+
+const HARPA_CATALOG_URL="https://harpacomjesus.com.br/hinos/";
+
+function renderHarpa(){
+  pageTitle.textContent="Hinos da Harpa";
+  content.innerHTML=`
+    <section class="harpa-hero">
+      <div class="harpa-cover-mark">🎼</div>
+      <div>
+        <span class="eyebrow">HARPA CRISTÃ</span>
+        <h2>640 Hinos da Harpa</h2>
+        <p>Encontre o hino pelo número ou pelo nome. Esta área fica separada dos louvores para facilitar na hora do culto.</p>
+      </div>
+    </section>
+
+    <div class="harpa-quick-card">
+      <div class="harpa-count">
+        <strong>640</strong>
+        <span>hinos no catálogo</span>
+      </div>
+      <div class="harpa-help">
+        <strong>Como usar</strong>
+        <span>Use a busca do catálogo abaixo e digite, por exemplo: <b>1</b>, <b>Chuvas de Graça</b>, <b>545</b> ou o nome do hino.</span>
+      </div>
+    </div>
+
+    <div class="harpa-number-jump">
+      <strong>Ir rápido por faixa</strong>
+      <div class="harpa-range-buttons">
+        ${[
+          [1,100],[101,200],[201,300],[301,400],[401,500],[501,600],[601,640]
+        ].map(([a,b])=>`<button onclick="harpaScrollToCatalog()">${a}–${b}</button>`).join("")}
+      </div>
+    </div>
+
+    <div class="harpa-browser-card" id="harpaCatalog">
+      <div class="harpa-browser-head">
+        <div>
+          <strong>Catálogo completo</strong>
+          <small>Todos os 640 hinos</small>
+        </div>
+        <button class="btn-ghost" onclick="openHarpaExternally()">Abrir fora ↗</button>
+      </div>
+
+      <div class="harpa-frame-wrap">
+        <iframe
+          id="harpaFrame"
+          src="${HARPA_CATALOG_URL}"
+          title="Catálogo dos 640 Hinos da Harpa Cristã"
+          loading="lazy"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allow="clipboard-read; clipboard-write"
+        ></iframe>
+      </div>
+
+      <div class="harpa-fallback">
+        <strong>Se o catálogo não aparecer no seu celular</strong>
+        <span>Alguns navegadores podem bloquear páginas externas dentro do aplicativo.</span>
+        <button class="btn-primary full-width" onclick="openHarpaExternally()">Abrir os 640 hinos</button>
+      </div>
+    </div>
+
+    <div class="panel harpa-note">
+      <strong>📌 Harpa separada dos Louvores</strong>
+      <p class="small">A aba <b>Harpa</b> é para procurar os hinos pelo número/nome. A aba <b>Louvores</b> continua com músicas e instrumentais para ouvir.</p>
+    </div>
+  `;
+}
+
+function harpaScrollToCatalog(){
+  document.getElementById("harpaCatalog")?.scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+function openHarpaExternally(){
+  window.open(HARPA_CATALOG_URL,"_blank","noopener,noreferrer");
+}
+
 function renderDonation(){
   pageTitle.textContent="Doação de Bíblias";const entries=JSON.parse(localStorage.getItem("bs-bible-donations")||"[]");
   content.innerHTML=`<div class="panel"><h3>♡ Doação de Bíblias</h3><p class="small">Registre pedidos ou pessoas dispostas a doar. Os dados ficam salvos neste aparelho.</p></div><div class="search-card"><select id="donationType" class="field"><option value="doar">Quero doar Bíblias</option><option value="receber">Preciso receber Bíblias</option></select><input id="donationName" class="field" placeholder="Nome"><div class="field-row"><input id="donationCity" class="field" placeholder="Cidade"><input id="donationQty" class="field" inputmode="numeric" placeholder="Quantidade"></div><button class="btn-primary full-width" onclick="saveDonation()">Registrar</button></div>${entries.length?entries.map(e=>`<article class="list-card"><div><strong>${e.type==='doar'?'Doação':'Pedido'} • ${escapeHtml(e.name)}</strong><small>${escapeHtml(e.city)} • ${e.qty} Bíblia(s)</small></div></article>`).join(''):''}`;
@@ -2605,7 +2684,7 @@ function exportBackup(){const data={};for(let i=0;i<localStorage.length;i++){con
 function importBackupFile(event){const file=event.target.files?.[0];if(!file)return;const reader=new FileReader();reader.onload=()=>{try{const obj=JSON.parse(reader.result);if(!obj.data)throw new Error();for(const [k,v] of Object.entries(obj.data)){if(k.startsWith("bs-"))localStorage.setItem(k,v);}alert("Backup restaurado. O aplicativo será recarregado.");location.reload();}catch(e){toast("Arquivo de backup inválido");}};reader.readAsText(file);}
 function clearAppData(){if(!confirm("Tem certeza? Isso apaga favoritos, notas e progresso deste aparelho."))return;const keys=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k?.startsWith("bs-"))keys.push(k);}keys.forEach(k=>localStorage.removeItem(k));location.reload();}
 
-function renderMore(){pageTitle.textContent="Mais informações";content.innerHTML=`<div class="setting-row" onclick="toggleTheme()"><div class="setting-left"><div class="setting-icon">${state.dark?'☀':'☾'}</div><div><h3>Modo ${state.dark?'claro':'escuro'}</h3><div class="small">Mude a aparência do aplicativo</div></div></div><span>›</span></div><div class="setting-row" onclick="installAppFromMenu()"><div class="setting-left"><div class="setting-icon">⇩</div><div><h3>Instalar aplicativo</h3><div class="small">Adicionar à tela inicial do celular</div></div></div><span>›</span></div><div class="setting-row" onclick="shareApp()"><div class="setting-left"><div class="setting-icon">↗</div><div><h3>Compartilhar app</h3><div class="small">Envie o Palavra Viva para alguém</div></div></div><span>›</span></div><div class="version-card"><div class="cross">✝</div><h3>Bíblia Sagrada</h3><p>Palavra Viva • versão 2.1</p><p style="margin-top:8px">Desenvolvido por JNR</p></div><div class="panel" style="margin-top:12px"><strong>📖 Recursos desta versão</strong><p class="small">Menu reorganizado, planos, devocionais, histórias, pesquisa avançada, hinários pessoais, áudio por voz do aparelho, quiz, dicionário, temas, estudos por localização, backup e versões que realmente trocam o texto bíblico.</p></div>`;}
+function renderMore(){pageTitle.textContent="Mais informações";content.innerHTML=`<div class="setting-row" onclick="toggleTheme()"><div class="setting-left"><div class="setting-icon">${state.dark?'☀':'☾'}</div><div><h3>Modo ${state.dark?'claro':'escuro'}</h3><div class="small">Mude a aparência do aplicativo</div></div></div><span>›</span></div><div class="setting-row" onclick="installAppFromMenu()"><div class="setting-left"><div class="setting-icon">⇩</div><div><h3>Instalar aplicativo</h3><div class="small">Adicionar à tela inicial do celular</div></div></div><span>›</span></div><div class="setting-row" onclick="shareApp()"><div class="setting-left"><div class="setting-icon">↗</div><div><h3>Compartilhar app</h3><div class="small">Envie o Palavra Viva para alguém</div></div></div><span>›</span></div><div class="version-card"><div class="cross">✝</div><h3>Bíblia Sagrada</h3><p>Palavra Viva • versão 2.2</p><p style="margin-top:8px">Desenvolvido por JNR</p></div><div class="panel" style="margin-top:12px"><strong>📖 Recursos desta versão</strong><p class="small">Menu reorganizado, planos, devocionais, histórias, pesquisa avançada, hinários pessoais, áudio por voz do aparelho, quiz, dicionário, temas, estudos por localização, backup e versões que realmente trocam o texto bíblico.</p></div>`;}
 
 function installAppFromMenu(){ if(deferredPrompt) installBtn.click(); else toast("No Chrome: menu ⋮ → Adicionar à tela inicial"); }
 function shareApp(){ const data={title:"Bíblia Sagrada • Palavra Viva",text:"Conheça o aplicativo Bíblia Sagrada • Palavra Viva",url:location.href}; if(navigator.share) navigator.share(data).catch(()=>{}); else if(navigator.clipboard){navigator.clipboard.writeText(location.href);toast("Link copiado");} }
@@ -2616,7 +2695,7 @@ function renderDrawer(){
   drawerContent.innerHTML = DRAWER_SECTIONS.map((section,idx)=>`<div class="drawer-section ${idx===0?'first':''}">${section.map(item=>`<button class="drawer-item ${state.page===item.key?'active':''}" onclick="handleDrawerItem('${item.key}')"><div class="drawer-item-left"><div class="drawer-icon">${item.icon}</div><div><div class="drawer-item-title">${item.title}</div><div class="drawer-item-meta">${item.meta||''}</div></div></div><span>›</span></button>`).join('')}</div>`).join('');
 }
 function handleDrawerItem(key){
-  const directPages = new Set(['bible','notes','favorites','plans','progress','devotional','stories','study','search','devotionals','hymns','donation','ads','apostolic','message','audio','store','versions','way','salt','questions','dictionary','themes','maps','blog','instagram','youtube','history','backup','more']);
+  const directPages = new Set(['bible','notes','favorites','plans','progress','devotional','stories','study','search','devotionals','hymns','harpa','donation','ads','apostolic','message','audio','store','versions','way','salt','questions','dictionary','themes','maps','blog','instagram','youtube','history','backup','more']);
   if(directPages.has(key)) navigate(key);
   else if(key==='share-app'){ shareApp(); closeDrawer(); }
 }
@@ -2639,6 +2718,7 @@ function render(){
   else if(state.page==="study") renderStudy();
   else if(state.page==="devotionals") renderDevotionals();
   else if(state.page==="hymns") renderHymns();
+  else if(state.page==="harpa") renderHarpa();
   else if(state.page==="donation") renderDonation();
   else if(state.page==="ads") renderAds();
   else if(state.page==="apostolic") renderVersionInfo("apostolic");
@@ -2679,7 +2759,7 @@ Object.assign(window,{ state,openDrawer,closeDrawer,quickOpenVersions,navigate,t
   renderHymns,setHymnCategory,savePlayableHymn,deleteHymn,playWorshipTrack,
   toggleWorshipPlayback,playNextWorship,playPreviousWorship,stopWorship,seekWorship
 
-,saveYoutubeHymn,hideWorshipPlayer,showWorshipPlayer});
+,saveYoutubeHymn,hideWorshipPlayer,showWorshipPlayer,renderHarpa,harpaScrollToCatalog,openHarpaExternally});
 
 if('serviceWorker' in navigator){ navigator.serviceWorker.register('./sw.js').catch(()=>{}); }
 render();

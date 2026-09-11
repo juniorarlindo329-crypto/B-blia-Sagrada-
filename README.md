@@ -1,36 +1,38 @@
-# Bíblia Sagrada • Palavra Viva — versão 2.1
+# Bíblia Sagrada • Palavra Viva — versão 2.2
 
-## Explicações mais profundas em cada versículo
+## Nova opção: Hinos da Harpa
 
-A explicação abaixo de cada versículo foi ampliada para funcionar como uma pequena aula de leitura bíblica.
+Foi adicionada uma opção **Harpa** diretamente na barra inferior do aplicativo.
 
-Agora ela procura mostrar:
-- o que está acontecendo naquele versículo;
-- o significado da frase dentro da história;
-- o tipo de livro bíblico em que o texto aparece;
-- o tema principal;
-- a relação com o versículo anterior e o seguinte.
+A nova área apresenta acesso ao catálogo com **640 hinos da Harpa Cristã**, com busca por número e nome.
 
-### Exemplo — Gênesis 1:1
-A explicação não fica apenas em “Deus criou tudo”.
+### Organização
+A barra inferior agora possui:
+- Início
+- Bíblia
+- Buscar
+- Versões
+- Harpa
+- Salvos
 
-Ela mostra que:
-- o versículo abre toda a narrativa bíblica;
-- Deus é apresentado antes de qualquer coisa criada;
-- “céus e terra” abrange toda a criação;
-- o capítulo seguirá mostrando a criação sendo organizada passo a passo.
+### Harpa x Louvores
+- **Harpa**: catálogo dos hinos tradicionais, para encontrar pelo número ou nome.
+- **Louvores**: músicas brasileiras, YouTube e instrumentais para ouvir.
 
-Gênesis 1:1–5 recebeu explicações especialmente revisadas nesse novo formato.
+### Catálogo
+O conteúdo completo dos hinos é carregado a partir de uma fonte externa dentro do aplicativo, em vez de copiar todas as letras para o pacote.
+Também existe um botão de abertura externa caso o navegador bloqueie a visualização incorporada.
 
 ## Mantido
-- explicação própria para cada versículo;
-- meditação abaixo de cada versículo;
+Todos os recursos da versão 2.1:
+- explicações detalhadas embaixo de cada versículo;
+- meditação;
 - estudo completo;
-- marcação por cores tocando no texto;
-- louvores brasileiros e player ocultável;
+- marcação por cores;
+- louvores;
 - AEC na lista;
-- quiz, favoritos, anotações e demais recursos.
-
-> As explicações são um auxílio devocional e de compreensão. Para estudo teológico aprofundado, é importante considerar o capítulo inteiro e fontes de estudo confiáveis.
+- quiz;
+- favoritos;
+- anotações.
 
 Desenvolvido por JNR.
