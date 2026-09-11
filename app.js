@@ -40,6 +40,58 @@ const SPECIAL_MEDITATIONS = {
   "Phil-4-6":{meditation:"A inquietação pode ocupar nossa mente com possibilidades e preocupações. Este texto nos convida a transformar preocupação em oração, levando a Deus aquilo que está além das nossas forças.",reflect:"Qual preocupação você pode transformar em oração agora?",prayer:"Senhor, recebe minhas preocupações e dá-me serenidade para lidar com aquilo que está diante de mim. Amém."}
 };
 
+const SPECIAL_INLINE_EXPLANATIONS = {
+  "Phil-4-13":{
+    explanation:"Paulo ensina que sua força para enfrentar diferentes situações vem de Cristo. O foco não é conseguir qualquer coisa que desejamos, mas permanecer firmes e fiéis mesmo quando as circunstâncias mudam.",
+    meditation:"Em vez de depender somente das suas próprias forças, entregue a Deus aquilo que hoje parece pesado e peça força para continuar."
+  },
+  "Ps-23-1":{
+    explanation:"Davi apresenta Deus como um pastor que cuida, guia e protege. A imagem mostra confiança: assim como o pastor conhece suas ovelhas, Deus conhece as necessidades de quem se entrega aos seus cuidados.",
+    meditation:"Pense em uma preocupação que você está carregando e coloque-a diante de Deus com confiança."
+  },
+  "Matt-11-28":{
+    explanation:"Jesus chama para perto dele quem está cansado e sobrecarregado. O versículo mostra acolhimento e descanso espiritual para quem reconhece seus limites e se aproxima dele.",
+    meditation:"Que peso você precisa entregar a Jesus hoje para encontrar descanso e direção?"
+  },
+  "Jer-29-11":{
+    explanation:"Essas palavras foram dadas a um povo vivendo um período difícil no exílio. Deus lembra que ainda havia propósito, esperança e futuro, mesmo quando a situação presente parecia desanimadora.",
+    meditation:"Não deixe uma fase difícil convencer você de que sua história terminou. Continue caminhando com esperança."
+  },
+  "Prov-3-5":{
+    explanation:"O texto aconselha a confiar em Deus acima da própria compreensão limitada. Isso não significa deixar de pensar, mas reconhecer que nem sempre enxergamos todas as consequências e caminhos.",
+    meditation:"Há alguma situação que você precisa entregar mais a Deus em vez de tentar controlar sozinho?"
+  },
+  "Isa-41-10":{
+    explanation:"Deus encoraja seu povo a não viver dominado pelo medo, porque sua presença, ajuda e sustento continuam disponíveis. A coragem nasce da certeza de não caminhar sozinho.",
+    meditation:"Lembre-se de que medo e fé podem aparecer juntos; escolha dar o próximo passo confiando que Deus está com você."
+  },
+  "Ps-46-1":{
+    explanation:"O salmo descreve Deus como refúgio e força em tempos de dificuldade. A segurança apresentada aqui não depende de uma vida sem problemas, mas da presença de Deus no meio deles.",
+    meditation:"Quando tudo parecer instável, busque primeiro um lugar de oração e confiança antes de agir no impulso."
+  },
+  "Rom-8-28":{
+    explanation:"Paulo não afirma que tudo o que acontece é bom. Ele ensina que Deus pode agir até em situações difíceis e conduzir sua obra para o bem daqueles que o amam.",
+    meditation:"Pergunte a Deus o que você pode aprender e como pode amadurecer mesmo em uma situação que não escolheu."
+  },
+  "John-3-16":{
+    explanation:"O versículo resume a mensagem central do evangelho: o amor de Deus se manifesta em sua entrega por meio de Jesus e convida cada pessoa a responder com fé.",
+    meditation:"Receba o amor de Deus como algo que também deve transformar a forma como você trata as outras pessoas."
+  },
+  "Ps-119-105":{
+    explanation:"A Palavra é comparada a uma lâmpada porque ilumina o caminho passo a passo. Ela não revela necessariamente tudo de uma vez, mas oferece direção para decisões e atitudes.",
+    meditation:"Qual é o próximo passo da sua vida em que você precisa da direção da Palavra de Deus?"
+  },
+  "2Cor-5-7":{
+    explanation:"Paulo contrasta viver apenas pelo que os olhos conseguem ver com viver confiando em Deus. A fé permite continuar obedecendo mesmo quando o resultado ainda não está claro.",
+    meditation:"Em qual área você precisa continuar fiel mesmo sem enxergar ainda como tudo vai terminar?"
+  },
+  "Phil-4-6":{
+    explanation:"Paulo orienta os cristãos a não alimentar a ansiedade sozinhos, mas transformar as preocupações em oração, apresentando a Deus pedidos e agradecimentos.",
+    meditation:"Escolha uma preocupação específica e transforme-a agora em uma oração simples e sincera."
+  }
+};
+
+
 const DAILY_REFS = [
   ["Phil",4,13],["Ps",23,1],["Matt",11,28],["Jer",29,11],["Prov",3,5],["Isa",41,10],
   ["Ps",46,1],["Rom",8,28],["John",3,16],["Ps",119,105],["2Cor",5,7],["Phil",4,6]
@@ -126,141 +178,14 @@ const VERSION_GROUPS = [
 
 
 const INCLUDED_WORSHIP_TRACKS = [
-  {
-    id:"br-lugar-secreto",
-    category:"Adoração",
-    title:"Lugar Secreto",
-    subtitle:"Clipe oficial",
-    performer:"Gabriela Rocha",
-    youtubeId:"YnrN0o0lubM",
-    source:"YouTube • canal oficial"
-  },
-  {
-    id:"br-me-atraiu",
-    category:"Adoração",
-    title:"Me Atraiu",
-    subtitle:"Reimagined",
-    performer:"Gabriela Rocha",
-    youtubeId:"_UN2gwabRBI",
-    source:"YouTube • canal oficial"
-  },
-  {
-    id:"br-bondade-de-deus",
-    category:"Adoração",
-    title:"Bondade de Deus",
-    subtitle:"Ao vivo",
-    performer:"Isaias Saad",
-    youtubeId:"mZ9yZYo9Mmk",
-    source:"YouTube • canal oficial"
-  },
-  {
-    id:"br-aquieta-minhalma",
-    category:"Adoração",
-    title:"Aquieta Minh'alma",
-    subtitle:"Vídeo oficial",
-    performer:"Ministério Zoe",
-    youtubeId:"ANfpF0pNob4",
-    source:"YouTube • canal oficial"
-  },
-  {
-    id:"br-bencaos",
-    category:"Adoração",
-    title:"Bênçãos Que Não Têm Fim",
-    subtitle:"Vídeo oficial",
-    performer:"Isadora Pompeo",
-    youtubeId:"Xq_07hEF2AQ",
-    source:"YouTube • canal oficial"
-  },
-  {
-    id:"br-me-ajude-a-melhorar",
-    category:"Adoração",
-    title:"Me Ajude a Melhorar",
-    subtitle:"Ao vivo",
-    performer:"Eli Soares",
-    youtubeId:"N4W011dK1uM",
-    source:"YouTube • canal oficial"
-  },
-  {
-    id:"br-deus-de-promessas",
-    category:"Louvores Antigos",
-    title:"Deus de Promessas",
-    subtitle:"DVD No Caminho do Milagre",
-    performer:"Davi Sacer",
-    youtubeId:"03QIkzzom1s",
-    source:"YouTube • Você Adora"
-  },
-  {
-    id:"br-ninguem-explica-deus",
-    category:"Adoração",
-    title:"Ninguém Explica Deus",
-    subtitle:"Ao vivo • feat. Gabriela Rocha",
-    performer:"Preto no Branco",
-    youtubeId:"LYsaKn8FRhc",
-    source:"YouTube"
-  },
-  {
-    id:"br-deus-provera",
-    category:"Louvores Pentecostais",
-    title:"Deus Proverá",
-    subtitle:"Vídeo oficial",
-    performer:"Gabriela Gomes",
-    youtubeId:"tf1rVE3mbpg",
-    source:"YouTube"
-  },
-  {
-    id:"br-todavia",
-    category:"Louvores Pentecostais",
-    title:"Todavia Me Alegrarei",
-    subtitle:"Clipe oficial",
-    performer:"Samuel Messias",
-    youtubeId:"81GaF34veWA",
-    source:"YouTube • MK Music"
-  },
-  {
-    id:"br-prioridade",
-    category:"Louvores Pentecostais",
-    title:"Prioridade",
-    subtitle:"Ao vivo",
-    performer:"Midian Lima",
-    youtubeId:"1Zyu6Ec57tU",
-    source:"YouTube • MK Music"
-  },
-  {
-    id:"br-galileu",
-    category:"Adoração",
-    title:"Galileu",
-    subtitle:"Ao Vivo no Mineirão",
-    performer:"Fernandinho",
-    youtubeId:"bcLC42v-eyE",
-    source:"YouTube"
-  },
-  {
-    id:"br-a-casa-e-sua",
-    category:"Adoração",
-    title:"A Casa É Sua",
-    subtitle:"Apresentação ao vivo",
-    performer:"Casa Worship",
-    youtubeId:"qWkQnQIFm_E",
-    source:"YouTube"
-  },
-  {
-    id:"inst-piano-oracao",
-    category:"Instrumental para Leitura",
-    title:"Piano Gospel para Orar e Ler",
-    subtitle:"Instrumental leve • sem distrações",
-    performer:"Piano Worship Life",
-    youtubeId:"4S2-Dgrftxs",
-    source:"YouTube • Official Artist Channel"
-  },
-  {
-    id:"inst-piano-worship-3h",
-    category:"Instrumental para Leitura",
-    title:"Piano Worship • 3 Horas",
-    subtitle:"Instrumental suave para leitura e oração",
-    performer:"Jerry Kim",
-    youtubeId:"bZ_Q_3CWwIA",
-    source:"YouTube • Official Artist Channel"
-  }
+  {id:"local-paz",category:"Instrumental para Leitura",title:"Paz na Palavra",subtitle:"Instrumental original • leitura tranquila",performer:"Palavra Viva",audioUrl:"./audio/paz-na-palavra.mp3",source:"Áudio incluído no app"},
+  {id:"local-oracao",category:"Instrumental para Leitura",title:"Momento de Oração",subtitle:"Instrumental original • piano e ambiente suave",performer:"Palavra Viva",audioUrl:"./audio/momento-de-oracao.mp3",source:"Áudio incluído no app"},
+  {id:"local-descanso",category:"Instrumental para Leitura",title:"Descanso em Deus",subtitle:"Instrumental original • calmo",performer:"Palavra Viva",audioUrl:"./audio/descanso-em-deus.mp3",source:"Áudio incluído no app"},
+  {id:"local-manha",category:"Instrumental para Leitura",title:"Manhã com a Palavra",subtitle:"Instrumental original • leve e sereno",performer:"Palavra Viva",audioUrl:"./audio/manha-com-a-palavra.mp3",source:"Áudio incluído no app"},
+  {id:"local-adoracao",category:"Adoração",title:"Adoração Suave",subtitle:"Instrumental cristão original",performer:"Palavra Viva",audioUrl:"./audio/adoracao-suave.mp3",source:"Áudio incluído no app"},
+  {id:"local-noite",category:"Adoração",title:"Noite de Reflexão",subtitle:"Instrumental original • oração e descanso",performer:"Palavra Viva",audioUrl:"./audio/noite-de-reflexao.mp3",source:"Áudio incluído no app"},
+  {id:"local-corinho",category:"Corinhos de Fogo",title:"Corinho de Alegria",subtitle:"Instrumental original • ritmo alegre",performer:"Palavra Viva",audioUrl:"./audio/corinho-de-alegria.mp3",source:"Áudio incluído no app"},
+  {id:"local-fogo",category:"Louvores Pentecostais",title:"Fogo e Fé",subtitle:"Instrumental original • estilo pentecostal",performer:"Palavra Viva",audioUrl:"./audio/fogo-e-fe.mp3",source:"Áudio incluído no app"}
 ];
 
 const WORSHIP_CATEGORIES = [
@@ -1179,6 +1104,137 @@ function renderReadingActionSheet(){
     </div>`;
 }
 
+
+function verseBookGroup(code){
+  if(["Ps"].includes(code)) return "psalm";
+  if(["Prov","Eccl"].includes(code)) return "wisdom";
+  if(["Matt","Mark","Luke","John"].includes(code)) return "gospel";
+  if(["Acts"].includes(code)) return "acts";
+  if(["Rom","1Cor","2Cor","Gal","Eph","Phil","Col","1Thess","2Thess","1Tim","2Tim","Titus","Phlm","Heb","Jas","1Pet","2Pet","1John","2John","3John","Jude"].includes(code)) return "letter";
+  if(["Gen","Exod","Lev","Num","Deut","Josh","Judg","Ruth","1Sam","2Sam","1Kgs","2Kgs","1Chr","2Chr","Ezra","Neh","Esth"].includes(code)) return "history";
+  if(["Job"].includes(code)) return "poetry";
+  if(["Isa","Jer","Lam","Ezek","Dan","Hos","Joel","Amos","Obad","Jonah","Mic","Nah","Hab","Zeph","Hag","Zech","Mal"].includes(code)) return "prophet";
+  if(["Rev"].includes(code)) return "revelation";
+  return "general";
+}
+
+function detectVerseTheme(text){
+  const t=String(text||"").toLowerCase();
+
+  const checks=[
+    {keys:["amor","amar","amou"],theme:"amor"},
+    {keys:["fé","crê","crer","creu","confia","confiar"],theme:"fé"},
+    {keys:["perdo","perdão","misericórdia","misericord"],theme:"perdão"},
+    {keys:["orar","oração","orai","ore"],theme:"oração"},
+    {keys:["pecado","pecar","iniquidade","transgress"],theme:"pecado"},
+    {keys:["graça"],theme:"graça"},
+    {keys:["salvação","salvar","salvo"],theme:"salvação"},
+    {keys:["esperança","esperar"],theme:"esperança"},
+    {keys:["paz"],theme:"paz"},
+    {keys:["sabedoria","sábio","prudência","prudente"],theme:"sabedoria"},
+    {keys:["justiça","justo","justiça"],theme:"justiça"},
+    {keys:["espírito santo","espírito"],theme:"espírito"},
+    {keys:["mandamento","lei","obedecer","obediência"],theme:"obediência"},
+    {keys:["alegria","alegrai","regozij"],theme:"alegria"},
+    {keys:["medo","temor","temais","temer"],theme:"temor"},
+    {keys:["tribulação","aflição","sofr","persegui"],theme:"perseverança"},
+    {keys:["vida","morte","morrer"],theme:"vida"},
+    {keys:["pobre","órfão","viúva","necessitado"],theme:"compaixão"},
+    {keys:["gerou","genealogia","filho de","filhos de"],theme:"genealogia"},
+    {keys:["louvor","louvai","louvarei","ador"],theme:"adoração"},
+    {keys:["promessa","prometeu","aliança"],theme:"promessa"}
+  ];
+
+  for(const item of checks){
+    if(item.keys.some(k=>t.includes(k))) return item.theme;
+  }
+  return "geral";
+}
+
+function contextualVerseExplanation(code,text){
+  const group=verseBookGroup(code);
+  const theme=detectVerseTheme(text);
+
+  const themeExplanations={
+    amor:"Este versículo destaca o amor como atitude, compromisso e cuidado. Na Bíblia, amar vai além do sentimento: aparece também na maneira de tratar, servir e agir com o próximo.",
+    fé:"Este versículo fala sobre fé e confiança. A ideia central é continuar confiando em Deus mesmo quando nem tudo pode ser visto ou entendido imediatamente.",
+    perdão:"Este versículo toca no tema do perdão e da misericórdia. Ele nos lembra da importância de receber a graça de Deus e também tratar outras pessoas com misericórdia.",
+    oração:"Este versículo chama atenção para a oração e a comunhão com Deus. A oração bíblica envolve sinceridade, dependência, gratidão e disposição para ouvir e obedecer.",
+    pecado:"Este versículo trata da realidade do pecado e de suas consequências. A Bíblia apresenta o pecado como aquilo que nos afasta da vontade de Deus e aponta para arrependimento e mudança de caminho.",
+    graça:"Este versículo destaca a graça de Deus: um favor que não é conquistado por mérito próprio, mas recebido com fé e gratidão.",
+    salvação:"Este versículo aponta para a salvação e para a iniciativa de Deus em resgatar e restaurar. O texto convida a responder com fé, arrependimento e uma vida transformada.",
+    esperança:"Este versículo fala de esperança. A esperança bíblica não é apenas desejar que algo dê certo; é continuar confiando em Deus mesmo durante períodos de espera.",
+    paz:"Este versículo apresenta a paz como algo que vai além da ausência de problemas. É uma segurança interior que nasce da confiança e da presença de Deus.",
+    sabedoria:"Este versículo ensina sobre sabedoria prática: pensar, escolher e agir de uma maneira que esteja alinhada com aquilo que é correto diante de Deus.",
+    justiça:"Este versículo fala de justiça e retidão. Ele chama atenção para atitudes corretas, honestas e coerentes com o caráter de Deus.",
+    espírito:"Este versículo menciona a ação espiritual de Deus. Leia observando o que o texto ensina sobre direção, transformação, presença ou poder do Espírito.",
+    obediência:"Este versículo trata de obediência. Na Bíblia, obedecer a Deus não é apenas conhecer um mandamento, mas colocar a Palavra em prática.",
+    alegria:"Este versículo fala de alegria. Muitas vezes a alegria bíblica aparece como resultado da confiança em Deus, mesmo quando as circunstâncias não são perfeitas.",
+    temor:"Este versículo aborda temor. Dependendo do contexto, pode falar de medo humano ou de reverência a Deus; por isso é importante observar o capítulo inteiro.",
+    perseverança:"Este versículo aparece em um contexto de luta, sofrimento ou perseverança. Ele ensina que dificuldades não precisam significar abandono de Deus e podem exigir firmeza e fé.",
+    vida:"Este versículo toca em vida e morte. Observe se o texto está falando da vida física, da vida espiritual, da eternidade ou das consequências das escolhas humanas.",
+    compaixão:"Este versículo chama atenção para pessoas vulneráveis e para a responsabilidade de agir com compaixão, cuidado e justiça.",
+    genealogia:"Este versículo faz parte de uma genealogia ou registro familiar. Esses nomes ajudam a mostrar continuidade histórica, descendência e o cumprimento de promessas ao longo das gerações.",
+    adoração:"Este versículo fala de louvor ou adoração. Ele direciona o coração para reconhecer quem Deus é, lembrar suas obras e responder com gratidão.",
+    promessa:"Este versículo envolve promessa ou aliança. Para entendê-lo bem, observe a quem a promessa foi feita, em qual situação e quais condições aparecem no contexto."
+  };
+
+  if(themeExplanations[theme]) return themeExplanations[theme];
+
+  const groupExplanations={
+    psalm:"Este versículo faz parte de um Salmo, uma coleção de orações e cânticos. Leia observando o sentimento do autor e o que ele declara sobre Deus no meio daquela situação.",
+    wisdom:"Este versículo pertence à literatura de sabedoria. Ele apresenta um princípio para pensar e viver com prudência; deve ser aplicado considerando o restante do capítulo e da Bíblia.",
+    gospel:"Este versículo está em um dos Evangelhos. Observe quem está falando, para quem, e o que a cena ensina sobre Jesus, seu caráter, suas ações ou seus ensinamentos.",
+    acts:"Este versículo está no livro de Atos, que relata o crescimento da igreja e a missão dos primeiros cristãos. Observe o acontecimento e o que ele mostra sobre fé, testemunho e ação de Deus.",
+    letter:"Este versículo faz parte de uma carta do Novo Testamento. Ele foi escrito para orientar cristãos em situações reais; leia também os versículos ao redor para entender a instrução completa.",
+    history:"Este versículo faz parte de uma narrativa histórica do Antigo Testamento. Ele relata pessoas, decisões e acontecimentos que precisam ser entendidos dentro da história maior do capítulo.",
+    poetry:"Este versículo usa linguagem poética e reflexiva. Preste atenção às imagens, sentimentos e contrastes usados para expressar uma verdade sobre Deus e a experiência humana.",
+    prophet:"Este versículo está em um livro profético. Os profetas frequentemente confrontam o pecado, chamam ao arrependimento, anunciam juízo ou oferecem esperança; o contexto define qual dessas ideias está presente aqui.",
+    revelation:"Este versículo faz parte de Apocalipse, livro que usa muitas imagens e símbolos. Evite interpretar uma frase isoladamente; observe a visão e o contexto em que ela aparece."
+  };
+
+  return groupExplanations[group] || "Este versículo faz parte de uma mensagem maior. Para entendê-lo bem, leia também os versículos antes e depois e observe quem está falando, para quem e em qual situação.";
+}
+
+function contextualVerseMeditation(code,text){
+  const theme=detectVerseTheme(text);
+  const prompts={
+    amor:"Como você pode transformar esse ensino sobre amor em uma atitude concreta hoje?",
+    fé:"Existe alguma área em que você precisa confiar em Deus mesmo sem enxergar todo o caminho?",
+    perdão:"Há alguém que você precisa perdoar, pedir perdão ou tratar com mais misericórdia?",
+    oração:"Que assunto deste versículo você pode transformar em oração agora?",
+    pecado:"Existe alguma atitude que este texto convida você a reconhecer, abandonar ou mudar?",
+    graça:"Como sua vida muda quando você lembra que depende da graça de Deus e não apenas do próprio esforço?",
+    salvação:"Como este versículo fortalece sua compreensão sobre aquilo que Deus faz para salvar e transformar?",
+    esperança:"Que motivo este versículo oferece para você não desistir hoje?",
+    paz:"O que você precisa entregar a Deus para caminhar com mais paz?",
+    sabedoria:"Qual decisão de hoje pode ser feita com mais sabedoria à luz deste versículo?",
+    justiça:"Há alguma situação em que você precisa agir com mais honestidade, justiça ou retidão?",
+    espírito:"Você tem dado espaço para Deus orientar suas atitudes, palavras e escolhas?",
+    obediência:"Qual parte da Palavra você já conhece, mas ainda precisa colocar em prática?",
+    alegria:"O que você pode agradecer a Deus hoje, mesmo que nem tudo esteja do jeito que gostaria?",
+    temor:"O que este versículo ensina sobre respeitar, confiar ou depender mais de Deus?",
+    perseverança:"Qual é o próximo passo fiel que você pode dar mesmo estando cansado?",
+    vida:"O que este texto ensina sobre o tipo de vida que você está construindo diante de Deus?",
+    compaixão:"Quem perto de você precisa de cuidado, ajuda ou uma atitude de compaixão?",
+    genealogia:"Lembre-se: Deus trabalha também através de gerações e histórias que parecem comuns. O que você deseja deixar de bom para quem vem depois de você?",
+    adoração:"Pare por alguns segundos e transforme o que leu em gratidão e louvor a Deus.",
+    promessa:"O que muda quando você lê uma promessa de Deus dentro do contexto em que ela foi dada?"
+  };
+  return prompts[theme] || "Leia esse versículo mais uma vez devagar. Qual palavra, atitude ou verdade dele você pode guardar e praticar hoje?";
+}
+
+function getInlineVerseInsight(code,chapter,v){
+  const id=refId(code,chapter,v.number);
+  const special=SPECIAL_INLINE_EXPLANATIONS[id];
+  if(special) return special;
+
+  return {
+    explanation:contextualVerseExplanation(code,v.text),
+    meditation:contextualVerseMeditation(code,v.text)
+  };
+}
+
 function fullVerseRow(code,bookName,chapter,v){
   const id=refId(code,chapter,v.number);
   const liked=!!getFavorite(id);
@@ -1189,6 +1245,7 @@ function fullVerseRow(code,bookName,chapter,v){
   const displayColor=highlightColor || readColor;
   const isActive=state.activeReadingVerse && Number(state.activeReadingVerse.verse)===Number(v.number);
   const rowStyle=displayColor ? `background:${displayColor.bg};color:${displayColor.fg}` : `background:var(--surface)`;
+  const insight=getInlineVerseInsight(code,chapter,v);
 
   return `<article id="verse-${v.number}" class="reading-verse ${isActive?'selected':''} ${readMarkId?'read-done':''}" style="${rowStyle}">
     <div class="reading-verse-line tap-mark-area" onclick="toggleVerseReadByNumber(${v.number})" title="Toque para marcar com a cor escolhida">
@@ -1197,8 +1254,19 @@ function fullVerseRow(code,bookName,chapter,v){
       ${readMarkId?'<span class="read-corner-check">✓</span>':''}
     </div>
 
+    <div class="verse-understanding">
+      <div class="verse-explanation-box">
+        <div class="verse-insight-title"><span>💡</span><strong>Explicação</strong></div>
+        <p>${escapeHtml(insight.explanation)}</p>
+      </div>
+      <div class="verse-meditation-box">
+        <div class="verse-insight-title"><span>🙏</span><strong>Meditação</strong></div>
+        <p>${escapeHtml(insight.meditation)}</p>
+      </div>
+    </div>
+
     <div class="verse-inline-tools">
-      <button class="verse-tool" onclick="openVerseByNumber(${v.number})">✦ Estudo Bíblico</button>
+      <button class="verse-tool" onclick="openVerseByNumber(${v.number})">✦ Estudo completo</button>
       <button class="verse-tool" onclick="shareReadingVerse(${v.number})">↗ Compartilhar</button>
       <button class="verse-tool" onclick="copyReadingVerse(${v.number})">⧉ Copiar</button>
       <button class="verse-tool" onclick="toggleFavoriteByNumber(${v.number})">${liked?"♥ Salvo":"♡ Salvar"}</button>
@@ -1206,7 +1274,6 @@ function fullVerseRow(code,bookName,chapter,v){
     </div>
   </article>`;
 }
-
 async function renderHome(){
   pageTitle.textContent="Início";
   const currentVersion = getVersionMeta(state.currentVersionCode);
@@ -1309,6 +1376,10 @@ async function renderBible(){
           <button class="top-icon-btn" onclick="fontDown()">T-</button>
         </div>
         ${renderReadMarkerToolbar()}
+        <div class="chapter-understanding-note">
+          <span>💡</span>
+          <div><strong>Entenda enquanto lê</strong><small>Cada versículo tem uma explicação simples e uma meditação logo abaixo. Para estudo mais profundo, toque em “Estudo completo”.</small></div>
+        </div>
         <section class="bible-reading">${chosen.map(v=>fullVerseRow(code,bookName,state.selectedChapter,v)).join('')}</section>
       </div>
       <div id="readingActionMount"></div>
@@ -1643,7 +1714,7 @@ function getAllWorshipTracks(){
 }
 
 function renderHymns(){
-  pageTitle.textContent="Louvores Brasileiros";
+  pageTitle.textContent="Louvores";
   const q=(state.hymnSearch||"").trim().toLowerCase();
   const category=state.hymnCategory||"Todos";
   const all=getAllWorshipTracks();
@@ -1657,9 +1728,9 @@ function renderHymns(){
     <section class="worship-hero brazilian-worship-hero">
       <div class="worship-icon">🇧🇷</div>
       <div>
-        <span class="eyebrow">LOUVORES BRASILEIROS</span>
-        <h2>Louvores em Português</h2>
-        <p>Toque no louvor para ouvir dentro do aplicativo. Ao voltar para a Bíblia, o player sai da tela para não atrapalhar a leitura, mas o louvor continua tocando.</p>
+        <span class="eyebrow">SEM YOUTUBE • SEM ANÚNCIOS</span>
+        <h2>Louvores para Ler e Orar</h2>
+        <p>Áudios instrumentais já vêm dentro do aplicativo. Toque e ouça sem propaganda; ao voltar para a Bíblia, o player sai da tela para não atrapalhar.</p>
       </div>
     </section>
 
@@ -1672,8 +1743,8 @@ function renderHymns(){
     </div>
 
     <div class="panel worship-info-panel">
-      <strong>▶ Tocando pelo YouTube dentro do app</strong>
-      <p class="small">A lista inicial usa vídeos públicos de canais oficiais ou publicações oficiais. O aplicativo não copia os MP3s desses artistas.</p>
+      <strong>▶ Player próprio, sem propaganda</strong>
+      <p class="small">As faixas incluídas são instrumentais originais do Palavra Viva e tocam direto do aplicativo, sem YouTube.</p>
     </div>
 
     ${filtered.length
@@ -1681,8 +1752,8 @@ function renderHymns(){
       : `<div class="empty-state"><span class="big">🎵</span><strong>Nenhum louvor encontrado</strong></div>`}
 
     <section class="search-card add-worship-card">
-      <h3>＋ Adicionar outro louvor brasileiro</h3>
-      <p class="small">Cole o link de um vídeo do YouTube. Depois ele fica salvo na sua lista dentro da Bíblia.</p>
+      <h3>＋ Adicionar outro áudio</h3>
+      <p class="small">Opcional: se um dia você tiver um MP3/OGG autorizado, pode adicionar pelo celular. Não é necessário para usar os louvores que já vêm no app.</p>
 
       <select id="hymnCategory" class="field">
         <option>Instrumental para Leitura</option><option>Corinhos de Fogo</option>
@@ -1694,8 +1765,6 @@ function renderHymns(){
       </select>
       <input id="hymnTitle" class="field" placeholder="Nome do louvor">
       <input id="hymnPerformer" class="field" placeholder="Cantor / grupo">
-      <input id="hymnYoutubeUrl" class="field" placeholder="Cole o link do YouTube">
-      <button class="btn-primary full-width" onclick="saveYoutubeHymn()">Adicionar louvor</button>
 
       <details class="optional-audio-details">
         <summary>Adicionar um áudio autorizado do celular</summary>
@@ -1713,7 +1782,7 @@ function renderHymns(){
 
 function renderWorshipTrack(track){
   const current=state.currentWorshipTrackId===track.id;
-  const isIncluded=track.id.startsWith("br-");
+  const isIncluded=track.id.startsWith("local-");
   const thumb=track.youtubeId ? `https://i.ytimg.com/vi/${track.youtubeId}/mqdefault.jpg` : "";
   return `<article class="worship-track-card ${current?'playing':''}">
     ${thumb
@@ -2157,7 +2226,7 @@ function exportBackup(){const data={};for(let i=0;i<localStorage.length;i++){con
 function importBackupFile(event){const file=event.target.files?.[0];if(!file)return;const reader=new FileReader();reader.onload=()=>{try{const obj=JSON.parse(reader.result);if(!obj.data)throw new Error();for(const [k,v] of Object.entries(obj.data)){if(k.startsWith("bs-"))localStorage.setItem(k,v);}alert("Backup restaurado. O aplicativo será recarregado.");location.reload();}catch(e){toast("Arquivo de backup inválido");}};reader.readAsText(file);}
 function clearAppData(){if(!confirm("Tem certeza? Isso apaga favoritos, notas e progresso deste aparelho."))return;const keys=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k?.startsWith("bs-"))keys.push(k);}keys.forEach(k=>localStorage.removeItem(k));location.reload();}
 
-function renderMore(){pageTitle.textContent="Mais informações";content.innerHTML=`<div class="setting-row" onclick="toggleTheme()"><div class="setting-left"><div class="setting-icon">${state.dark?'☀':'☾'}</div><div><h3>Modo ${state.dark?'claro':'escuro'}</h3><div class="small">Mude a aparência do aplicativo</div></div></div><span>›</span></div><div class="setting-row" onclick="installAppFromMenu()"><div class="setting-left"><div class="setting-icon">⇩</div><div><h3>Instalar aplicativo</h3><div class="small">Adicionar à tela inicial do celular</div></div></div><span>›</span></div><div class="setting-row" onclick="shareApp()"><div class="setting-left"><div class="setting-icon">↗</div><div><h3>Compartilhar app</h3><div class="small">Envie o Palavra Viva para alguém</div></div></div><span>›</span></div><div class="version-card"><div class="cross">✝</div><h3>Bíblia Sagrada</h3><p>Palavra Viva • versão 1.6</p><p style="margin-top:8px">Desenvolvido por JNR</p></div><div class="panel" style="margin-top:12px"><strong>📖 Recursos desta versão</strong><p class="small">Menu reorganizado, planos, devocionais, histórias, pesquisa avançada, hinários pessoais, áudio por voz do aparelho, quiz, dicionário, temas, estudos por localização, backup e versões que realmente trocam o texto bíblico.</p></div>`;}
+function renderMore(){pageTitle.textContent="Mais informações";content.innerHTML=`<div class="setting-row" onclick="toggleTheme()"><div class="setting-left"><div class="setting-icon">${state.dark?'☀':'☾'}</div><div><h3>Modo ${state.dark?'claro':'escuro'}</h3><div class="small">Mude a aparência do aplicativo</div></div></div><span>›</span></div><div class="setting-row" onclick="installAppFromMenu()"><div class="setting-left"><div class="setting-icon">⇩</div><div><h3>Instalar aplicativo</h3><div class="small">Adicionar à tela inicial do celular</div></div></div><span>›</span></div><div class="setting-row" onclick="shareApp()"><div class="setting-left"><div class="setting-icon">↗</div><div><h3>Compartilhar app</h3><div class="small">Envie o Palavra Viva para alguém</div></div></div><span>›</span></div><div class="version-card"><div class="cross">✝</div><h3>Bíblia Sagrada</h3><p>Palavra Viva • versão 1.8</p><p style="margin-top:8px">Desenvolvido por JNR</p></div><div class="panel" style="margin-top:12px"><strong>📖 Recursos desta versão</strong><p class="small">Menu reorganizado, planos, devocionais, histórias, pesquisa avançada, hinários pessoais, áudio por voz do aparelho, quiz, dicionário, temas, estudos por localização, backup e versões que realmente trocam o texto bíblico.</p></div>`;}
 
 function installAppFromMenu(){ if(deferredPrompt) installBtn.click(); else toast("No Chrome: menu ⋮ → Adicionar à tela inicial"); }
 function shareApp(){ const data={title:"Bíblia Sagrada • Palavra Viva",text:"Conheça o aplicativo Bíblia Sagrada • Palavra Viva",url:location.href}; if(navigator.share) navigator.share(data).catch(()=>{}); else if(navigator.clipboard){navigator.clipboard.writeText(location.href);toast("Link copiado");} }

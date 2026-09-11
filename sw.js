@@ -1,12 +1,20 @@
-const CACHE="biblia-sagrada-v16";
+const CACHE="biblia-sagrada-v18";
 const ASSETS=[
   "./",
   "./index.html",
-  "./style.css?v=1.6",
-  "./app.js?v=1.6",
+  "./style.css?v=1.8",
+  "./app.js?v=1.8",
   "./manifest.json",
   "./icon.svg",
-  "./cover-biblia.png"
+  "./cover-biblia.png",
+  "./audio/paz-na-palavra.mp3",
+  "./audio/momento-de-oracao.mp3",
+  "./audio/descanso-em-deus.mp3",
+  "./audio/manha-com-a-palavra.mp3",
+  "./audio/adoracao-suave.mp3",
+  "./audio/noite-de-reflexao.mp3",
+  "./audio/corinho-de-alegria.mp3",
+  "./audio/fogo-e-fe.mp3"
 ];
 
 self.addEventListener("install",e=>{

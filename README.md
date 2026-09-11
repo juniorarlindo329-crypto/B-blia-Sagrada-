@@ -1,33 +1,33 @@
-# Bíblia Sagrada • Palavra Viva — versão 1.6
+# Bíblia Sagrada • Palavra Viva — versão 1.8
 
-## Leitura sem player atrapalhando
-Quando a pessoa entra na Bíblia, no versículo, na meditação da passagem ou no estudo,
-o player de louvores sai completamente da tela.
+## Explicação e meditação embaixo de cada versículo
 
-O áudio/vídeo continua ativo em segundo plano dentro da página.
-Para controlar a música novamente, basta voltar à área de Louvores.
+Agora, durante a leitura de um capítulo, cada versículo mostra logo abaixo:
 
-## Mais louvores brasileiros
-Foram acrescentados:
-- Me Atraiu — Gabriela Rocha
-- Bondade de Deus — Isaias Saad
-- Aquieta Minh'alma — Ministério Zoe
-- Bênçãos Que Não Têm Fim — Isadora Pompeo
-- Me Ajude a Melhorar — Eli Soares
-- Deus de Promessas — Davi Sacer
+### 💡 Explicação
+Uma explicação simples para ajudar a pessoa a entender melhor o sentido do texto.
 
-Além dos louvores brasileiros que já estavam na v1.5.
+### 🙏 Meditação
+Uma pergunta ou aplicação curta para levar o versículo para a vida diária.
 
-## Instrumental para Leitura
-Nova categoria com sons leves:
-- Piano Gospel para Orar e Ler — Piano Worship Life
-- Piano Worship • 3 Horas — Jerry Kim
+### Estudo completo
+O botão **Estudo completo** continua disponível para abrir a tela detalhada com reflexão, aplicação, oração e encorajamento.
+
+## Como funciona junto com a marcação
+A marcação de leitura continua igual:
+- escolha uma cor;
+- toque diretamente no texto do versículo;
+- o bloco é marcado;
+- a explicação e a meditação continuam visíveis abaixo.
+
+## Observação
+As explicações rápidas são devocionais e contextuais. Para compreender uma passagem com maior profundidade, o aplicativo incentiva a leitura dos versículos ao redor e o uso do Estudo completo.
 
 ## Mantido
+- Louvores sem anúncios da v1.7
 - AEC na lista de versões
-- marcação do versículo tocando diretamente no texto
 - Livro → Capítulo → Palavra
-- seletor rápido Livro / Capítulo / Versículo / Versão
+- seletor rápido de Livro / Capítulo / Versículo / Versão
 - quiz
 - anotações
 - favoritos

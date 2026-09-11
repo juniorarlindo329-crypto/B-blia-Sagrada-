@@ -1046,3 +1046,99 @@ body.reading-clean-mode .bottom-nav{
 .worship-track-card:active{
   transform:scale(.995);
 }
+\n/* v1.7 — player próprio sem YouTube e sem anúncios */\n.brazilian-worship-hero{background:linear-gradient(145deg,#173b2b,#6f4b20)}\n.worship-track-card.playing{box-shadow:0 0 0 2px color-mix(in srgb,var(--gold) 35%,transparent),var(--shadow)}\n
+
+/* v1.8 — explicação e meditação embaixo de cada versículo */
+.chapter-understanding-note{
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
+  margin:10px 10px 14px;
+  padding:12px 13px;
+  border-radius:16px;
+  border:1px solid color-mix(in srgb,var(--gold) 32%,var(--line));
+  background:color-mix(in srgb,var(--gold) 7%,var(--surface));
+}
+.chapter-understanding-note>span{
+  font-size:22px;
+  line-height:1;
+}
+.chapter-understanding-note strong{
+  display:block;
+  font-size:13px;
+}
+.chapter-understanding-note small{
+  display:block;
+  margin-top:3px;
+  color:var(--muted);
+  line-height:1.45;
+}
+
+.verse-understanding{
+  margin:10px 0 3px;
+  display:grid;
+  gap:8px;
+}
+
+.verse-explanation-box,
+.verse-meditation-box{
+  padding:12px 13px;
+  border-radius:15px;
+  border:1px solid color-mix(in srgb,var(--line) 88%,transparent);
+  background:color-mix(in srgb,var(--surface-soft) 78%,transparent);
+}
+
+.verse-explanation-box{
+  border-left:4px solid #d29a31;
+}
+
+.verse-meditation-box{
+  border-left:4px solid #7c9b78;
+}
+
+.verse-insight-title{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  margin-bottom:6px;
+}
+
+.verse-insight-title strong{
+  font-size:12px;
+  letter-spacing:.01em;
+}
+
+.verse-explanation-box p,
+.verse-meditation-box p{
+  margin:0;
+  font-size:12.5px;
+  line-height:1.58;
+  color:var(--muted);
+}
+
+.reading-verse.read-done .verse-explanation-box,
+.reading-verse.read-done .verse-meditation-box{
+  background:rgba(255,255,255,.40);
+  border-color:rgba(0,0,0,.08);
+}
+
+body.dark .reading-verse.read-done .verse-explanation-box,
+body.dark .reading-verse.read-done .verse-meditation-box{
+  background:rgba(0,0,0,.16);
+  border-color:rgba(255,255,255,.08);
+}
+
+@media(max-width:620px){
+  .verse-understanding{
+    margin-top:9px;
+  }
+  .verse-explanation-box,
+  .verse-meditation-box{
+    padding:11px 12px;
+  }
+  .verse-explanation-box p,
+  .verse-meditation-box p{
+    font-size:12px;
+    line-height:1.55;
+  }
+}
