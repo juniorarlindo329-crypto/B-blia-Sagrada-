@@ -1,51 +1,30 @@
-# Bíblia Sagrada • Palavra Viva — versão 1.9
+# Bíblia Sagrada • Palavra Viva — versão 2.0
 
-## Louvores brasileiros + player ocultável
+## Correção principal: explicação própria para cada versículo
 
-A área de Louvores volta a ter louvores brasileiros conhecidos pelo YouTube, junto com instrumentais leves para leitura.
+A explicação abaixo dos versículos não usa mais um texto genérico repetido.
 
-### Nova opção: Ocultar player
-Depois que o louvor começa:
-- toque no botão **⌄**;
-- o player sai da tela;
-- o aplicativo não encerra o louvor;
-- continue navegando pela Bíblia;
-- para trazer o player de volta, entre em **Louvores** e toque em **Mostrar player**.
+Agora o aplicativo considera:
+- o texto exato do versículo;
+- o livro e a referência;
+- se o versículo é fala, resposta, pergunta, ordem, narrativa, genealogia, ensino, profecia etc.;
+- o versículo anterior e o seguinte, quando disponíveis;
+- o tema real encontrado em palavras completas, evitando falsos resultados por pedaços de palavras.
 
-Ao entrar na leitura bíblica, o app também usa o modo de leitura limpa para não deixar o player ocupando a tela.
+### Exemplo corrigido — Gênesis 3:2
+A explicação agora mostra que a mulher responde à serpente dizendo que eles podiam comer dos frutos das árvores do jardim, e prepara a restrição específica do versículo seguinte.
 
-> Observação: em vídeos do YouTube, o navegador/Android ou o próprio YouTube pode interromper a reprodução em algumas situações, especialmente se a página for suspensa. O app não remove anúncios do YouTube.
-
-## Louvores brasileiros incluídos
-- Lugar Secreto — Gabriela Rocha
-- Me Atraiu — Gabriela Rocha
-- Bondade de Deus — Isaias Saad
-- Aquieta Minh'alma — Ministério Zoe
-- Bênçãos Que Não Têm Fim — Isadora Pompeo
-- Me Ajude a Melhorar — Eli Soares
-- Deus de Promessas — Davi Sacer
-- Ninguém Explica Deus — Preto no Branco feat. Gabriela Rocha
-- Deus Proverá — Gabriela Gomes
-- Todavia Me Alegrarei — Samuel Messias
-- Prioridade — Midian Lima
-- Galileu — Fernandinho
-- A Casa É Sua — Casa Worship
-
-## Instrumentais leves mantidos
-- Paz na Palavra
-- Momento de Oração
-- Descanso em Deus
-- Manhã com a Palavra
+Gênesis 3:1-7 recebeu explicações específicas revisadas, e o restante da Bíblia usa o novo mecanismo contextual por versículo.
 
 ## Mantido
-Todos os recursos da v1.8:
-- explicação e meditação embaixo de cada versículo;
-- marcação por toque;
-- AEC na lista;
+- meditação abaixo de cada versículo;
+- Estudo completo;
+- marcação por toque e cores;
+- louvores brasileiros e player ocultável;
+- AEC na lista de versões;
 - Livro → Capítulo → Palavra;
-- quiz;
-- favoritos;
-- anotações;
-- demais menus.
+- quiz, favoritos, anotações e demais menus.
+
+> As explicações rápidas são recursos devocionais de auxílio à leitura. Para estudo doutrinário aprofundado, é importante considerar o capítulo inteiro e fontes de estudo confiáveis.
 
 Desenvolvido por JNR.

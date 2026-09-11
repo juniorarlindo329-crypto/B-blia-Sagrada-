@@ -41,6 +41,35 @@ const SPECIAL_MEDITATIONS = {
 };
 
 const SPECIAL_INLINE_EXPLANATIONS = {
+  "Gen-3-1":{
+    explanation:"A serpente inicia o diálogo questionando a ordem que Deus havia dado sobre as árvores do jardim. A pergunta distorce o mandamento ao sugerir que Deus teria proibido comer de todas as árvores, preparando a tentação que vem a seguir.",
+    meditation:"Preste atenção quando uma dúvida começa mudando ou exagerando aquilo que Deus realmente disse. Conhecer bem a Palavra ajuda a reconhecer esse tipo de distorção."
+  },
+  "Gen-3-2":{
+    explanation:"A mulher responde à serpente dizendo que eles podiam comer dos frutos das árvores do jardim. Ou seja, ela esclarece que Deus não havia proibido todos os frutos; havia liberdade para comer das demais árvores. A restrição específica aparece no versículo seguinte.",
+    meditation:"Nem sempre uma ordem de Deus significa perda de liberdade. Observe também aquilo que Deus permite e oferece, não apenas o limite estabelecido."
+  },
+  "Gen-3-3":{
+    explanation:"A mulher explica que havia uma árvore específica, no meio do jardim, cujo fruto não deveria ser comido. Ela relaciona essa desobediência à morte, mostrando que o mandamento tinha uma consequência séria.",
+    meditation:"Limites podem existir para proteção. Há alguma orientação de Deus que você precisa levar mais a sério antes de experimentar as consequências de ignorá-la?"
+  },
+  "Gen-3-4":{
+    explanation:"A serpente contradiz diretamente a consequência apresentada por Deus e afirma que eles não morreriam. Aqui a tentação avança: depois de questionar a Palavra, ela passa a negar o que Deus havia dito.",
+    meditation:"Quando uma voz contradiz claramente a Palavra de Deus, qual delas você escolhe considerar verdadeira?"
+  },
+  "Gen-3-5":{
+    explanation:"A serpente apresenta o fruto como caminho para obter algo desejável: olhos abertos e conhecimento do bem e do mal. A fala tenta fazer a desobediência parecer vantajosa e coloca em dúvida as intenções de Deus.",
+    meditation:"Nem tudo que parece oferecer vantagem imediata conduz a um bom caminho. Peça discernimento antes de decidir apenas pelo que parece atraente."
+  },
+  "Gen-3-6":{
+    explanation:"A mulher observa que o fruto parecia bom, agradável e desejável; então o toma, come e dá também ao marido. O versículo mostra a passagem da tentação para a decisão e, finalmente, para a ação de desobedecer.",
+    meditation:"Muitas escolhas começam no que alimentamos com os olhos e com o desejo. O que você precisa interromper antes que uma tentação se transforme em atitude?"
+  },
+  "Gen-3-7":{
+    explanation:"Depois de comerem, o homem e a mulher percebem que estavam nus e tentam cobrir-se. O resultado imediato da desobediência aparece como vergonha e tentativa de esconder a própria condição.",
+    meditation:"Quando erramos, a primeira reação pode ser esconder. Deus, porém, nos chama à verdade, ao arrependimento e à restauração."
+  },
+
   "Phil-4-13":{
     explanation:"Paulo ensina que sua força para enfrentar diferentes situações vem de Cristo. O foco não é conseguir qualquer coisa que desejamos, mas permanecer firmes e fiéis mesmo quando as circunstâncias mudam.",
     meditation:"Em vez de depender somente das suas próprias forças, entregue a Deus aquilo que hoje parece pesado e peça força para continuar."
@@ -1233,120 +1262,222 @@ function verseBookGroup(code){
   return "general";
 }
 
+function normalizeInsightText(text){
+  return String(text||"")
+    .normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+    .toLowerCase()
+    .replace(/[“”\"'’]/g,"")
+    .replace(/[^a-z0-9\s-]/g," ")
+    .replace(/\s+/g," ")
+    .trim();
+}
+
+function hasInsightTerm(text,terms){
+  const normalized=` ${normalizeInsightText(text)} `;
+  return terms.some(term=>{
+    const key=normalizeInsightText(term);
+    return key.includes(" ") ? normalized.includes(` ${key} `) : normalized.includes(` ${key} `);
+  });
+}
+
 function detectVerseTheme(text){
-  const t=String(text||"").toLowerCase();
-
   const checks=[
-    {keys:["amor","amar","amou"],theme:"amor"},
-    {keys:["fé","crê","crer","creu","confia","confiar"],theme:"fé"},
-    {keys:["perdo","perdão","misericórdia","misericord"],theme:"perdão"},
-    {keys:["orar","oração","orai","ore"],theme:"oração"},
-    {keys:["pecado","pecar","iniquidade","transgress"],theme:"pecado"},
-    {keys:["graça"],theme:"graça"},
-    {keys:["salvação","salvar","salvo"],theme:"salvação"},
-    {keys:["esperança","esperar"],theme:"esperança"},
+    {keys:["amor","amar","amou","amai"],theme:"amor"},
+    {keys:["fé","fe","crer","creu","confia","confiar"],theme:"fé"},
+    {keys:["perdão","perdao","perdoar","misericórdia","misericordia"],theme:"perdão"},
+    {keys:["orar","oração","oracao","orai","oração"],theme:"oração"},
+    {keys:["pecado","pecar","iniquidade","transgressão","transgressao"],theme:"pecado"},
+    {keys:["graça","graca"],theme:"graça"},
+    {keys:["salvação","salvacao","salvar","salvo"],theme:"salvação"},
+    {keys:["esperança","esperanca","esperar"],theme:"esperança"},
     {keys:["paz"],theme:"paz"},
-    {keys:["sabedoria","sábio","prudência","prudente"],theme:"sabedoria"},
-    {keys:["justiça","justo","justiça"],theme:"justiça"},
-    {keys:["espírito santo","espírito"],theme:"espírito"},
-    {keys:["mandamento","lei","obedecer","obediência"],theme:"obediência"},
-    {keys:["alegria","alegrai","regozij"],theme:"alegria"},
+    {keys:["sabedoria","sábio","sabio","prudência","prudencia"],theme:"sabedoria"},
+    {keys:["justiça","justica","justo"],theme:"justiça"},
+    {keys:["espírito santo","espirito santo"],theme:"espírito"},
+    {keys:["mandamento","lei","obedecer","obediência","obediencia"],theme:"obediência"},
+    {keys:["alegria","alegrai","regozijai"],theme:"alegria"},
     {keys:["medo","temor","temais","temer"],theme:"temor"},
-    {keys:["tribulação","aflição","sofr","persegui"],theme:"perseverança"},
+    {keys:["tribulação","tribulacao","aflição","aflicao","perseguição","perseguicao"],theme:"perseverança"},
     {keys:["vida","morte","morrer"],theme:"vida"},
-    {keys:["pobre","órfão","viúva","necessitado"],theme:"compaixão"},
+    {keys:["pobre","órfão","orfao","viúva","viuva","necessitado"],theme:"compaixão"},
     {keys:["gerou","genealogia","filho de","filhos de"],theme:"genealogia"},
-    {keys:["louvor","louvai","louvarei","ador"],theme:"adoração"},
-    {keys:["promessa","prometeu","aliança"],theme:"promessa"}
+    {keys:["louvor","louvai","louvarei","adoração","adoracao"],theme:"adoração"},
+    {keys:["promessa","prometeu","aliança","alianca"],theme:"promessa"}
   ];
-
-  for(const item of checks){
-    if(item.keys.some(k=>t.includes(k))) return item.theme;
-  }
+  for(const item of checks){ if(hasInsightTerm(text,item.keys)) return item.theme; }
   return "geral";
 }
 
-function contextualVerseExplanation(code,text){
-  const group=verseBookGroup(code);
-  const theme=detectVerseTheme(text);
-
-  const themeExplanations={
-    amor:"Este versículo destaca o amor como atitude, compromisso e cuidado. Na Bíblia, amar vai além do sentimento: aparece também na maneira de tratar, servir e agir com o próximo.",
-    fé:"Este versículo fala sobre fé e confiança. A ideia central é continuar confiando em Deus mesmo quando nem tudo pode ser visto ou entendido imediatamente.",
-    perdão:"Este versículo toca no tema do perdão e da misericórdia. Ele nos lembra da importância de receber a graça de Deus e também tratar outras pessoas com misericórdia.",
-    oração:"Este versículo chama atenção para a oração e a comunhão com Deus. A oração bíblica envolve sinceridade, dependência, gratidão e disposição para ouvir e obedecer.",
-    pecado:"Este versículo trata da realidade do pecado e de suas consequências. A Bíblia apresenta o pecado como aquilo que nos afasta da vontade de Deus e aponta para arrependimento e mudança de caminho.",
-    graça:"Este versículo destaca a graça de Deus: um favor que não é conquistado por mérito próprio, mas recebido com fé e gratidão.",
-    salvação:"Este versículo aponta para a salvação e para a iniciativa de Deus em resgatar e restaurar. O texto convida a responder com fé, arrependimento e uma vida transformada.",
-    esperança:"Este versículo fala de esperança. A esperança bíblica não é apenas desejar que algo dê certo; é continuar confiando em Deus mesmo durante períodos de espera.",
-    paz:"Este versículo apresenta a paz como algo que vai além da ausência de problemas. É uma segurança interior que nasce da confiança e da presença de Deus.",
-    sabedoria:"Este versículo ensina sobre sabedoria prática: pensar, escolher e agir de uma maneira que esteja alinhada com aquilo que é correto diante de Deus.",
-    justiça:"Este versículo fala de justiça e retidão. Ele chama atenção para atitudes corretas, honestas e coerentes com o caráter de Deus.",
-    espírito:"Este versículo menciona a ação espiritual de Deus. Leia observando o que o texto ensina sobre direção, transformação, presença ou poder do Espírito.",
-    obediência:"Este versículo trata de obediência. Na Bíblia, obedecer a Deus não é apenas conhecer um mandamento, mas colocar a Palavra em prática.",
-    alegria:"Este versículo fala de alegria. Muitas vezes a alegria bíblica aparece como resultado da confiança em Deus, mesmo quando as circunstâncias não são perfeitas.",
-    temor:"Este versículo aborda temor. Dependendo do contexto, pode falar de medo humano ou de reverência a Deus; por isso é importante observar o capítulo inteiro.",
-    perseverança:"Este versículo aparece em um contexto de luta, sofrimento ou perseverança. Ele ensina que dificuldades não precisam significar abandono de Deus e podem exigir firmeza e fé.",
-    vida:"Este versículo toca em vida e morte. Observe se o texto está falando da vida física, da vida espiritual, da eternidade ou das consequências das escolhas humanas.",
-    compaixão:"Este versículo chama atenção para pessoas vulneráveis e para a responsabilidade de agir com compaixão, cuidado e justiça.",
-    genealogia:"Este versículo faz parte de uma genealogia ou registro familiar. Esses nomes ajudam a mostrar continuidade histórica, descendência e o cumprimento de promessas ao longo das gerações.",
-    adoração:"Este versículo fala de louvor ou adoração. Ele direciona o coração para reconhecer quem Deus é, lembrar suas obras e responder com gratidão.",
-    promessa:"Este versículo envolve promessa ou aliança. Para entendê-lo bem, observe a quem a promessa foi feita, em qual situação e quais condições aparecem no contexto."
-  };
-
-  if(themeExplanations[theme]) return themeExplanations[theme];
-
-  const groupExplanations={
-    psalm:"Este versículo faz parte de um Salmo, uma coleção de orações e cânticos. Leia observando o sentimento do autor e o que ele declara sobre Deus no meio daquela situação.",
-    wisdom:"Este versículo pertence à literatura de sabedoria. Ele apresenta um princípio para pensar e viver com prudência; deve ser aplicado considerando o restante do capítulo e da Bíblia.",
-    gospel:"Este versículo está em um dos Evangelhos. Observe quem está falando, para quem, e o que a cena ensina sobre Jesus, seu caráter, suas ações ou seus ensinamentos.",
-    acts:"Este versículo está no livro de Atos, que relata o crescimento da igreja e a missão dos primeiros cristãos. Observe o acontecimento e o que ele mostra sobre fé, testemunho e ação de Deus.",
-    letter:"Este versículo faz parte de uma carta do Novo Testamento. Ele foi escrito para orientar cristãos em situações reais; leia também os versículos ao redor para entender a instrução completa.",
-    history:"Este versículo faz parte de uma narrativa histórica do Antigo Testamento. Ele relata pessoas, decisões e acontecimentos que precisam ser entendidos dentro da história maior do capítulo.",
-    poetry:"Este versículo usa linguagem poética e reflexiva. Preste atenção às imagens, sentimentos e contrastes usados para expressar uma verdade sobre Deus e a experiência humana.",
-    prophet:"Este versículo está em um livro profético. Os profetas frequentemente confrontam o pecado, chamam ao arrependimento, anunciam juízo ou oferecem esperança; o contexto define qual dessas ideias está presente aqui.",
-    revelation:"Este versículo faz parte de Apocalipse, livro que usa muitas imagens e símbolos. Evite interpretar uma frase isoladamente; observe a visão e o contexto em que ela aparece."
-  };
-
-  return groupExplanations[group] || "Este versículo faz parte de uma mensagem maior. Para entendê-lo bem, leia também os versículos antes e depois e observe quem está falando, para quem e em qual situação.";
+function cleanInsightSnippet(text,max=96){
+  const clean=String(text||"").replace(/\s+/g," ").trim().replace(/[;,.!?]+$/g,"");
+  return clean.length>max ? clean.slice(0,max).replace(/\s+\S*$/,"").trim()+"…" : clean;
 }
 
-function contextualVerseMeditation(code,text){
-  const theme=detectVerseTheme(text);
-  const prompts={
-    amor:"Como você pode transformar esse ensino sobre amor em uma atitude concreta hoje?",
-    fé:"Existe alguma área em que você precisa confiar em Deus mesmo sem enxergar todo o caminho?",
-    perdão:"Há alguém que você precisa perdoar, pedir perdão ou tratar com mais misericórdia?",
-    oração:"Que assunto deste versículo você pode transformar em oração agora?",
-    pecado:"Existe alguma atitude que este texto convida você a reconhecer, abandonar ou mudar?",
-    graça:"Como sua vida muda quando você lembra que depende da graça de Deus e não apenas do próprio esforço?",
-    salvação:"Como este versículo fortalece sua compreensão sobre aquilo que Deus faz para salvar e transformar?",
-    esperança:"Que motivo este versículo oferece para você não desistir hoje?",
-    paz:"O que você precisa entregar a Deus para caminhar com mais paz?",
-    sabedoria:"Qual decisão de hoje pode ser feita com mais sabedoria à luz deste versículo?",
-    justiça:"Há alguma situação em que você precisa agir com mais honestidade, justiça ou retidão?",
-    espírito:"Você tem dado espaço para Deus orientar suas atitudes, palavras e escolhas?",
-    obediência:"Qual parte da Palavra você já conhece, mas ainda precisa colocar em prática?",
-    alegria:"O que você pode agradecer a Deus hoje, mesmo que nem tudo esteja do jeito que gostaria?",
-    temor:"O que este versículo ensina sobre respeitar, confiar ou depender mais de Deus?",
-    perseverança:"Qual é o próximo passo fiel que você pode dar mesmo estando cansado?",
-    vida:"O que este texto ensina sobre o tipo de vida que você está construindo diante de Deus?",
-    compaixão:"Quem perto de você precisa de cuidado, ajuda ou uma atitude de compaixão?",
-    genealogia:"Lembre-se: Deus trabalha também através de gerações e histórias que parecem comuns. O que você deseja deixar de bom para quem vem depois de você?",
-    adoração:"Pare por alguns segundos e transforme o que leu em gratidão e louvor a Deus.",
-    promessa:"O que muda quando você lê uma promessa de Deus dentro do contexto em que ela foi dada?"
+function lowerFirstPt(text){
+  const s=String(text||"").trim();
+  return s ? s.charAt(0).toLocaleLowerCase("pt-BR")+s.slice(1) : s;
+}
+
+function verseContext(code,chapter,verseNumber){
+  const verses=state.currentChapterVerses||[];
+  const index=verses.findIndex(v=>Number(v.number)===Number(verseNumber));
+  return {
+    prev:index>0?verses[index-1]:null,
+    next:index>=0&&index<verses.length-1?verses[index+1]:null
   };
-  return prompts[theme] || "Leia esse versículo mais uma vez devagar. Qual palavra, atitude ou verdade dele você pode guardar e praticar hoje?";
+}
+
+function speechSpecificExplanation(bookName,chapter,v){
+  const text=String(v.text||"").replace(/\s+/g," ").trim();
+  const colon=text.indexOf(":");
+  const speechVerb=/\b(respondeu|disse|falou|perguntou|clamou|ordenou|mandou|declarou)\b/i;
+  if(!speechVerb.test(text)) return null;
+
+  if(colon>0){
+    let intro=text.slice(0,colon).replace(/^E\s+/i,"").trim();
+    const speech=cleanInsightSnippet(text.slice(colon+1),120);
+    return `Em ${bookName} ${chapter}:${v.number}, ${lowerFirstPt(intro)}. A fala registrada é: “${speech}”. O versículo deve ser entendido como parte desse diálogo, e não como uma frase isolada.`;
+  }
+
+  return `Em ${bookName} ${chapter}:${v.number}, o texto registra uma fala ou resposta dentro da cena: “${cleanInsightSnippet(text,125)}”. Observe quem está falando e o que motivou essa declaração nos versículos ao redor.`;
+}
+
+function actionSpecificExplanation(code,bookName,chapter,v){
+  const text=String(v.text||"").replace(/\s+/g," ").trim();
+  const n=normalizeInsightText(text);
+  const ref=`${bookName} ${chapter}:${v.number}`;
+
+  if(/\bgerou\b|\bfilho de\b|\bfilhos de\b/.test(n))
+    return `${ref} registra uma informação de descendência ou família: “${cleanInsightSnippet(text,120)}”. Esses registros ligam pessoas e gerações dentro da história bíblica e ajudam a acompanhar a continuidade da narrativa.`;
+
+  if(/\bbem aventurad/.test(n))
+    return `${ref} apresenta uma declaração de bem-aventurança: “${cleanInsightSnippet(text,120)}”. O texto descreve uma condição ou atitude que, diante de Deus, é considerada verdadeiramente abençoada.`;
+
+  if(/\beu sou\b/.test(n))
+    return `${ref} contém uma declaração direta de identidade ou autoridade: “${cleanInsightSnippet(text,120)}”. Para entender seu alcance, observe quem faz essa afirmação e a situação em que ela é pronunciada.`;
+
+  if(/\bnao\b/.test(n) && /\b(comereis|faras|fazei|temais|matara|adulterar|furtar|mentir|toqueis|comais)\b/.test(n))
+    return `${ref} apresenta uma proibição ou limite: “${cleanInsightSnippet(text,120)}”. A explicação do motivo ou das consequências costuma aparecer no próprio contexto do capítulo.`;
+
+  if(/\bporque\b/.test(n))
+    return `${ref} apresenta uma razão ou explicação: “${cleanInsightSnippet(text,125)}”. A palavra “porque” liga este versículo ao pensamento anterior, mostrando o motivo da afirmação que está sendo desenvolvida.`;
+
+  if(/\bportanto\b/.test(n))
+    return `${ref} traz uma conclusão ou aplicação baseada no que foi dito antes: “${cleanInsightSnippet(text,125)}”. Por isso, os versículos anteriores são importantes para compreender de onde essa conclusão vem.`;
+
+  if(/\b(viu|tomou|comeu|deu|entrou|saiu|subiu|desceu|partiu|veio|foi|chegou|levantou|caiu|morreu|nasceu)\b/.test(n))
+    return `${ref} descreve uma ação dentro da narrativa: “${cleanInsightSnippet(text,125)}”. O versículo mostra o que acontece neste ponto da história; o significado fica mais claro acompanhando a sequência antes e depois.`;
+
+  if(verseBookGroup(code)==="psalm")
+    return `${ref} expressa uma oração, declaração ou cântico: “${cleanInsightSnippet(text,125)}”. Nos Salmos, as palavras revelam sentimentos diante de Deus e transformam experiências humanas em confiança, pedido, gratidão ou louvor.`;
+
+  if(verseBookGroup(code)==="wisdom")
+    return `${ref} apresenta uma observação de sabedoria: “${cleanInsightSnippet(text,125)}”. A intenção é ensinar um princípio para decisões, caráter ou maneira de viver, considerando também o restante do capítulo.`;
+
+  if(verseBookGroup(code)==="gospel")
+    return `${ref} registra parte do relato sobre Jesus e seu ministério: “${cleanInsightSnippet(text,125)}”. Observe se o versículo descreve uma ação, uma reação das pessoas ou um ensinamento, e acompanhe a cena completa para entendê-lo corretamente.`;
+
+  if(verseBookGroup(code)==="letter")
+    return `${ref} faz parte de uma orientação dada aos cristãos: “${cleanInsightSnippet(text,125)}”. A frase contribui para o argumento do autor e deve ser lida junto das ideias que vêm antes e depois.`;
+
+  if(verseBookGroup(code)==="prophet")
+    return `${ref} faz parte de uma mensagem profética: “${cleanInsightSnippet(text,125)}”. O contexto mostra se a mensagem está advertindo, chamando ao arrependimento, anunciando juízo ou oferecendo esperança.`;
+
+  return `${ref} diz: “${cleanInsightSnippet(text,130)}”. Este versículo acrescenta uma informação específica à passagem; para entendê-lo, observe a ação, a fala ou a ideia apresentada aqui e como ela se conecta aos versículos vizinhos.`;
+}
+
+function themeMeaning(theme){
+  const meanings={
+    amor:"O tema do amor aqui deve ser entendido como algo que também produz atitude, cuidado e compromisso.",
+    fé:"O tema central envolve confiança em Deus, especialmente quando nem tudo está visível ou resolvido.",
+    perdão:"O texto toca em perdão e misericórdia, chamando atenção para restauração e graça.",
+    oração:"O versículo realmente trata de oração ou comunhão com Deus; por isso a aplicação deve partir do que ele diz sobre buscar, pedir ou falar com Deus.",
+    pecado:"O texto lida com pecado, desobediência ou suas consequências, apontando para a necessidade de reconhecer e corrigir o caminho.",
+    graça:"A ideia de graça ressalta aquilo que Deus oferece sem depender apenas do mérito humano.",
+    salvação:"O versículo se relaciona ao resgate e à restauração que vêm de Deus.",
+    esperança:"O texto oferece razão para continuar confiando mesmo em períodos de espera ou dificuldade.",
+    paz:"A paz aparece como segurança e descanso que não dependem somente das circunstâncias externas.",
+    sabedoria:"O texto ensina a pensar e agir com prudência diante de Deus.",
+    justiça:"A passagem chama atenção para retidão, honestidade e aquilo que é correto diante de Deus.",
+    espírito:"O versículo menciona a atuação espiritual de Deus; o contexto ajuda a definir se fala de presença, direção, poder ou transformação.",
+    obediência:"O ponto envolve levar a Palavra a sério e transformá-la em atitude prática.",
+    alegria:"A alegria apresentada no texto está ligada à forma de responder a Deus e às circunstâncias.",
+    temor:"O contexto define se o temor é medo humano ou reverência diante de Deus.",
+    perseverança:"O texto aparece em cenário de luta ou resistência e chama atenção para firmeza.",
+    vida:"O versículo fala de vida ou morte e precisa ser lido observando se o sentido é físico, espiritual ou figurado.",
+    compaixão:"A passagem chama atenção para cuidado concreto com pessoas vulneráveis.",
+    genealogia:"O registro de nomes e descendência mostra continuidade entre gerações dentro da história bíblica.",
+    adoração:"O versículo direciona para louvor, reconhecimento e resposta a Deus.",
+    promessa:"A passagem envolve promessa ou aliança; é importante observar a quem foi dada e em qual situação."
+  };
+  return meanings[theme]||"";
+}
+
+function contextualVerseExplanation(code,bookName,chapter,v){
+  const speech=speechSpecificExplanation(bookName,chapter,v);
+  let base=speech || actionSpecificExplanation(code,bookName,chapter,v);
+  const theme=detectVerseTheme(v.text);
+  const extra=themeMeaning(theme);
+  if(extra && !base.includes(extra)) base+=` ${extra}`;
+
+  const {prev,next}=verseContext(code,chapter,v.number);
+  // Add a short, verse-specific context line without repeating a generic explanation.
+  if(prev && next){
+    base+=` No contexto imediato, ele vem depois de “${cleanInsightSnippet(prev.text,55)}” e antes de “${cleanInsightSnippet(next.text,55)}”.`;
+  }else if(prev){
+    base+=` Ele continua a ideia do versículo anterior: “${cleanInsightSnippet(prev.text,65)}”.`;
+  }else if(next){
+    base+=` A sequência continua no versículo seguinte: “${cleanInsightSnippet(next.text,65)}”.`;
+  }
+  return base;
+}
+
+function contextualVerseMeditation(code,bookName,chapter,v){
+  const ref=`${bookName} ${chapter}:${v.number}`;
+  const theme=detectVerseTheme(v.text);
+  const prompts={
+    amor:"Que atitude de amor este versículo pode produzir em você hoje?",
+    fé:"Onde você precisa exercer confiança em Deus a partir do que acabou de ler?",
+    perdão:"Este texto chama você a liberar perdão, pedir perdão ou receber misericórdia?",
+    oração:"Transforme exatamente o assunto deste versículo em uma oração. O que você diria a Deus?",
+    pecado:"Que atitude este texto ajuda você a reconhecer, abandonar ou corrigir?",
+    graça:"Como este versículo muda sua maneira de enxergar a graça de Deus?",
+    salvação:"O que este versículo ensina sobre a maneira como Deus resgata e transforma?",
+    esperança:"Que motivo este texto dá para você continuar caminhando?",
+    paz:"O que você precisa colocar diante de Deus para viver a paz ensinada aqui?",
+    sabedoria:"Qual decisão prática pode ser iluminada por este versículo?",
+    justiça:"Onde você pode agir com mais justiça e retidão hoje?",
+    espírito:"Que espaço você tem dado para Deus dirigir suas atitudes?",
+    obediência:"Qual parte deste versículo precisa sair da leitura e virar prática?",
+    alegria:"Que motivo de gratidão ou alegria aparece neste texto?",
+    temor:"O que este versículo ensina sobre sua maneira de responder a Deus?",
+    perseverança:"Qual próximo passo fiel você pode dar sem desistir?",
+    vida:"O que este texto ensina sobre a vida que você está construindo?",
+    compaixão:"Quem pode receber de você uma atitude de cuidado hoje?",
+    genealogia:"O que este registro ensina sobre Deus trabalhando através de pessoas e gerações?",
+    adoração:"Que motivo para louvar ou agradecer a Deus aparece neste versículo?",
+    promessa:"O que você aprende ao ler esta promessa dentro do contexto em que ela foi dada?"
+  };
+  const specific=prompts[theme];
+  if(specific) return specific;
+
+  const variants=[
+    `Depois de ler ${ref}, qual detalhe do próprio versículo você não tinha percebido antes?`,
+    `O que ${ref} revela sobre as pessoas, as escolhas ou a ação de Deus nessa passagem?`,
+    `Se você explicasse ${ref} para outra pessoa em uma frase, o que diria e como aplicaria isso hoje?`,
+    `Qual atitude, alerta ou aprendizado aparece especificamente em ${ref}?`
+  ];
+  return variants[(Number(v.number)-1)%variants.length];
 }
 
 function getInlineVerseInsight(code,chapter,v){
   const id=refId(code,chapter,v.number);
   const special=SPECIAL_INLINE_EXPLANATIONS[id];
   if(special) return special;
-
+  const bookName=NAME_BY_CODE[code]||code;
   return {
-    explanation:contextualVerseExplanation(code,v.text),
-    meditation:contextualVerseMeditation(code,v.text)
+    explanation:contextualVerseExplanation(code,bookName,chapter,v),
+    meditation:contextualVerseMeditation(code,bookName,chapter,v)
   };
 }
 
@@ -1493,7 +1624,7 @@ async function renderBible(){
         ${renderReadMarkerToolbar()}
         <div class="chapter-understanding-note">
           <span>💡</span>
-          <div><strong>Entenda enquanto lê</strong><small>Cada versículo tem uma explicação simples e uma meditação logo abaixo. Para estudo mais profundo, toque em “Estudo completo”.</small></div>
+          <div><strong>Entenda enquanto lê</strong><small>Cada versículo recebe uma explicação própria, baseada no texto daquele versículo e no contexto ao redor. Para aprofundar, toque em “Estudo completo”.</small></div>
         </div>
         <section class="bible-reading">${chosen.map(v=>fullVerseRow(code,bookName,state.selectedChapter,v)).join('')}</section>
       </div>
@@ -2378,7 +2509,7 @@ function exportBackup(){const data={};for(let i=0;i<localStorage.length;i++){con
 function importBackupFile(event){const file=event.target.files?.[0];if(!file)return;const reader=new FileReader();reader.onload=()=>{try{const obj=JSON.parse(reader.result);if(!obj.data)throw new Error();for(const [k,v] of Object.entries(obj.data)){if(k.startsWith("bs-"))localStorage.setItem(k,v);}alert("Backup restaurado. O aplicativo será recarregado.");location.reload();}catch(e){toast("Arquivo de backup inválido");}};reader.readAsText(file);}
 function clearAppData(){if(!confirm("Tem certeza? Isso apaga favoritos, notas e progresso deste aparelho."))return;const keys=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k?.startsWith("bs-"))keys.push(k);}keys.forEach(k=>localStorage.removeItem(k));location.reload();}
 
-function renderMore(){pageTitle.textContent="Mais informações";content.innerHTML=`<div class="setting-row" onclick="toggleTheme()"><div class="setting-left"><div class="setting-icon">${state.dark?'☀':'☾'}</div><div><h3>Modo ${state.dark?'claro':'escuro'}</h3><div class="small">Mude a aparência do aplicativo</div></div></div><span>›</span></div><div class="setting-row" onclick="installAppFromMenu()"><div class="setting-left"><div class="setting-icon">⇩</div><div><h3>Instalar aplicativo</h3><div class="small">Adicionar à tela inicial do celular</div></div></div><span>›</span></div><div class="setting-row" onclick="shareApp()"><div class="setting-left"><div class="setting-icon">↗</div><div><h3>Compartilhar app</h3><div class="small">Envie o Palavra Viva para alguém</div></div></div><span>›</span></div><div class="version-card"><div class="cross">✝</div><h3>Bíblia Sagrada</h3><p>Palavra Viva • versão 1.9</p><p style="margin-top:8px">Desenvolvido por JNR</p></div><div class="panel" style="margin-top:12px"><strong>📖 Recursos desta versão</strong><p class="small">Menu reorganizado, planos, devocionais, histórias, pesquisa avançada, hinários pessoais, áudio por voz do aparelho, quiz, dicionário, temas, estudos por localização, backup e versões que realmente trocam o texto bíblico.</p></div>`;}
+function renderMore(){pageTitle.textContent="Mais informações";content.innerHTML=`<div class="setting-row" onclick="toggleTheme()"><div class="setting-left"><div class="setting-icon">${state.dark?'☀':'☾'}</div><div><h3>Modo ${state.dark?'claro':'escuro'}</h3><div class="small">Mude a aparência do aplicativo</div></div></div><span>›</span></div><div class="setting-row" onclick="installAppFromMenu()"><div class="setting-left"><div class="setting-icon">⇩</div><div><h3>Instalar aplicativo</h3><div class="small">Adicionar à tela inicial do celular</div></div></div><span>›</span></div><div class="setting-row" onclick="shareApp()"><div class="setting-left"><div class="setting-icon">↗</div><div><h3>Compartilhar app</h3><div class="small">Envie o Palavra Viva para alguém</div></div></div><span>›</span></div><div class="version-card"><div class="cross">✝</div><h3>Bíblia Sagrada</h3><p>Palavra Viva • versão 2.0</p><p style="margin-top:8px">Desenvolvido por JNR</p></div><div class="panel" style="margin-top:12px"><strong>📖 Recursos desta versão</strong><p class="small">Menu reorganizado, planos, devocionais, histórias, pesquisa avançada, hinários pessoais, áudio por voz do aparelho, quiz, dicionário, temas, estudos por localização, backup e versões que realmente trocam o texto bíblico.</p></div>`;}
 
 function installAppFromMenu(){ if(deferredPrompt) installBtn.click(); else toast("No Chrome: menu ⋮ → Adicionar à tela inicial"); }
 function shareApp(){ const data={title:"Bíblia Sagrada • Palavra Viva",text:"Conheça o aplicativo Bíblia Sagrada • Palavra Viva",url:location.href}; if(navigator.share) navigator.share(data).catch(()=>{}); else if(navigator.clipboard){navigator.clipboard.writeText(location.href);toast("Link copiado");} }
