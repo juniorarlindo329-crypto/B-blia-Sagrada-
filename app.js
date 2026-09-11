@@ -434,6 +434,8 @@ const MAPS = ["Êxodo","Viagens Missionárias de Paulo","Israel Antigo","Jerusal
 const WORKING_VERSION_GROUPS = [
   {language:"Português", versions:[
     {name:"Almeida 1819 (Bíblia Livre)",code:"ALM",lang:"pt",slug:"almeida-livre"},
+    {name:"Nova Versão Internacional",code:"NVI",lang:"pt",licensed:true,provider:"Biblica",officialUrl:"https://partners.biblica.com/?bible-translation=nova-versao-internacional-portuguese"},
+    {name:"Nova Versão Transformadora",code:"NVT",lang:"pt",licensed:true,provider:"Editora Mundo Cristão",officialUrl:"https://www.mundocristao.com.br/novaversaotransformadora/"},
     {name:"Almeida Edição Contemporânea",code:"AEC",lang:"pt",licensed:true,provider:"Editora Vida"}
   ]},
   {language:"Inglês", versions:[
@@ -1867,7 +1869,7 @@ function renderVersions(){
       <button class="version-tab ${state.versionsTab==='audio'?'active':''}" onclick="setVersionsTab('audio')">Áudio</button>
     </div>
     <div class="toggle-row"><div><strong>Duas traduções na mesma tela</strong><div class="small">Ative para deixar a segunda tradução preparada.</div></div><button class="switch ${state.dualVersion?'on':''}" onclick="toggleDualVersion()"></button></div>
-    <div class="panel" style="margin-bottom:12px"><strong>Versões da Bíblia</strong><p class="small">A Almeida Edição Contemporânea (AEC) já aparece na lista. Versões com texto aberto podem ser usadas imediatamente; versões licenciadas precisam de uma fonte autorizada para exibir o texto completo corretamente.</p></div>
+    <div class="panel" style="margin-bottom:12px"><strong>Versões da Bíblia</strong><p class="small">Agora a lista em português inclui <b>NVI</b>, <b>NVT</b> e <b>AEC</b>. As traduções licenciadas aparecem identificadas e precisam de autorização/fonte oficial para exibir o texto completo dentro do leitor.</p></div>
     ${groups.map(group=>`<section class="language-block"><div class="language-title">${group.language}</div><div class="version-list">${group.versions.map(v=>renderVersionRow(v)).join('')}</div></section>`).join('')}`;
 }
 function renderVersionRow(v){
@@ -1905,24 +1907,78 @@ function selectVersion(code){
 
 function showLicensedVersionInfo(code){
   const meta=getVersionMeta(code);
-  if(code!=="AEC"){toast("Esta versão precisa de uma fonte autorizada.");return;}
-  pageTitle.textContent="Almeida Edição Contemporânea";
+
+  const details={
+    NVI:{
+      eyebrow:"NVI",
+      title:"Nova Versão Internacional",
+      description:"A NVI já foi adicionada à lista do aplicativo. Para exibir a tradução completa dentro do leitor, precisamos de acesso autorizado ao texto oficial da Biblica.",
+      reason:"A NVI é uma tradução protegida por direitos autorais. O portal oficial da Biblica oferece uma área de parceiros para solicitar acesso à tradução.",
+      actionLabel:"Solicitar acesso oficial",
+      url:"https://partners.biblica.com/?bible-translation=nova-versao-internacional-portuguese"
+    },
+    NVT:{
+      eyebrow:"NVT",
+      title:"Nova Versão Transformadora",
+      description:"A NVT já foi adicionada à lista do aplicativo. O texto integral só será ativado quando tivermos uma fonte/licença autorizada da Editora Mundo Cristão.",
+      reason:"A NVT é uma tradução protegida. A permissão padrão permite citações limitadas, mas não a distribuição da Bíblia inteira dentro de um aplicativo sem autorização.",
+      actionLabel:"Ver fonte oficial da NVT",
+      url:"https://www.mundocristao.com.br/novaversaotransformadora/"
+    },
+    AEC:{
+      eyebrow:"AEC",
+      title:"Almeida Edição Contemporânea",
+      description:"A AEC continua preparada no aplicativo, mas o texto integral precisa de uma fonte autorizada da Editora Vida.",
+      reason:"Assim evitamos exibir outra tradução com o nome AEC e mantemos o aplicativo correto.",
+      actionLabel:null,
+      url:null
+    }
+  };
+
+  const d=details[code] || {
+    eyebrow:code,
+    title:meta.name,
+    description:"Esta versão precisa de uma fonte autorizada para exibir o texto completo.",
+    reason:"O aplicativo não substitui o texto por outra tradução diferente.",
+    actionLabel:null,
+    url:null
+  };
+
+  pageTitle.textContent=d.title;
   content.innerHTML=`
     <div class="licensed-version-card">
       <div class="licensed-lock">📖</div>
-      <span class="eyebrow">AEC</span>
-      <h2>Almeida Edição Contemporânea</h2>
-      <p>A versão AEC já foi adicionada ao aplicativo, mas o texto bíblico integral não foi substituído por outro texto diferente.</p>
-      <div class="license-info-box">
-        <strong>Por que?</strong>
-        <p>Para exibir a AEC corretamente, precisamos conectar uma fonte autorizada/licenciada da tradução. Assim evitamos mostrar Almeida Livre com o nome AEC.</p>
+      <span class="eyebrow">${escapeHtml(d.eyebrow)}</span>
+      <h2>${escapeHtml(d.title)}</h2>
+      <p>${escapeHtml(d.description)}</p>
+
+      <div class="license-status-row">
+        <span>🔒</span>
+        <div>
+          <strong>Aguardando licença/fonte oficial</strong>
+          <small>Assim que conectarmos uma fonte autorizada, esta versão poderá mudar o texto real da Bíblia.</small>
+        </div>
       </div>
+
+      <div class="license-info-box">
+        <strong>Por que ainda não está liberada?</strong>
+        <p>${escapeHtml(d.reason)}</p>
+      </div>
+
       <div class="reading-bottom-actions">
-        <button class="btn-primary" onclick="navigate('versions')">Voltar às versões</button>
-        <button class="btn-ghost" onclick="navigate('bible')">Continuar lendo a Bíblia</button>
+        ${d.url ? `<button class="btn-primary" onclick="openLicensedSource('${code}')">${escapeHtml(d.actionLabel)}</button>` : ""}
+        <button class="${d.url?'btn-ghost':'btn-primary'}" onclick="navigate('versions')">Voltar às versões</button>
+        <button class="btn-ghost" onclick="navigate('bible')">Continuar lendo</button>
       </div>
     </div>`;
 }
+
+function openLicensedSource(code){
+  const meta=getVersionMeta(code);
+  if(!meta?.officialUrl){toast("Fonte oficial ainda não cadastrada");return;}
+  window.open(meta.officialUrl,"_blank","noopener,noreferrer");
+}
+
 async function downloadVersion(code){
   const meta=getVersionMeta(code);
   const allBooks=[...BOOKS.old,...BOOKS.new].map(x=>x[1]);
@@ -2684,7 +2740,7 @@ function exportBackup(){const data={};for(let i=0;i<localStorage.length;i++){con
 function importBackupFile(event){const file=event.target.files?.[0];if(!file)return;const reader=new FileReader();reader.onload=()=>{try{const obj=JSON.parse(reader.result);if(!obj.data)throw new Error();for(const [k,v] of Object.entries(obj.data)){if(k.startsWith("bs-"))localStorage.setItem(k,v);}alert("Backup restaurado. O aplicativo será recarregado.");location.reload();}catch(e){toast("Arquivo de backup inválido");}};reader.readAsText(file);}
 function clearAppData(){if(!confirm("Tem certeza? Isso apaga favoritos, notas e progresso deste aparelho."))return;const keys=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k?.startsWith("bs-"))keys.push(k);}keys.forEach(k=>localStorage.removeItem(k));location.reload();}
 
-function renderMore(){pageTitle.textContent="Mais informações";content.innerHTML=`<div class="setting-row" onclick="toggleTheme()"><div class="setting-left"><div class="setting-icon">${state.dark?'☀':'☾'}</div><div><h3>Modo ${state.dark?'claro':'escuro'}</h3><div class="small">Mude a aparência do aplicativo</div></div></div><span>›</span></div><div class="setting-row" onclick="installAppFromMenu()"><div class="setting-left"><div class="setting-icon">⇩</div><div><h3>Instalar aplicativo</h3><div class="small">Adicionar à tela inicial do celular</div></div></div><span>›</span></div><div class="setting-row" onclick="shareApp()"><div class="setting-left"><div class="setting-icon">↗</div><div><h3>Compartilhar app</h3><div class="small">Envie o Palavra Viva para alguém</div></div></div><span>›</span></div><div class="version-card"><div class="cross">✝</div><h3>Bíblia Sagrada</h3><p>Palavra Viva • versão 2.2</p><p style="margin-top:8px">Desenvolvido por JNR</p></div><div class="panel" style="margin-top:12px"><strong>📖 Recursos desta versão</strong><p class="small">Menu reorganizado, planos, devocionais, histórias, pesquisa avançada, hinários pessoais, áudio por voz do aparelho, quiz, dicionário, temas, estudos por localização, backup e versões que realmente trocam o texto bíblico.</p></div>`;}
+function renderMore(){pageTitle.textContent="Mais informações";content.innerHTML=`<div class="setting-row" onclick="toggleTheme()"><div class="setting-left"><div class="setting-icon">${state.dark?'☀':'☾'}</div><div><h3>Modo ${state.dark?'claro':'escuro'}</h3><div class="small">Mude a aparência do aplicativo</div></div></div><span>›</span></div><div class="setting-row" onclick="installAppFromMenu()"><div class="setting-left"><div class="setting-icon">⇩</div><div><h3>Instalar aplicativo</h3><div class="small">Adicionar à tela inicial do celular</div></div></div><span>›</span></div><div class="setting-row" onclick="shareApp()"><div class="setting-left"><div class="setting-icon">↗</div><div><h3>Compartilhar app</h3><div class="small">Envie o Palavra Viva para alguém</div></div></div><span>›</span></div><div class="version-card"><div class="cross">✝</div><h3>Bíblia Sagrada</h3><p>Palavra Viva • versão 2.3</p><p style="margin-top:8px">Desenvolvido por JNR</p></div><div class="panel" style="margin-top:12px"><strong>📖 Recursos desta versão</strong><p class="small">Menu reorganizado, planos, devocionais, histórias, pesquisa avançada, hinários pessoais, áudio por voz do aparelho, quiz, dicionário, temas, estudos por localização, backup e versões que realmente trocam o texto bíblico.</p></div>`;}
 
 function installAppFromMenu(){ if(deferredPrompt) installBtn.click(); else toast("No Chrome: menu ⋮ → Adicionar à tela inicial"); }
 function shareApp(){ const data={title:"Bíblia Sagrada • Palavra Viva",text:"Conheça o aplicativo Bíblia Sagrada • Palavra Viva",url:location.href}; if(navigator.share) navigator.share(data).catch(()=>{}); else if(navigator.clipboard){navigator.clipboard.writeText(location.href);toast("Link copiado");} }
@@ -2759,7 +2815,7 @@ Object.assign(window,{ state,openDrawer,closeDrawer,quickOpenVersions,navigate,t
   renderHymns,setHymnCategory,savePlayableHymn,deleteHymn,playWorshipTrack,
   toggleWorshipPlayback,playNextWorship,playPreviousWorship,stopWorship,seekWorship
 
-,saveYoutubeHymn,hideWorshipPlayer,showWorshipPlayer,renderHarpa,harpaScrollToCatalog,openHarpaExternally});
+,saveYoutubeHymn,hideWorshipPlayer,showWorshipPlayer,renderHarpa,harpaScrollToCatalog,openHarpaExternally,openLicensedSource});
 
 if('serviceWorker' in navigator){ navigator.serviceWorker.register('./sw.js').catch(()=>{}); }
 render();

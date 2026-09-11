@@ -1,9 +1,9 @@
-const CACHE="biblia-sagrada-v22";
+const CACHE="biblia-sagrada-v23";
 const ASSETS=[
   "./",
   "./index.html",
-  "./style.css?v=2.2",
-  "./app.js?v=2.2",
+  "./style.css?v=2.3",
+  "./app.js?v=2.3",
   "./manifest.json",
   "./icon.svg",
   "./cover-biblia.png",

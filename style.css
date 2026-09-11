@@ -1469,3 +1469,32 @@ body.worship-user-hidden .bottom-nav{
     min-height:520px;
   }
 }
+
+
+/* v2.3 — NVI e NVT */
+.license-status-row{
+  display:flex;
+  align-items:flex-start;
+  gap:11px;
+  margin:16px 0;
+  padding:13px 14px;
+  border-radius:17px;
+  border:1px solid color-mix(in srgb,var(--gold) 35%,var(--line));
+  background:color-mix(in srgb,var(--gold) 7%,var(--surface));
+}
+
+.license-status-row>span{
+  font-size:22px;
+}
+
+.license-status-row strong,
+.license-status-row small{
+  display:block;
+}
+
+.license-status-row small{
+  margin-top:4px;
+  color:var(--muted);
+  line-height:1.45;
+  font-size:10.5px;
+}
