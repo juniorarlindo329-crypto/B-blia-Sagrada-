@@ -1,22 +1,32 @@
-# Bíblia Sagrada • Palavra Viva — versão 2.5
+# Bíblia Sagrada • Palavra Viva — versão 2.6
 
-## Harpa Cristã completa dentro do aplicativo
+## Anotações agora funcionam como um caderno completo
 
-Os 640 hinos do PDF enviado pelo usuário foram organizados diretamente no app.
+A opção **Anotações** do menu foi refeita.
 
-### Agora a aba Harpa tem
-- 640 hinos numerados de 1 a 640;
-- busca por número ou nome;
-- filtros rápidos por faixa;
-- letra completa abrindo dentro da Bíblia;
-- favorito;
-- copiar;
-- anterior/próximo;
-- funcionamento offline após o app ser carregado/cacheado;
-- nenhuma dependência de site externo para a letra da Harpa.
+Agora é possível:
+- criar uma anotação diretamente pelo menu;
+- colocar título;
+- adicionar referência bíblica opcional;
+- escrever estudos, pregações, lembretes, orações e mensagens;
+- editar uma anotação depois;
+- excluir;
+- pesquisar pelo título, referência ou conteúdo;
+- ver no mesmo lugar as anotações feitas diretamente nos versículos;
+- abrir novamente o versículo ligado a uma anotação;
+- editar a anotação daquele versículo pelo próprio menu.
 
-As letras vieram do PDF fornecido pelo usuário nesta conversa.
+As anotações ficam salvas no aparelho pelo armazenamento local e são incluídas no Backup do aplicativo.
 
-Todos os demais recursos da versão anterior foram mantidos.
+## Mantido
+- 640 hinos da Harpa dentro do app
+- explicações detalhadas
+- meditações
+- louvores
+- marcação por cores
+- favoritos
+- quiz
+- versões da Bíblia
+- demais funções
 
 Desenvolvido por JNR.

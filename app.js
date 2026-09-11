@@ -684,6 +684,8 @@ const state = {
   dualVersion:false,
   fontScale:Number(localStorage.getItem("bs-font-scale")||1),
   notes:JSON.parse(localStorage.getItem("bs-notes")||"{}"),
+  generalNotes:JSON.parse(localStorage.getItem("bs-general-notes")||"[]"),
+  notesSearch:"",
   highlights:JSON.parse(localStorage.getItem("bs-highlights")||"{}"),
   readMarks:JSON.parse(localStorage.getItem("bs-read-marks")||"{}"),
   readMarkColor:localStorage.getItem("bs-read-mark-color")||"mint",
@@ -1847,13 +1849,303 @@ function renderFavorites(){
   pageTitle.textContent="Salvos";
   content.innerHTML=state.fullFavorites.length ? state.fullFavorites.map(v=>`<article class="note-card"><h3>${v.bookName} ${v.chapter}:${v.verse}</h3><p>${escapeHtml(v.text)}</p><div class="card-actions"><button class="btn-primary" onclick="openFavoriteById('${v.id}')">Meditar</button><button class="btn-ghost" onclick="removeFavoriteById('${v.id}')">♥ Remover</button></div></article>`).join('') : `<div class="empty-state"><span class="big">♡</span><strong>Nenhum versículo salvo</strong><br><br><span class="small">Na leitura da Bíblia, toque em “Salvar” para guardar uma passagem.</span></div>`;
 }
+function formatNoteDate(value){
+  if(!value) return "";
+  const d=new Date(value);
+  if(Number.isNaN(d.getTime())) return "";
+  return d.toLocaleDateString("pt-BR",{day:"2-digit",month:"2-digit",year:"numeric"})+" • "+d.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"});
+}
+
+function setNotesSearch(value){
+  state.notesSearch=String(value||"");
+  renderNotes();
+  setTimeout(()=>{
+    const field=document.getElementById("notesSearchField");
+    if(field){
+      field.focus();
+      field.setSelectionRange(field.value.length,field.value.length);
+    }
+  },0);
+}
+
 function renderNotes(){
   pageTitle.textContent="Anotações";
-  const entries = Object.entries(state.notes);
-  content.innerHTML = entries.length ? entries.map(([id,text])=>`<article class="note-card"><h3>${humanizeNoteId(id)}</h3><p>${escapeHtml(text)}</p><div class="card-actions"><button class="btn-ghost" onclick="removeNote('${id}')">Excluir</button></div></article>`).join('') : `<div class="empty-state"><span class="big">📝</span><strong>Nenhuma anotação ainda</strong><br><br><span class="small">Abra um versículo na leitura e use o botão “Anotar”.</span></div>`;
+
+  if(!Array.isArray(state.generalNotes)) state.generalNotes=[];
+
+  const q=normalizeInsightText(state.notesSearch||"");
+  const general=[...state.generalNotes]
+    .sort((a,b)=>String(b.updatedAt||b.createdAt||"").localeCompare(String(a.updatedAt||a.createdAt||"")))
+    .filter(n=>{
+      if(!q) return true;
+      return normalizeInsightText(`${n.title||""} ${n.reference||""} ${n.text||""}`).includes(q);
+    });
+
+  const verseEntries=Object.entries(state.notes)
+    .map(([id,text])=>({id,text,reference:humanizeNoteId(id)}))
+    .filter(n=>{
+      if(!q) return true;
+      return normalizeInsightText(`${n.reference} ${n.text}`).includes(q);
+    });
+
+  const totalGeneral=state.generalNotes.length;
+  const totalVerse=Object.keys(state.notes).length;
+  const total=totalGeneral+totalVerse;
+
+  content.innerHTML=`
+    <section class="notes-hero">
+      <div class="notes-hero-icon">📝</div>
+      <div>
+        <span class="eyebrow">MEU CADERNO</span>
+        <h2>Minhas Anotações</h2>
+        <p>Escreva estudos, mensagens, lembretes, pregações e anotações dos versículos. Tudo fica salvo neste aparelho.</p>
+      </div>
+    </section>
+
+    <div class="notes-toolbar">
+      <button class="btn-primary notes-new-btn" onclick="openNewGeneralNote()">＋ Nova anotação</button>
+      <div class="notes-stats">
+        <span><strong>${total}</strong> total</span>
+        <span><strong>${totalGeneral}</strong> pessoais</span>
+        <span><strong>${totalVerse}</strong> versículos</span>
+      </div>
+    </div>
+
+    <div class="notes-search-wrap">
+      <span>⌕</span>
+      <input id="notesSearchField" type="search" value="${escapeHtml(state.notesSearch||"")}" placeholder="Buscar nas anotações..." oninput="setNotesSearch(this.value)">
+      ${state.notesSearch?`<button onclick="setNotesSearch('')" aria-label="Limpar busca">×</button>`:""}
+    </div>
+
+    ${total===0 ? `
+      <div class="empty-state notes-empty">
+        <span class="big">📝</span>
+        <strong>Seu caderno está vazio</strong>
+        <p class="small">Toque em <b>Nova anotação</b> para escrever qualquer estudo ou lembrete. Você também pode anotar diretamente em um versículo.</p>
+        <button class="btn-primary" onclick="openNewGeneralNote()">Criar minha primeira anotação</button>
+      </div>
+    ` : ""}
+
+    ${general.length ? `
+      <div class="notes-section-head">
+        <div><span class="notes-section-icon">✎</span><strong>Minhas anotações</strong></div>
+        <small>${general.length} ${general.length===1?"anotação":"anotações"}</small>
+      </div>
+      <div class="notes-grid">
+        ${general.map(n=>`
+          <article class="note-card note-card-general">
+            <div class="note-card-top">
+              <span class="note-kind-badge">MINHA ANOTAÇÃO</span>
+              <button class="note-more-btn" onclick="editGeneralNote('${n.id}')" aria-label="Editar">✎</button>
+            </div>
+            <h3>${escapeHtml(n.title||"Sem título")}</h3>
+            ${n.reference?`<div class="note-reference">📖 ${escapeHtml(n.reference)}</div>`:""}
+            <p>${escapeHtml(n.text||"")}</p>
+            <div class="note-date">${escapeHtml(formatNoteDate(n.updatedAt||n.createdAt))}</div>
+            <div class="card-actions">
+              <button class="btn-primary" onclick="editGeneralNote('${n.id}')">Abrir / editar</button>
+              <button class="btn-ghost danger-text" onclick="deleteGeneralNote('${n.id}')">Excluir</button>
+            </div>
+          </article>
+        `).join("")}
+      </div>
+    ` : (state.notesSearch && totalGeneral ? `<div class="notes-no-result">Nenhuma anotação pessoal encontrada nessa busca.</div>`:"")}
+
+    ${verseEntries.length ? `
+      <div class="notes-section-head verse-notes-head">
+        <div><span class="notes-section-icon">📖</span><strong>Anotações da Bíblia</strong></div>
+        <small>${verseEntries.length} ${verseEntries.length===1?"versículo":"versículos"}</small>
+      </div>
+      <div class="notes-grid">
+        ${verseEntries.map(n=>`
+          <article class="note-card note-card-verse">
+            <div class="note-card-top">
+              <span class="note-kind-badge verse">VERSÍCULO</span>
+              <button class="note-more-btn" onclick="editVerseNoteFromMenu('${n.id}')" aria-label="Editar">✎</button>
+            </div>
+            <h3>${escapeHtml(n.reference)}</h3>
+            <p>${escapeHtml(n.text)}</p>
+            <div class="card-actions">
+              <button class="btn-primary" onclick="openVerseNoteReference('${n.id}')">Abrir versículo</button>
+              <button class="btn-ghost" onclick="editVerseNoteFromMenu('${n.id}')">Editar</button>
+              <button class="btn-ghost danger-text" onclick="removeNote('${n.id}')">Excluir</button>
+            </div>
+          </article>
+        `).join("")}
+      </div>
+    ` : (state.notesSearch && totalVerse ? `<div class="notes-no-result">Nenhuma anotação de versículo encontrada nessa busca.</div>`:"")}
+
+    ${state.notesSearch && !general.length && !verseEntries.length ? `
+      <div class="empty-state notes-empty">
+        <span class="big">⌕</span>
+        <strong>Nada encontrado</strong>
+        <p class="small">Tente outra palavra ou limpe a busca.</p>
+        <button class="btn-ghost" onclick="setNotesSearch('')">Limpar busca</button>
+      </div>
+    `:""}
+  `;
 }
-function removeNote(id){ delete state.notes[id]; saveJSON('bs-notes', state.notes); renderNotes(); toast('Anotação removida'); }
-function humanizeNoteId(id){ const [code,chapter,verse]=id.split('-'); return `${NAME_BY_CODE[code]||code} ${chapter}:${verse}`; }
+
+function openNewGeneralNote(){
+  renderGeneralNoteEditor(null);
+}
+
+function editGeneralNote(id){
+  renderGeneralNoteEditor(id);
+}
+
+function renderGeneralNoteEditor(id){
+  pageTitle.textContent=id ? "Editar anotação" : "Nova anotação";
+  const note=id ? state.generalNotes.find(n=>n.id===id) : null;
+  const title=note?.title||"";
+  const reference=note?.reference||"";
+  const text=note?.text||"";
+
+  content.innerHTML=`
+    <section class="note-editor-shell">
+      <div class="note-editor-head">
+        <button class="note-back-btn" onclick="navigate('notes')">‹</button>
+        <div>
+          <span class="eyebrow">${id?"EDITANDO":"NOVA ANOTAÇÃO"}</span>
+          <h2>${id?"Editar anotação":"Escrever anotação"}</h2>
+        </div>
+      </div>
+
+      <label class="note-editor-label">Título</label>
+      <input id="generalNoteTitle" class="field note-title-field" maxlength="90" placeholder="Ex.: Estudo sobre fé" value="${escapeHtml(title)}">
+
+      <label class="note-editor-label">Referência bíblica <span>(opcional)</span></label>
+      <input id="generalNoteReference" class="field" maxlength="80" placeholder="Ex.: João 3:16 ou Salmo 23" value="${escapeHtml(reference)}">
+
+      <label class="note-editor-label">Sua anotação</label>
+      <textarea id="generalNoteText" class="note-field general-note-text" placeholder="Escreva aqui seu estudo, mensagem, ideia, oração ou lembrete...">${escapeHtml(text)}</textarea>
+
+      <div class="note-editor-tip">💡 As anotações ficam salvas no seu aparelho e também entram no Backup do aplicativo.</div>
+
+      <div class="note-editor-actions">
+        <button class="btn-primary" onclick="saveGeneralNote('${id||""}')">💾 Salvar anotação</button>
+        <button class="btn-ghost" onclick="navigate('notes')">Cancelar</button>
+        ${id?`<button class="btn-ghost danger-text" onclick="deleteGeneralNote('${id}')">Excluir</button>`:""}
+      </div>
+    </section>
+  `;
+
+  setTimeout(()=>document.getElementById(id?"generalNoteText":"generalNoteTitle")?.focus(),0);
+}
+
+function saveGeneralNote(id){
+  const title=document.getElementById("generalNoteTitle")?.value?.trim()||"";
+  const reference=document.getElementById("generalNoteReference")?.value?.trim()||"";
+  const text=document.getElementById("generalNoteText")?.value?.trim()||"";
+
+  if(!title && !text){
+    toast("Escreva um título ou uma anotação");
+    return;
+  }
+
+  const now=new Date().toISOString();
+
+  if(id){
+    const index=state.generalNotes.findIndex(n=>n.id===id);
+    if(index>=0){
+      state.generalNotes[index]={
+        ...state.generalNotes[index],
+        title:title||"Sem título",
+        reference,
+        text,
+        updatedAt:now
+      };
+    }
+  }else{
+    state.generalNotes.unshift({
+      id:`note-${Date.now()}-${Math.random().toString(36).slice(2,7)}`,
+      title:title||"Sem título",
+      reference,
+      text,
+      createdAt:now,
+      updatedAt:now
+    });
+  }
+
+  saveJSON("bs-general-notes",state.generalNotes);
+  state.notesSearch="";
+  navigate("notes");
+  toast("Anotação salva");
+}
+
+function deleteGeneralNote(id){
+  const note=state.generalNotes.find(n=>n.id===id);
+  if(!note) return;
+  if(!confirm(`Excluir a anotação "${note.title||"Sem título"}"?`)) return;
+  state.generalNotes=state.generalNotes.filter(n=>n.id!==id);
+  saveJSON("bs-general-notes",state.generalNotes);
+  navigate("notes");
+  toast("Anotação excluída");
+}
+
+function editVerseNoteFromMenu(id){
+  const current=state.notes[id]||"";
+  pageTitle.textContent="Editar anotação";
+  content.innerHTML=`
+    <section class="note-editor-shell">
+      <div class="note-editor-head">
+        <button class="note-back-btn" onclick="navigate('notes')">‹</button>
+        <div>
+          <span class="eyebrow">ANOTAÇÃO BÍBLICA</span>
+          <h2>${escapeHtml(humanizeNoteId(id))}</h2>
+        </div>
+      </div>
+
+      <div class="note-reference-large">📖 ${escapeHtml(humanizeNoteId(id))}</div>
+
+      <label class="note-editor-label">Sua anotação</label>
+      <textarea id="menuVerseNoteText" class="note-field general-note-text" placeholder="Escreva sua anotação sobre este versículo...">${escapeHtml(current)}</textarea>
+
+      <div class="note-editor-actions">
+        <button class="btn-primary" onclick="saveVerseNoteFromMenu('${id}')">💾 Salvar alteração</button>
+        <button class="btn-ghost" onclick="openVerseNoteReference('${id}')">Abrir versículo</button>
+        <button class="btn-ghost" onclick="navigate('notes')">Cancelar</button>
+      </div>
+    </section>
+  `;
+  setTimeout(()=>document.getElementById("menuVerseNoteText")?.focus(),0);
+}
+
+function saveVerseNoteFromMenu(id){
+  const text=document.getElementById("menuVerseNoteText")?.value?.trim()||"";
+  if(text) state.notes[id]=text;
+  else delete state.notes[id];
+  saveJSON("bs-notes",state.notes);
+  navigate("notes");
+  toast(text?"Anotação atualizada":"Anotação removida");
+}
+
+async function openVerseNoteReference(id){
+  const [code,chapter,verse]=id.split("-");
+  if(!code||!chapter||!verse) return;
+  showLoading("Abrindo versículo...");
+  try{
+    const v=await getVerse(code,Number(chapter),Number(verse));
+    openVerseObject(v);
+  }catch(e){
+    toast("Não foi possível abrir esse versículo");
+    navigate("notes");
+  }
+}
+
+function removeNote(id){
+  if(!state.notes[id]) return;
+  if(!confirm(`Excluir a anotação de ${humanizeNoteId(id)}?`)) return;
+  delete state.notes[id];
+  saveJSON("bs-notes", state.notes);
+  renderNotes();
+  toast("Anotação removida");
+}
+
+function humanizeNoteId(id){
+  const [code,chapter,verse]=id.split("-");
+  return `${NAME_BY_CODE[code]||code} ${chapter}:${verse}`;
+}
 
 function renderVersions(){
   pageTitle.textContent="Versões";
@@ -2816,7 +3108,7 @@ function exportBackup(){const data={};for(let i=0;i<localStorage.length;i++){con
 function importBackupFile(event){const file=event.target.files?.[0];if(!file)return;const reader=new FileReader();reader.onload=()=>{try{const obj=JSON.parse(reader.result);if(!obj.data)throw new Error();for(const [k,v] of Object.entries(obj.data)){if(k.startsWith("bs-"))localStorage.setItem(k,v);}alert("Backup restaurado. O aplicativo será recarregado.");location.reload();}catch(e){toast("Arquivo de backup inválido");}};reader.readAsText(file);}
 function clearAppData(){if(!confirm("Tem certeza? Isso apaga favoritos, notas e progresso deste aparelho."))return;const keys=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k?.startsWith("bs-"))keys.push(k);}keys.forEach(k=>localStorage.removeItem(k));location.reload();}
 
-function renderMore(){pageTitle.textContent="Mais informações";content.innerHTML=`<div class="setting-row" onclick="toggleTheme()"><div class="setting-left"><div class="setting-icon">${state.dark?'☀':'☾'}</div><div><h3>Modo ${state.dark?'claro':'escuro'}</h3><div class="small">Mude a aparência do aplicativo</div></div></div><span>›</span></div><div class="setting-row" onclick="installAppFromMenu()"><div class="setting-left"><div class="setting-icon">⇩</div><div><h3>Instalar aplicativo</h3><div class="small">Adicionar à tela inicial do celular</div></div></div><span>›</span></div><div class="setting-row" onclick="shareApp()"><div class="setting-left"><div class="setting-icon">↗</div><div><h3>Compartilhar app</h3><div class="small">Envie o Palavra Viva para alguém</div></div></div><span>›</span></div><div class="version-card"><div class="cross">✝</div><h3>Bíblia Sagrada</h3><p>Palavra Viva • versão 2.5</p><p style="margin-top:8px">Desenvolvido por JNR</p></div><div class="panel" style="margin-top:12px"><strong>📖 Recursos desta versão</strong><p class="small">Menu reorganizado, planos, devocionais, histórias, pesquisa avançada, hinários pessoais, áudio por voz do aparelho, quiz, dicionário, temas, estudos por localização, backup e versões que realmente trocam o texto bíblico.</p></div>`;}
+function renderMore(){pageTitle.textContent="Mais informações";content.innerHTML=`<div class="setting-row" onclick="toggleTheme()"><div class="setting-left"><div class="setting-icon">${state.dark?'☀':'☾'}</div><div><h3>Modo ${state.dark?'claro':'escuro'}</h3><div class="small">Mude a aparência do aplicativo</div></div></div><span>›</span></div><div class="setting-row" onclick="installAppFromMenu()"><div class="setting-left"><div class="setting-icon">⇩</div><div><h3>Instalar aplicativo</h3><div class="small">Adicionar à tela inicial do celular</div></div></div><span>›</span></div><div class="setting-row" onclick="shareApp()"><div class="setting-left"><div class="setting-icon">↗</div><div><h3>Compartilhar app</h3><div class="small">Envie o Palavra Viva para alguém</div></div></div><span>›</span></div><div class="version-card"><div class="cross">✝</div><h3>Bíblia Sagrada</h3><p>Palavra Viva • versão 2.6</p><p style="margin-top:8px">Desenvolvido por JNR</p></div><div class="panel" style="margin-top:12px"><strong>📖 Recursos desta versão</strong><p class="small">Menu reorganizado, planos, devocionais, histórias, pesquisa avançada, hinários pessoais, áudio por voz do aparelho, quiz, dicionário, temas, estudos por localização, backup e versões que realmente trocam o texto bíblico.</p></div>`;}
 
 function installAppFromMenu(){ if(deferredPrompt) installBtn.click(); else toast("No Chrome: menu ⋮ → Adicionar à tela inicial"); }
 function shareApp(){ const data={title:"Bíblia Sagrada • Palavra Viva",text:"Conheça o aplicativo Bíblia Sagrada • Palavra Viva",url:location.href}; if(navigator.share) navigator.share(data).catch(()=>{}); else if(navigator.clipboard){navigator.clipboard.writeText(location.href);toast("Link copiado");} }
@@ -2891,7 +3183,7 @@ Object.assign(window,{ state,openDrawer,closeDrawer,quickOpenVersions,navigate,t
   renderHymns,setHymnCategory,savePlayableHymn,deleteHymn,playWorshipTrack,
   toggleWorshipPlayback,playNextWorship,playPreviousWorship,stopWorship,seekWorship
 
-,saveYoutubeHymn,hideWorshipPlayer,showWorshipPlayer,renderHarpa,harpaScrollToCatalog,openHarpaExternally,openLicensedSource,renderHarpaList,openHarpaHymn,saveHarpaLyrics,editHarpaLyrics,copyHarpaHymn,filterHarpaRange,toggleHarpaFavorite});
+,openNewGeneralNote,editGeneralNote,saveGeneralNote,deleteGeneralNote,setNotesSearch,editVerseNoteFromMenu,saveVerseNoteFromMenu,openVerseNoteReference,saveYoutubeHymn,hideWorshipPlayer,showWorshipPlayer,renderHarpa,harpaScrollToCatalog,openHarpaExternally,openLicensedSource,renderHarpaList,openHarpaHymn,saveHarpaLyrics,editHarpaLyrics,copyHarpaHymn,filterHarpaRange,toggleHarpaFavorite});
 
 if('serviceWorker' in navigator){ navigator.serviceWorker.register('./sw.js').catch(()=>{}); }
 render();
