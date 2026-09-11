@@ -1498,3 +1498,82 @@ body.worship-user-hidden .bottom-nav{
   line-height:1.45;
   font-size:10.5px;
 }
+
+
+/* v2.4 — Harpa 100% dentro do app */
+.harpa-internal-card{
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  align-items:center;
+  gap:12px;
+  margin-bottom:9px;
+  padding:13px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:var(--surface);
+  box-shadow:0 7px 20px rgba(60,40,20,.05);
+}
+.harpa-internal-card strong,
+.harpa-internal-card small{display:block}
+.harpa-internal-card small{color:var(--muted);margin-top:3px;font-size:10px}
+.harpa-internal-card>span{font-size:24px;color:var(--gold)}
+.harpa-number-badge{
+  min-width:52px;height:52px;padding:0 8px;border-radius:16px;
+  display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--gold-dark),var(--gold-2));
+  color:#fff;font-weight:950;
+}
+.harpa-hymn-page{padding-bottom:24px}
+.harpa-hymn-head{
+  display:flex;align-items:center;gap:14px;
+  margin:15px 0;padding:18px;
+  border-radius:22px;background:var(--surface);border:1px solid var(--line);
+}
+.harpa-big-number{
+  min-width:68px;height:68px;border-radius:20px;
+  display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--gold-dark),var(--gold-2));
+  color:#fff;font-size:25px;font-weight:950;
+}
+.harpa-hymn-head h2{margin:4px 0 0;font-family:Georgia,serif;font-size:27px}
+.harpa-lyrics{
+  padding:20px 18px;
+  border:1px solid var(--line);border-radius:22px;
+  background:var(--surface);
+  font-family:Georgia,serif;
+  font-size:18px;line-height:1.75;
+}
+.harpa-add-lyrics{
+  margin-top:14px;padding:18px;border:1px solid var(--line);
+  border-radius:22px;background:var(--surface);
+}
+.harpa-add-lyrics p{color:var(--muted);line-height:1.5;font-size:12px}
+.harpa-lyrics-input{
+  min-height:320px !important;
+  resize:vertical;
+  white-space:pre-wrap;
+  line-height:1.6;
+}
+
+
+/* v2.5 — Harpa Cristã completa dentro do aplicativo */
+.harpa-summary-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0;
+}
+.harpa-summary-grid>div{
+  padding:12px 8px;border-radius:16px;border:1px solid var(--line);background:var(--surface);text-align:center;
+}
+.harpa-summary-grid strong{display:block;font-size:21px;color:var(--gold-dark)}
+.harpa-summary-grid span{display:block;margin-top:3px;font-size:9px;color:var(--muted);text-transform:uppercase;font-weight:850}
+.harpa-range-row{display:flex;gap:7px;overflow:auto;margin:10px 0 12px;scrollbar-width:none}
+.harpa-range-row::-webkit-scrollbar{display:none}
+.harpa-range-row button{flex:0 0 auto;border:1px solid var(--line);border-radius:999px;padding:9px 11px;background:var(--surface);color:var(--text);font-size:10px;font-weight:850}
+.harpa-hymn-actions-top{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.harpa-next-prev{display:flex;justify-content:space-between;gap:10px;margin-top:18px}
+.harpa-edit-details{margin-top:20px;border:1px solid var(--line);border-radius:16px;background:var(--surface-soft);overflow:hidden}
+.harpa-edit-details summary{padding:13px;font-size:11px;font-weight:850;cursor:pointer;color:var(--muted)}
+.harpa-edit-details textarea{margin:0 12px 10px;width:calc(100% - 24px);min-height:260px}
+.harpa-edit-details button{margin:0 12px 12px;width:calc(100% - 24px)}
+.harpa-lyrics{font-size:16px;line-height:1.72}
+.harpa-lyrics div{min-height:1.15em}
+@media(max-width:620px){.harpa-summary-grid strong{font-size:19px}.harpa-lyrics{font-size:15.5px;line-height:1.7}}

@@ -378,7 +378,7 @@ const DRAWER_SECTIONS = [
     {key:"search", title:"Pesquisa", icon:"⌕", meta:"Buscar referência"},
     {key:"devotionals", title:"Devocionais", icon:"🙏", meta:"Momentos de reflexão"},
     {key:"hymns", title:"Louvores", icon:"🎵", meta:"Louvores e instrumentais"},
-    {key:"harpa", title:"Hinos da Harpa", icon:"🎼", meta:"640 hinos"}
+    {key:"harpa", title:"Hinos da Harpa", icon:"🎼", meta:"Dentro do app"}
   ],
   [
     {key:"donation", title:"Doação de Bíblias", icon:"♡", meta:"Ações solidárias"},
@@ -2531,7 +2531,16 @@ worshipAudioEl.addEventListener("loadedmetadata",()=>{
 
 
 
-const HARPA_CATALOG_URL="https://harpacomjesus.com.br/hinos/";
+
+const HARPA_INTERNAL_HYMNS = window.HARPA_INTERNAL_HYMNS || [];
+
+function getSavedHarpaLyrics(){
+  return JSON.parse(localStorage.getItem("bs-harpa-lyrics")||"{}");
+}
+
+function getHarpaFavoriteNumbers(){
+  return JSON.parse(localStorage.getItem("bs-harpa-favorites")||"[]");
+}
 
 function renderHarpa(){
   pageTitle.textContent="Hinos da Harpa";
@@ -2539,72 +2548,139 @@ function renderHarpa(){
     <section class="harpa-hero">
       <div class="harpa-cover-mark">🎼</div>
       <div>
-        <span class="eyebrow">HARPA CRISTÃ</span>
-        <h2>640 Hinos da Harpa</h2>
-        <p>Encontre o hino pelo número ou pelo nome. Esta área fica separada dos louvores para facilitar na hora do culto.</p>
+        <span class="eyebrow">HARPA DENTRO DA BÍBLIA</span>
+        <h2>Harpa Cristã Completa</h2>
+        <p>Os 640 hinos estão dentro do aplicativo. Busque pelo número ou pelo nome e abra a letra sem sair da Bíblia.</p>
       </div>
     </section>
 
-    <div class="harpa-quick-card">
-      <div class="harpa-count">
-        <strong>640</strong>
-        <span>hinos no catálogo</span>
-      </div>
-      <div class="harpa-help">
-        <strong>Como usar</strong>
-        <span>Use a busca do catálogo abaixo e digite, por exemplo: <b>1</b>, <b>Chuvas de Graça</b>, <b>545</b> ou o nome do hino.</span>
-      </div>
+    <div class="harpa-summary-grid">
+      <div><strong>640</strong><span>hinos</span></div>
+      <div><strong>100%</strong><span>dentro do app</span></div>
+      <div><strong>⌕</strong><span>busca rápida</span></div>
     </div>
 
-    <div class="harpa-number-jump">
-      <strong>Ir rápido por faixa</strong>
-      <div class="harpa-range-buttons">
-        ${[
-          [1,100],[101,200],[201,300],[301,400],[401,500],[501,600],[601,640]
-        ].map(([a,b])=>`<button onclick="harpaScrollToCatalog()">${a}–${b}</button>`).join("")}
-      </div>
+    <div class="search-card">
+      <input id="harpaSearch" class="field" placeholder="Buscar: 545, Porque Ele Vive..." oninput="renderHarpaList(this.value)">
     </div>
 
-    <div class="harpa-browser-card" id="harpaCatalog">
-      <div class="harpa-browser-head">
-        <div>
-          <strong>Catálogo completo</strong>
-          <small>Todos os 640 hinos</small>
-        </div>
-        <button class="btn-ghost" onclick="openHarpaExternally()">Abrir fora ↗</button>
-      </div>
-
-      <div class="harpa-frame-wrap">
-        <iframe
-          id="harpaFrame"
-          src="${HARPA_CATALOG_URL}"
-          title="Catálogo dos 640 Hinos da Harpa Cristã"
-          loading="lazy"
-          referrerpolicy="strict-origin-when-cross-origin"
-          allow="clipboard-read; clipboard-write"
-        ></iframe>
-      </div>
-
-      <div class="harpa-fallback">
-        <strong>Se o catálogo não aparecer no seu celular</strong>
-        <span>Alguns navegadores podem bloquear páginas externas dentro do aplicativo.</span>
-        <button class="btn-primary full-width" onclick="openHarpaExternally()">Abrir os 640 hinos</button>
-      </div>
+    <div class="harpa-range-row">
+      ${[[1,100],[101,200],[201,300],[301,400],[401,500],[501,600],[601,640]].map(([a,b])=>`<button onclick="filterHarpaRange(${a},${b})">${a}–${b}</button>`).join("")}
+      <button onclick="renderHarpaList('')">Todos</button>
     </div>
 
     <div class="panel harpa-note">
-      <strong>📌 Harpa separada dos Louvores</strong>
-      <p class="small">A aba <b>Harpa</b> é para procurar os hinos pelo número/nome. A aba <b>Louvores</b> continua com músicas e instrumentais para ouvir.</p>
+      <strong>📖 Letras no próprio aplicativo</strong>
+      <p class="small">Nenhum site externo é necessário para ler os hinos. Você também pode favoritar e copiar um hino.</p>
     </div>
-  `;
+
+    <div id="harpaInternalList"></div>`;
+  renderHarpaList("");
 }
 
-function harpaScrollToCatalog(){
-  document.getElementById("harpaCatalog")?.scrollIntoView({behavior:"smooth",block:"start"});
+function renderHarpaList(query=""){
+  const mount=document.getElementById("harpaInternalList");
+  if(!mount) return;
+  const q=String(query||"").trim().toLocaleLowerCase("pt-BR");
+  const favs=getHarpaFavoriteNumbers();
+  const items=HARPA_INTERNAL_HYMNS.filter(h=>{
+    const hay=`${h.number} ${h.title}`.toLocaleLowerCase("pt-BR");
+    return !q || hay.includes(q);
+  });
+
+  mount.innerHTML=items.length
+    ? items.map(h=>`
+      <article class="harpa-internal-card" onclick="openHarpaHymn(${h.number})">
+        <div class="harpa-number-badge">${h.number}</div>
+        <div>
+          <strong>${escapeHtml(h.title)}</strong>
+          <small>Harpa Cristã • letra completa ${favs.includes(h.number)?'• ♥ favorito':''}</small>
+        </div>
+        <span>›</span>
+      </article>`).join("")
+    : `<div class="empty-state">Nenhum hino encontrado.</div>`;
 }
 
-function openHarpaExternally(){
-  window.open(HARPA_CATALOG_URL,"_blank","noopener,noreferrer");
+function filterHarpaRange(a,b){
+  const mount=document.getElementById("harpaInternalList");
+  if(!mount) return;
+  const favs=getHarpaFavoriteNumbers();
+  const items=HARPA_INTERNAL_HYMNS.filter(h=>h.number>=a&&h.number<=b);
+  mount.innerHTML=items.map(h=>`
+    <article class="harpa-internal-card" onclick="openHarpaHymn(${h.number})">
+      <div class="harpa-number-badge">${h.number}</div>
+      <div><strong>${escapeHtml(h.title)}</strong><small>Harpa Cristã ${favs.includes(h.number)?'• ♥ favorito':''}</small></div><span>›</span>
+    </article>`).join("");
+  mount.scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+function openHarpaHymn(number){
+  const hymn=HARPA_INTERNAL_HYMNS.find(h=>Number(h.number)===Number(number));
+  if(!hymn) return;
+  const saved=getSavedHarpaLyrics();
+  const lyrics=saved[number]||hymn.lyrics||"";
+  const favs=getHarpaFavoriteNumbers();
+  const liked=favs.includes(Number(number));
+  const prev=Number(number)>1?Number(number)-1:null;
+  const next=Number(number)<640?Number(number)+1:null;
+
+  pageTitle.textContent=`Harpa ${hymn.number}`;
+  content.innerHTML=`
+    <article class="harpa-hymn-page">
+      <button class="btn-ghost" onclick="renderHarpa()">← Voltar à Harpa</button>
+      <div class="harpa-hymn-head">
+        <span class="harpa-big-number">${hymn.number}</span>
+        <div><span class="eyebrow">HARPA CRISTÃ</span><h2>${escapeHtml(hymn.title)}</h2></div>
+      </div>
+
+      <div class="harpa-hymn-actions-top">
+        <button class="btn-primary" onclick="toggleHarpaFavorite(${hymn.number})">${liked?'♥ Favorito':'♡ Favoritar'}</button>
+        <button class="btn-ghost" onclick="copyHarpaHymn(${hymn.number})">Copiar</button>
+      </div>
+
+      <div class="harpa-lyrics">${lyrics.split("\n").map(line=>line?`<div>${escapeHtml(line)}</div>`:`<br>`).join("")}</div>
+
+      <div class="harpa-next-prev">
+        ${prev?`<button class="btn-ghost" onclick="openHarpaHymn(${prev})">← ${prev}</button>`:'<span></span>'}
+        ${next?`<button class="btn-primary" onclick="openHarpaHymn(${next})">${next} →</button>`:'<span></span>'}
+      </div>
+
+      <details class="harpa-edit-details">
+        <summary>Editar esta letra somente neste aparelho</summary>
+        <textarea id="harpaLyricsInput" class="field harpa-lyrics-input">${escapeHtml(lyrics)}</textarea>
+        <button class="btn-ghost full-width" onclick="saveHarpaLyrics(${hymn.number})">Salvar edição local</button>
+      </details>
+    </article>`;
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function toggleHarpaFavorite(number){
+  let favs=getHarpaFavoriteNumbers();
+  number=Number(number);
+  favs=favs.includes(number)?favs.filter(n=>n!==number):[...favs,number].sort((a,b)=>a-b);
+  localStorage.setItem("bs-harpa-favorites",JSON.stringify(favs));
+  openHarpaHymn(number);
+  toast(favs.includes(number)?"Hino favoritado":"Hino removido dos favoritos");
+}
+
+function saveHarpaLyrics(number){
+  const value=document.getElementById("harpaLyricsInput")?.value.trim()||"";
+  if(!value){toast("A letra não pode ficar vazia");return;}
+  const saved=getSavedHarpaLyrics();
+  saved[number]=value;
+  localStorage.setItem("bs-harpa-lyrics",JSON.stringify(saved));
+  toast("Edição salva neste aparelho");
+  openHarpaHymn(number);
+}
+
+function editHarpaLyrics(number){ openHarpaHymn(number); }
+
+async function copyHarpaHymn(number){
+  const hymn=HARPA_INTERNAL_HYMNS.find(h=>Number(h.number)===Number(number));
+  if(!hymn) return;
+  const lyrics=getSavedHarpaLyrics()[number]||hymn.lyrics||"";
+  await copyText(`${hymn.title} - ${hymn.number}\nHarpa Cristã\n\n${lyrics}`);
+  toast("Hino copiado");
 }
 
 function renderDonation(){
@@ -2740,7 +2816,7 @@ function exportBackup(){const data={};for(let i=0;i<localStorage.length;i++){con
 function importBackupFile(event){const file=event.target.files?.[0];if(!file)return;const reader=new FileReader();reader.onload=()=>{try{const obj=JSON.parse(reader.result);if(!obj.data)throw new Error();for(const [k,v] of Object.entries(obj.data)){if(k.startsWith("bs-"))localStorage.setItem(k,v);}alert("Backup restaurado. O aplicativo será recarregado.");location.reload();}catch(e){toast("Arquivo de backup inválido");}};reader.readAsText(file);}
 function clearAppData(){if(!confirm("Tem certeza? Isso apaga favoritos, notas e progresso deste aparelho."))return;const keys=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k?.startsWith("bs-"))keys.push(k);}keys.forEach(k=>localStorage.removeItem(k));location.reload();}
 
-function renderMore(){pageTitle.textContent="Mais informações";content.innerHTML=`<div class="setting-row" onclick="toggleTheme()"><div class="setting-left"><div class="setting-icon">${state.dark?'☀':'☾'}</div><div><h3>Modo ${state.dark?'claro':'escuro'}</h3><div class="small">Mude a aparência do aplicativo</div></div></div><span>›</span></div><div class="setting-row" onclick="installAppFromMenu()"><div class="setting-left"><div class="setting-icon">⇩</div><div><h3>Instalar aplicativo</h3><div class="small">Adicionar à tela inicial do celular</div></div></div><span>›</span></div><div class="setting-row" onclick="shareApp()"><div class="setting-left"><div class="setting-icon">↗</div><div><h3>Compartilhar app</h3><div class="small">Envie o Palavra Viva para alguém</div></div></div><span>›</span></div><div class="version-card"><div class="cross">✝</div><h3>Bíblia Sagrada</h3><p>Palavra Viva • versão 2.3</p><p style="margin-top:8px">Desenvolvido por JNR</p></div><div class="panel" style="margin-top:12px"><strong>📖 Recursos desta versão</strong><p class="small">Menu reorganizado, planos, devocionais, histórias, pesquisa avançada, hinários pessoais, áudio por voz do aparelho, quiz, dicionário, temas, estudos por localização, backup e versões que realmente trocam o texto bíblico.</p></div>`;}
+function renderMore(){pageTitle.textContent="Mais informações";content.innerHTML=`<div class="setting-row" onclick="toggleTheme()"><div class="setting-left"><div class="setting-icon">${state.dark?'☀':'☾'}</div><div><h3>Modo ${state.dark?'claro':'escuro'}</h3><div class="small">Mude a aparência do aplicativo</div></div></div><span>›</span></div><div class="setting-row" onclick="installAppFromMenu()"><div class="setting-left"><div class="setting-icon">⇩</div><div><h3>Instalar aplicativo</h3><div class="small">Adicionar à tela inicial do celular</div></div></div><span>›</span></div><div class="setting-row" onclick="shareApp()"><div class="setting-left"><div class="setting-icon">↗</div><div><h3>Compartilhar app</h3><div class="small">Envie o Palavra Viva para alguém</div></div></div><span>›</span></div><div class="version-card"><div class="cross">✝</div><h3>Bíblia Sagrada</h3><p>Palavra Viva • versão 2.5</p><p style="margin-top:8px">Desenvolvido por JNR</p></div><div class="panel" style="margin-top:12px"><strong>📖 Recursos desta versão</strong><p class="small">Menu reorganizado, planos, devocionais, histórias, pesquisa avançada, hinários pessoais, áudio por voz do aparelho, quiz, dicionário, temas, estudos por localização, backup e versões que realmente trocam o texto bíblico.</p></div>`;}
 
 function installAppFromMenu(){ if(deferredPrompt) installBtn.click(); else toast("No Chrome: menu ⋮ → Adicionar à tela inicial"); }
 function shareApp(){ const data={title:"Bíblia Sagrada • Palavra Viva",text:"Conheça o aplicativo Bíblia Sagrada • Palavra Viva",url:location.href}; if(navigator.share) navigator.share(data).catch(()=>{}); else if(navigator.clipboard){navigator.clipboard.writeText(location.href);toast("Link copiado");} }
@@ -2815,7 +2891,7 @@ Object.assign(window,{ state,openDrawer,closeDrawer,quickOpenVersions,navigate,t
   renderHymns,setHymnCategory,savePlayableHymn,deleteHymn,playWorshipTrack,
   toggleWorshipPlayback,playNextWorship,playPreviousWorship,stopWorship,seekWorship
 
-,saveYoutubeHymn,hideWorshipPlayer,showWorshipPlayer,renderHarpa,harpaScrollToCatalog,openHarpaExternally,openLicensedSource});
+,saveYoutubeHymn,hideWorshipPlayer,showWorshipPlayer,renderHarpa,harpaScrollToCatalog,openHarpaExternally,openLicensedSource,renderHarpaList,openHarpaHymn,saveHarpaLyrics,editHarpaLyrics,copyHarpaHymn,filterHarpaRange,toggleHarpaFavorite});
 
 if('serviceWorker' in navigator){ navigator.serviceWorker.register('./sw.js').catch(()=>{}); }
 render();

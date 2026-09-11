@@ -1,33 +1,22 @@
-# Bíblia Sagrada • Palavra Viva — versão 2.3
+# Bíblia Sagrada • Palavra Viva — versão 2.5
 
-## NVI e NVT adicionadas à área de Versões
+## Harpa Cristã completa dentro do aplicativo
 
-Agora a lista em português mostra:
+Os 640 hinos do PDF enviado pelo usuário foram organizados diretamente no app.
 
-- Almeida 1819 (Bíblia Livre) — ativa
-- NVI — Nova Versão Internacional — licenciada
-- NVT — Nova Versão Transformadora — licenciada
-- AEC — Almeida Edição Contemporânea — licenciada
+### Agora a aba Harpa tem
+- 640 hinos numerados de 1 a 640;
+- busca por número ou nome;
+- filtros rápidos por faixa;
+- letra completa abrindo dentro da Bíblia;
+- favorito;
+- copiar;
+- anterior/próximo;
+- funcionamento offline após o app ser carregado/cacheado;
+- nenhuma dependência de site externo para a letra da Harpa.
 
-## Importante
-NVI e NVT aparecem corretamente como versões oficiais, mas o aplicativo não usa outro texto fingindo ser essas traduções.
+As letras vieram do PDF fornecido pelo usuário nesta conversa.
 
-Para ativar o texto integral:
-- NVI: é necessário acesso/autorização oficial da Biblica.
-- NVT: é necessário acesso/autorização da Editora Mundo Cristão.
-
-A tela de cada versão inclui um botão para abrir a fonte oficial e solicitar/ver informações de acesso.
-
-## Mantido
-Todos os recursos da v2.2:
-- Hinos da Harpa
-- explicações detalhadas
-- meditação
-- marcação por cores
-- louvores
-- quiz
-- favoritos
-- anotações
-- demais menus
+Todos os demais recursos da versão anterior foram mantidos.
 
 Desenvolvido por JNR.
